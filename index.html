@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading.</title>
+
+<style>
+    body{
+        margin-top: 0px;
+        background:#04143a;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:80vh;
+        text-align: center;
+    }
+
+.logo-container {
+    text-align: center;
+    padding: 20px;
+}
+
+/* ---------------------------- */
+/*  ENTER ANIMATIONS (WORKING)  */
+/* ---------------------------- */
+
+.from-top {
+    opacity: 0;
+    transform: translateY(-300px);
+    animation: slideDown 1.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.from-bottom {
+    opacity: 0;
+    transform: translateY(300px);
+    animation: slideUp 1.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+/* -------------------------------- */
+/*      EXIT ANIMATIONS (NEW)       */
+/* -------------------------------- */
+
+.exit-up {
+    animation: exitUp 1.5s ease forwards;
+}
+
+@keyframes exitUp {
+    to {
+        opacity: 0;
+        transform: translateY(-500px);
+    }
+}
+
+.exit-down {
+    animation: exitDown 1.5s ease forwards;
+}
+
+@keyframes exitDown {
+    to {
+        opacity: 1;
+        transform: translateY(500px);
+    }
+}
+</style>
+</head>
+<body>
+    <div style=" text-align: center; padding: 20px;" class="logo-container">
+
+     <!-- LOGO (ENTER FROM TOP → EXIT UP) -->
+     <img id="logo" src="https://res.cloudinary.com/die8hxris/image/upload/v1766728648/mu0tpbcyio6lyuutjdfr.jpg" alt="00000" width="200px" height="200px" class="from-top">
+      
+     <!-- EBRO (ENTER FROM BOTTOM → EXIT DOWN) -->
+     <h1 id="ebro"
+        style=" font-size: 80px; font-weight: 700; letter-spacing: 5px; margin: 0;
+                line-height: 1; color:#d9cfcf; font-family:'Courier New', Courier, monospace;"
+        class="from-bottom">
+        EBRO
+     </h1>
+
+     <!-- SHOP (ENTER BOTTOM → EXIT DOWN) -->
+     <p id="shop"
+        style="font-size: 30px; font-weight: 400; text-transform: uppercase; color: #c9a44c;
+               margin-top: 10px; padding-bottom: 5px; letter-spacing: 2px;"
+        class="from-bottom">
+        SHOP
+     </p>
+
+    <!-- ONLINE PLATFORM (ENTER BOTTOM → EXIT DOWN) -->
+    <p id="platform"
+       style="font-family: 'Brush Script MT', cursive; font-size: 25px; color: #c9a44c; margin: 0;
+              font-weight: 100;"
+       class="from-bottom">
+       Online platform
+    </p> 
+</div>
+
+<script>
+// Run exit animations after 3 seconds
+setTimeout(function() {
+
+    let logo = document.getElementById("logo");
+    let ebro = document.getElementById("ebro");
+    let shop = document.getElementById("shop");
+    let platform = document.getElementById("platform");
+
+    // REMOVE enter animations
+    logo.classList.remove("from-top");
+    ebro.classList.remove("from-bottom");
+    shop.classList.remove("from-bottom");
+    platform.classList.remove("from-bottom");
+
+    // FORCE BROWSER REFLOW (IMPORTANT FIX)
+    void logo.offsetWidth;
+
+    // ADD exit animations
+    logo.classList.add("exit-up");
+    ebro.classList.add("exit-down");
+    shop.classList.add("exit-down");
+    platform.classList.add("exit-down");
+
+    // Redirect AFTER exit animation plays
+    setTimeout(function(){
+        window.location.href = "home.html";
+    }, 800);
+
+}, 5000);
+</script>
+
+
+</body>
+</html>
+

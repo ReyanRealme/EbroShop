@@ -1,0 +1,2829 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<title>EbRoShop Header - Fixed</title>
+
+<style>
+  html{
+    scroll-behavior: smooth;
+  }
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff}
+
+/* HEADER */
+.header{
+  background:#136835;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  color:#fff;
+}
+.left,.right{display:flex;align-items:center;gap:18px}
+.icon-btn{cursor:pointer;display:flex;align-items:center}
+.icon-btn svg{
+  width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;
+}
+
+/* CART BADGE */
+.cart{position:relative;}
+.badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#fff;
+  color:#136835;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:bold;
+  display:none;
+}
+
+/* EbRo logo – fully isolated */
+.ebro-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Circle like icon */
+.ebro-logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Image behaves like icon */
+.ebro-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit:contain;
+}
+
+/* Text area */
+.ebro-logo-text {
+  margin-left: 8px;
+}
+
+/* Main text */
+.ebro-logo-main {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Sub text */
+.ebro-logo-sub {
+  font-size: 11px;
+  color: #ffffff;
+}
+
+
+
+
+/* LOGO */
+.logo-area{display:flex;align-items:center;gap:10px}
+.logo-circle{
+  width:42px;height:42px;background:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;padding:5px;
+}
+.logo-text .main{font-size:20px;font-weight:bold}
+.logo-text .sub{font-size:10px;margin-top:2px;text-transform:capitalize;}
+
+
+/* OVERLAY */
+#menuOverlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.42);
+  display:none;z-index:9;
+}
+
+/* SIDE MENU (SLIDE DRAWER) */
+#sideMenu{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:320px;
+  height:100%;
+  background:#fafafa;
+  box-shadow:3px 0 8px rgba(0,0,0,0.2);
+  z-index:10;
+  transition:left .28s ease;
+  padding:20px 22px;
+  overflow-y:auto;
+}
+
+#sideMenu a {
+  text-decoration: none; /* remove underline */
+  color: #111;           /* text color */
+}
+
+/* MENU SECTIONS */
+.menu-title{
+  color:#999;
+  font-size:14px;
+  margin:18px 0 6px;
+}
+
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0;
+  font-size:16px;
+  color:#000;
+  cursor:pointer;
+  border-bottom:1px solid #eee;
+}
+.menu-item svg{
+  width:22px;height:22px;stroke:#000;fill:none;stroke-width:1.7;
+}
+
+/* LOGIN ROW */
+.login-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0 20px;
+  border-bottom:1px solid #ddd;
+}
+.login-row .user-icon{
+  width:46px;height:46px;border-radius:50%;background:#eee;
+  display:flex;align-items:center;justify-content:center;
+}
+.login-row .user-icon svg{width:28px;height:28px;stroke:#777}
+
+/* CLOSE BUTTON */
+.close-btn{
+  font-size:26px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-bottom:12px;
+  display:inline-block;
+}
+
+
+/* for text header */
+@keyframes ticker-scroll{
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+@media (max-width:520px){
+  .ticker-track{font-size:14px}
+}
+
+/* -------------------------
+   SEARCH PANEL STYLES
+   ------------------------- */
+#searchPanel {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:#fff;
+  z-index:9999;
+  display:none;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.search-top {
+  padding:12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
+
+.search-top input {
+  flex:1;
+  padding:12px;
+  font-size:16px;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
+
+.search-close-btn {
+  padding:10px 14px;
+  background:#136835;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* product card design (matches your screenshot) */
+.products-wrap { padding:14px; }
+.products-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:space-between;
+}
+
+.product-card {
+    width: 48%;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.07);
+    padding-bottom:8px;
+    overflow:hidden;
+}
+
+.product-card img {
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    display:block;
+}
+.product-name {
+  padding:10px;
+    font-size:16px;
+    font-weight:600;
+}
+.product-price {
+    padding:0 10px;
+    font-size:16px;
+    font-weight:bold;
+    color:#111;
+}
+.add-btn {
+    margin:12px 10px 16px 10px;
+    width:calc(100% - 20px);
+    padding:10px 0;
+    background:#008cff;
+    color:#fff;
+    border:none;
+    font-size:15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* small responsiveness */
+@media (max-width:520px){
+  .product-card{width:100%}
+  .logo-text .main{font-size:16px}
+}
+
+
+
+
+
+ /* Styling for the specific slides */
+        /* NOTE: REPLACE THESE URLS with the actual paths to your banner images */
+        #slide-1 { 
+            background-image: url('https://res.cloudinary.com/die8hxris/image/upload/v1765983254/w0bah8m4ptlmqezh5cao.jpg'); 
+            background-color: #e0f2f7; 
+            background-repeat: no-repeat; 
+            background-size: 100% auto; /* Adjust to better fit the content */
+            background-position: top center;
+            background-size: contain;
+        }
+        #slide-2 { 
+            background-image: url('https://res.cloudinary.com/die8hxris/image/upload/v1765983212/rbjmgnyphxsvylfbffag.jpg'); 
+            background-color: #1fc8ea; 
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: top center;
+            background-size: contain;
+            
+        }
+        #slide-3 { 
+            background-image: url('https://res.cloudinary.com/die8hxris/image/upload/v1765983484/xnzayu8f4bkscf7bf12w.jpg'); 
+            background-color: #e8f5e9; 
+            background-repeat: no-repeat; 
+            background-size: 100% auto;
+            background-position: top center;
+            background-size: contain;
+    
+        }
+
+        /* Specific text colors based on screenshots */
+        #slide-1 .banner-title { color: #007bff; text-shadow: none; }
+        #slide-1 .banner-subtitle { color: #4a4a4a; text-shadow: none; }
+        #slide-2 .banner-title { color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+        #slide-2 .banner-subtitle { color: #fccf00; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); }
+        #slide-3 .banner-title { color: #333; text-shadow: none; }
+        #slide-3 .banner-subtitle { color: #e74c3c; font-size: 1.5em; font-weight: bold; text-shadow: none; }
+        #slide-3 .banner-content p { color: #555; text-shadow: none; margin-bottom: 5px;}
+
+        .buy-now-btn:hover {
+            background-color: #e68900;
+        }
+
+        .category-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 1), 
+                        0 0 0 6px #007bff; /* Slight blue highlight on hover */
+        }
+
+        
+        .centered-dot::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #388e3c;
+            border-radius: 50%;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 768px) {
+            .banner { height: 300px; }
+            .banner-content { padding-bottom: 30px; }
+            .banner-title { font-size: 2.2em; }
+            .banner-subtitle { font-size: 1.1em; }
+            .buy-now-btn { padding: 10px 20px; }
+            
+            .category-box {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            .banner { height: 250px; }
+            .banner-title { font-size: 1.8em; }
+            .buy-now-btn { padding: 8px 15px; font-size: 0.9em; }
+            
+            .category-box {
+                width: 70px;
+                height: 70px;
+            }
+        }
+
+
+        /*shop by catagory*/
+            .category-link:hover {
+            color: #7cb342; /* Highlight color on hover */
+        }
+
+     
+        /* Hide the arrow on the last item */
+        .category-item:last-child .arrow {
+            display: none;
+        }
+
+
+/* for bottum menu*/
+  .product-list-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .add-to-cart-button:hover {
+            background-color: #f0f8ff; /* Light hover effect */
+        }
+        /* Optional: Scroll navigation arrows (as shown in image) */
+        .scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .scroll-arrow.left {
+            left: 5px;
+        }
+
+        .scroll-arrow.right {
+            right: 5px;
+        }
+
+
+
+        /*for FAQ's*/
+        .links a:hover {
+    color: #000;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/*For last footer*/
+.payment-logos a:hover img {
+    transform: scale(1.05);
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+    .footer-text {
+        font-size: 20px;
+    }
+
+    .payment-logos a img {
+        height: 34px;
+    }
+}
+
+
+/*for bottom nav*/
+  .nav-item.active {
+    color: #000;
+  }
+
+  .nav-item.active svg {
+    stroke: #000;
+  }
+
+  .cart {
+    position: relative;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP TICKER -->
+<div style=" background:#136835; --white:#ffffff; --muted-white:rgba(255,255,255,0.95);">
+  <div style="font-family: Helvetica Neue, Arial, sans-serif; background:#fff;">
+    <header style="background:#136835; color:var(--white); width:100%; box-shadow: 0 1px 0 rgba(0,0,0,0.08);" class="site-header" role="banner">
+      <div style="overflow:hidden; border-top:1px solid rgba(255,255,255,0.06);" class="ticker-wrap" aria-hidden="false">
+        <div style="display:block; width:100%; padding:10px 0;" class="ticker" role="marquee">
+          <div style="display:inline-block; white-space:nowrap; will-change:transform; font-weight:600; font-size:16px; color:var(--muted-white); animation: ticker-scroll 10s linear infinite;" class="ticker-track">
+            <span style="display:inline-block; padding-right:60px;">Fast delivery all over Addis Abeba. Order Now.</span>
+            <span style="display:inline-block; padding-right:60px;">ወዳሉበት በፍጥነት ወዳሉበት እናደርሳለን. አሁኑኑ ይዘዙን</span>
+            <span style="padding-left:40px;">Fast delivery all over Addis Abeba. Order Now.</span>
+            <span style="padding-left:40px;">ወዳሉበት በፍጥነት ወዳሉበት እናደርሳለን. አሁኑኑ ይዘዙን.</span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+
+<!-- MAIN HEADER -->
+<div  class="header">
+  <div class="left">
+    <div class="icon-btn" id="hamburgerBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </div>
+
+       <a href="search.html" aria-label="Search" class="icon-btn">
+          <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="6"/>
+          <path d="M21 21l-4-4"/>
+          </svg>
+       </a>
+  </div>
+
+<div class="logo-area">
+  <a href="home.html" class="ebro-logo-link">
+    
+    <div class="ebro-logo-circle" title="EbRoShop">
+      <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983404/j5tztu0kuzdspwmk3zfg.jpg" alt="EbRoShop Logo" class="ebro-logo-img">
+    </div>
+
+    <div class="ebro-logo-text">
+      <div class="ebro-logo-main">EbRoShop.com</div>
+      <div class="ebro-logo-sub">by Ebro Gurage Tone</div>
+    </div>
+
+  </a>
+</div>
+
+
+
+  <div class="right">
+    <div class="icon-btn" id="accountBtn" aria-label="Account">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20a8 8 0 0116 0"/>
+      </svg>
+    </div>
+
+    <div class="cart icon-btn" id="cartBtn" aria-label="Cart">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 3h2l3 12h10l3-8H6"/>
+        <circle cx="9" cy="20" r="1"/>
+        <circle cx="18" cy="20" r="1"/>
+      </svg>
+      <div class="badge" id="cartBadge">0</div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY + SIDE MENU -->
+<div id="menuOverlay" aria-hidden="true"></div>
+
+
+
+  <div id="sideMenu" aria-hidden="true">
+  <span class="close-btn" id="closeMenu">✖️</span>
+
+  <!--For signup-->
+<a href="register.html" class="login-row" id="auth-link">
+  <div class="user-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/>
+      <path d="M4 20a8 8 0 0116 0"/>
+    </svg>
+  </div>
+  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #0d4a7e;">Signup or Register</div>
+</a>
+
+<!-- Main Links -->
+  <a href="home.html" class="menu-item">
+    <!-- Home Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 11l9-8 9 8"/>
+  <path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"/>
+  <path d="M9 22V12h6v10"/>
+</svg>
+
+    <span>Home</span>
+  </a>
+
+  <a href="about.html" class="menu-item">
+    <!-- Info Icon -->
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  <circle cx="12" cy="12" r="10"/>
+  <line x1="12" y1="11" x2="12" y2="16"/>
+  <circle cx="12" cy="8" r="1"/>
+</svg>
+    <span>About-us</span>
+  </a>
+
+  <a href="contact.html" class="menu-item">
+    <!-- Contact/Phone Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+  <path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.24
+           11.4 11.4 0 003.6.6a1 1 0 011 1v3.5a1 1 0 01-1 1
+           C10.6 22 2 13.4 2 3.5a1 1 0 011-1H6.5a1 1 0 011 1
+           11.4 11.4 0 00.6 3.6 1 1 0 01-.25 1z"/>
+</svg>
+    <span>Contact-us</span>
+  </a>
+
+  <a href="faq.html" class="menu-item">
+    <!-- FAQ/Question Icon -->
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+  <path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zm0 15a1.25 1.25 0 1 1 0-2.5a1.25 1.25 0 0 1 0 2.5zm1.1-4.6c-.9.6-1.1 1-1.1 1.6h-2
+           c0-1.5.6-2.4 1.9-3.2
+           .9-.6 1.4-1 1.4-1.8
+           0-.9-.7-1.5-1.8-1.5
+           -1 0-1.8.6-1.9 1.7H7.6
+           C7.7 6.2 9.4 5 11.5 5
+           c2.4 0 4.2 1.4 4.2 3.6
+           0 1.6-1 2.6-2.5 3.4z"/>
+</svg>
+    <span>FAQs</span>
+  </a>
+
+  <a href="terms.html" class="menu-item">
+    <!-- Document Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+  <path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+  <path d="M14 2v6h6"/>
+  <path d="M8 13l2 2l4-4"/>
+</svg>
+    <span>Terms Of Service</span>
+  </a>
+
+  <a href="returns.html" class="menu-item">
+    <!-- Return/Arrow Icon -->
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+ <!--First arrow (clockwise, top-right) -->
+  <path d="M4.5 12a7.5 7.5 0 0 1 7.5-7.5"/>
+  <polyline points="12 2 14 6 10 6"/>
+  <!-- Second arrow (counter-clockwise, bottom-left) -->
+  <path d="M19.5 12a7.5 7.5 0 0 1-7.5 7.5"/>
+  <polyline points="12 22 10 18 14 18"/>
+</svg> 
+    <span>Return Policy</span>
+  </a>
+
+  <a href="privacy.html" class="menu-item">
+    <!-- Lock Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+  <path d="M4 3h16v18H4z"/>
+  <path d="M7 7h10M7 11h10M7 15h6"/>
+</svg>
+    <span>Privacy Policy</span>
+  </a>
+
+  <!-- Products -->
+  <div class="menu-title">Products</div>
+
+  <a href="basicfood.php" class="menu-item">
+    <!-- Food Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 9h18l-1 10H4z"/>
+  <path d="M16 4a2 2 0 1 1-4 0"/>
+</svg>
+    <span>Basic Food</span>
+  </a>
+
+  <a href="cooking.php" class="menu-item">
+    <!-- Cooking Ingredients Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 5h6v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5z"/>
+  <path d="M9 5c0-1.5 1-3 3-3s3 1.5 3 3"/>
+  <path d="M11 9h2"/>
+  <path d="M11 13h2"/>
+</svg>
+    <span>Cooking ingrident</span>
+  </a>
+
+  <a href="babyproduct.php" class="menu-item">
+    <!-- Baby Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M6 21v-2a6 6 0 0112 0v2"/>
+    </svg>
+    <span>Baby product</span>
+  </a>
+
+  <a href="cosmotics.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 10h-6l-3-6-3 6H3l5 7-2 6 6-4 6 4-2-6 5-7z"/>
+    </svg>
+    <span>HealthCare</span>
+  </a>
+
+   <a href="packaged.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+ <svg
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 7l9-4 9 4" />
+  <path d="M3 7v10l9 4 9-4V7" />
+  <path d="M12 3v4" />
+  <path d="M12 13v8" />
+</svg>
+    <span>Packaged Goods</span>
+  </a>
+
+   <a href="powdersoap.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+    <svg
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Detergent box -->
+  <path d="M6 3h10l2 4v14H6z" />
+  <!-- Box top -->
+  <path d="M6 7h12" />
+  <!-- Scoop handle -->
+  <path d="M9 11c2-2 4-2 6 0" />
+  <!-- Powder granules -->
+  <circle cx="9" cy="16" r="0.8" />
+  <circle cx="12" cy="17" r="0.8" />
+  <circle cx="15" cy="16" r="0.8" />
+</svg>
+    <span>Laundery powders</span>
+  </a>
+
+    <a href="dayper.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+    <svg
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Diaper outer shape -->
+  <path d="M4 7c2-3 14-3 16 0v6c0 4-4 7-8 7s-8-3-8-7z" />
+  <!-- Waist folds -->
+  <path d="M7 7v2M17 7v2" />
+  <!-- Inner absorbent area -->
+  <path d="M9 12c1 2 5 2 6 0" />
+</svg>
+
+    <span>Dayper$Wipes</span>
+  </a>
+  <a href="packedfood.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+    <svg
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <!-- Can body -->
+  <path d="M6 6c0-2 12-2 12 0v12c0 2-12 2-12 0z" />
+  <!-- Top rim -->
+  <path d="M6 6c0 2 12 2 12 0" />
+  <!-- Bottom rim -->
+  <path d="M6 18c0-2 12-2 12 0" />
+  <!-- Label -->
+  <path d="M9 10h6v4H9z" />
+</svg>
+    <span>Packed Foods</span>
+  </a>
+
+    <a href="otheringrident.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Bowl -->
+  <path d="M3 14h18" />
+  <path d="M5 14c0 4 4 6 7 6s7-2 7-6" />
+
+  <!-- Powder mound -->
+  <path d="M8 14c1-2 2-3 4-3s3 1 4 3" />
+
+  <!-- Granules -->
+  <circle cx="9" cy="10" r="0.6" />
+  <circle cx="12" cy="9" r="0.6" />
+  <circle cx="15" cy="10" r="0.6" />
+</svg>
+    <span>Spices powders</span>
+  </a>
+
+    <a href="oil.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+    <svg viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <!-- Bottle neck -->
+  <path d="M10 2h4v3h-4z"/>
+  <!-- Bottle body -->
+  <path d="M9 5h6c1.5 0 2 1.5 2 3v9c0 2-2 4-5 4s-5-2-5-4V8c0-1.5.5-3 2-3z"/>
+  <!-- Oil level -->
+  <path d="M7 13h10"/>
+  <!-- Oil drop -->
+  <path d="M19 14c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
+</svg>
+    <span>Food Oils</span>
+  </a>
+
+   <a href="modes.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <!-- Pad body -->
+  <rect x="6" y="3" width="12" height="18" rx="4" ry="4"/>
+  <!-- Inner absorbent area -->
+  <rect x="9" y="6" width="6" height="12" rx="3" ry="3"/>
+  <!-- Side wings -->
+  <path d="M6 9l-3 3 3 3"/>
+  <path d="M18 9l3 3-3 3"/>
+</svg>
+    <span>Modes$Soft</span>
+  </a>
+
+    <a href="liquidsoap.php" class="menu-item">
+    <!-- Health/Medical Icon -->
+   <svg viewBox="0 0 24 24" width="24" height="24"
+     fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <!-- Pump top -->
+  <path d="M10 2h4"/>
+  <path d="M12 2v3"/>
+  <path d="M12 5h6"/>
+  <!-- Bottle body -->
+  <rect x="7" y="6" width="10" height="15" rx="3"/>
+  <!-- Liquid level -->
+  <path d="M7 13h10"/>
+  <!-- Soap drop -->
+  <path d="M12 11c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
+</svg>
+    <span>Liquid soap</span>
+  </a>
+<br>
+<br>
+<br>
+</div>
+
+
+
+
+<!-- SEARCH PANEL -->
+<div id="searchPanel" aria-hidden="true">
+  <div class="search-top">
+    <input id="searchInput" type="text" placeholder="Search products..." aria-label="Search products">
+    <button class="search-close-btn" id="closeSearch">Close</button>
+  </div>
+
+  <div class="products-wrap">
+    <div id="searchResults" class="products-grid">
+      <!-- products will render here -->
+    </div>
+  </div>
+  
+</div>
+
+
+
+
+
+    <div style=" font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f8f8f8; display: contents;/* Light background for the page */">
+
+    <div style="  width: 100%;
+            overflow: hidden; /* Hide parts of slides that are not active */
+            position: relative;
+            padding: 25px 0; /* Vertical padding around the carousel */" class="carousel-container">
+        <div style="display:flex;
+            transition: transform 0.5s ease-in-out; /* Smooth slide transition */
+            width: 300%; /* For 3 slides */" class="carousel-track" id="carouselTrack">
+            
+            <div style="    flex-shrink: 0; /* Slides don't shrink */
+            width: 33.33%; /* Each slide takes 1/3 of the track width */
+            padding: 0 10px; /* Space between the container edge and the slide content */" class="carousel-slide">
+                <div style="   position: relative;
+            height: 350px; /* Fixed height for the banner */
+            border-radius: 15px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end; 
+            color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" class="banner" id="slide-1">
+                    <div style="  position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Align content to the bottom of the banner */
+            align-items: center;
+            text-align: center;
+            padding: 0 20px 40px; /* Push content up from the bottom edge */" class="banner-content">
+                         <a href="#cooking" style=" display: inline-block;
+            padding: 12px 30px;
+            background-color: #ff9800; /* Orange color for the button */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;" class="buy-now-btn">BUY NOW</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="    flex-shrink: 0; /* Slides don't shrink */
+            width: 33.33%; /* Each slide takes 1/3 of the track width */
+            padding: 0 10px; /* Space between the container edge and the slide content */" class="carousel-slide">
+                <div style="   position: relative;
+            height: 350px; /* Fixed height for the banner */
+            border-radius: 15px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end; 
+            color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" class="banner" id="slide-2">
+                    <div style="  position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Align content to the bottom of the banner */
+            align-items: center;
+            text-align: center;
+            padding: 0 20px 40px; /* Push content up from the bottom edge */" class="banner-content">
+                      
+                        <a href="#baby" style=" display: inline-block;
+            padding: 12px 30px;
+            background-color: #ff9800; /* Orange color for the button */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;" class="buy-now-btn">BUY NOW</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="    flex-shrink: 0; /* Slides don't shrink */
+            width: 33.33%; /* Each slide takes 1/3 of the track width */
+            padding: 0 10px; /* Space between the container edge and the slide content */" class="carousel-slide">
+                <div style="   position: relative;
+            height: 350px; /* Fixed height for the banner */
+            border-radius: 15px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end; 
+            color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" class="banner" id="slide-3">
+                    <div style="  position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Align content to the bottom of the banner */
+            align-items: center;
+            text-align: center;
+            padding: 0 20px 40px; /* Push content up from the bottom edge */" class="banner-content">
+                        
+                        <a href="#food" style=" display: inline-block;
+            padding: 12px 30px;
+            background-color: #ff9800; /* Orange color for the button */
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;" class="buy-now-btn">BUY NOW</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div style="position: absolute;  bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;" class="carousel-dots" id="carouselDots">
+            <span style="width: 30px; /* Active dot is wider, as seen in the screenshots */
+            border-radius: 5px;
+            background-color: #388e3c; /* Green color for active dot */" class="dot active" data-slide="0"></span>
+            <span style=" width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;" class="dot" data-slide="1"></span>
+            <span style=" width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;" class="dot" data-slide="2"></span>
+        </div>
+    </div>
+
+
+ <!--for shop by catagory-->
+ <div style="        font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;">
+    <div style=" width: 100%;
+            max-width: 800px; /* Limits the max width of the card */
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Important to keep the shadow contained */" class="category-box-container">
+        <div style="   /* This div holds the green tab and the grey/white line */
+            position: relative;
+            padding-bottom: 5px; /* Space for the thin divider line */
+            border-bottom: 1px solid #e0e0e0;" class="category-header-wrapper">
+            <div style=" display: inline-block;
+            background-color: #136835; /* Soft Green color from the photo */
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 10px 20px 10px 20px; /* Padding inside the green box */
+            border-radius: 5px 5px 0 0; /* Rounded top corners */
+            position: relative;
+            z-index: 2; /* Ensures the green box sits above the line */" class="category-header">
+                Shop by categories
+            </div>
+        </div>
+
+        <div style="  /* Enables horizontal scrolling */
+            overflow-x: auto;
+            white-space: nowrap; /* Prevents categories from wrapping to a new line */
+            padding: 20px 0; /* Vertical padding above and below the list */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */" class="category-list-wrapper">
+            <div style="   display: flex;
+            align-items: center;
+            padding: 0 10px; /* Horizontal padding for the content */" class="category-list">
+                
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./basicfood.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Basic Food</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./cooking.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Cooking Ingredients</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./babyproduct.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Baby Products</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./Cosmotics.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Cosmotics</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+                
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./packaged.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Packaged Goods</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./oil.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Food Oils</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./liquidsoap.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Liquid Soap</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+                
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./packedfood.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Packed Foods</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./dayper.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Dayper $ Wipes</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+        
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./otheringrident.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Spices and Legume powders</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./powdersoap.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Laundery powders</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+
+               
+
+                <div style="            display: flex;
+            align-items: center;
+            margin-right: 15px; /* Space after the link and before the arrow */
+            flex-shrink: 0; /* Prevents the items from shrinking when scrolling */" class="category-item">
+                    <a href="./modes.php" style="  text-decoration: none;
+            color: #333;
+            font-size: 1.1em;
+            font-weight: 500;
+            line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
+            text-align: center; /* Center multi-line text */
+            transition: color 0.2s;" class="category-link">Modes and Softs</a>
+                    <span style=" color: #2196f3; /* Bright Blue color for the arrow */
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 15px; /* Space between the category word and the arrow */" class="arrow">&gt;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--For catagoryin pic-->
+
+    <div style="font-family: Arial, sans-serif;
+        background: #ffffff;
+        text-align: center;
+        padding: 15px;">
+
+<div style="  display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 5px 0px; 
+        max-width: 600px;
+        align-items: center;
+        margin: auto;" class="grid">
+ 
+
+     <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 20px;" href="basicfood.php"><img style=" width: 90px;
+        height: 100px;
+        object-fit:cover;
+        display: block;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="EbRoShop.com">Basic Foods</a>
+    </div>
+
+
+   <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 30px;" href="packedfood.php"><img style=" width: 80px;
+        height: 90px;
+        object-fit:cover;
+        display: block;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="EbRoShop.com">Packed Foods</a>
+    </div>
+
+
+  <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 20px;" href="oil.php"><img style=" width: 90px;
+        height: 100px;
+        object-fit:cover;
+        display:block;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="EbRoShop.com">Food Oils</a>
+    </div>
+
+    <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 5px;" href="cooking.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:contain;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="EbRoShop.com">Cooking Ingredient</a>
+    </div>
+
+   <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 20px;" href="otheringrident.php"><img style=" width: 100px;
+        height: 100px;
+        object-fit:cover;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="EbRoShop.com">Spiecs and Legume powders</a>
+    </div>
+
+   <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 5px;" href="babyproduct.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:contain;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="EbRoShop.com">Baby Products</a>
+    </div>
+
+    <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 0px;" href="dayper.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:contain;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="EbRoShop.com">Dayper and Wipes</a>
+    </div>
+
+    <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 10px;" href="cosmotics.php"><img style=" width: 100px;
+        height: 120px;
+        object-fit:contain;
+        display:block;
+        margin:auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="EbRoShop.com">Cosmotics</a>
+    </div>
+
+
+    
+    <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 0px;" href="liquidsoap.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:cover;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="EbRoShop.com">Liquid Soap</a>
+    </div>
+
+     <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 0px;" href="powdersoap.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:cover;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="EbRoShop.com">Laundry Powder</a>
+    </div>
+
+   <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 0px;" href="modes.php"><img style=" width: 90px;
+        height: 110px;
+        object-fit:cover;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="EbRoShop.com">Modes&Soft</a>
+    </div>
+
+     <div style="text-align: center;" class="item">
+        <a style="    text-decoration: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: bold;
+        display:block;
+        margin-top: 0px;" href="packaged.php"><img style=" width: 100px;
+        height: 110px;
+        object-fit:cover;
+        display:grid;
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="EbRoShop.com">Packaged Goods</a>
+    </div>
+
+   
+
+
+</div>
+</div>
+
+
+
+<!--For buttom menu-->
+<section id="cooking">
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5; /* Light grey background for the page */">
+ <div style="  max-width: 600px; /* Optional: Limit width for mobile/app feel */
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" class="container">
+    <div style="    padding: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333; background-color: white" class="header">
+        Cooking Ingredients
+    </div>
+
+    <div style=" padding: 0 10px 10px 10px;" class="hero-image-container">
+        <img style="  width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983254/w0bah8m4ptlmqezh5cao.jpg" alt="A large basket of mixed fruits and vegetables" class="hero-image">
+    </div>
+
+    <div style="  display: flex;
+            overflow-x: scroll; /* Enables horizontal scrolling */
+            padding: 10px;
+            -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
+            /* Hide scrollbar for a cleaner look */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */" class="product-list-container">
+
+        <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; " class="product-title">Cooking Items</p>
+                
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">16 products AVAILABLE</div>
+            <br>
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+            
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./cooking.php">Shop Now</a>
+            </div>
+        </div>
+
+
+        <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+             
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; text-align: center;" class="product-title">Food Oils</p>
+                
+          
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">15 products AVAILABLE</div>
+             <br>
+        
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+            
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./oil.php">Shop Now</a>
+            </div>
+        </div>
+
+
+      <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+             
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; " class="product-title">Spiecs powders</p>
+                
+          
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">6 products AVAILABLE</div>
+             <br>
+        
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+           
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./otheringrident.php">Shop Now</a>
+            </div>
+        </div>
+
+
+    </div>
+    
+</div>
+</div>
+</section>
+
+
+<section id="baby">
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5; /* Light grey background for the page */">
+ <div style="  max-width: 600px; /* Optional: Limit width for mobile/app feel */
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" class="container">
+    <div style="    padding: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333; background-color: white" class="header">
+        Baby Products
+    </div>
+
+    <div style=" padding: 0 10px 10px 10px;" class="hero-image-container">
+        <img style="  width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983212/rbjmgnyphxsvylfbffag.jpg" alt="A large basket of mixed fruits and vegetables" class="hero-image">
+    </div>
+
+    <div style="  display: flex;
+            overflow-x: scroll; /* Enables horizontal scrolling */
+            padding: 10px;
+            -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
+            /* Hide scrollbar for a cleaner look */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */" class="product-list-container">
+
+        <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; " class="product-title">Powder milks</p>
+                
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">14 products AVAILABLE</div>
+            <br>
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+            
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./babyproduct.php">Shop Now</a>
+            </div>
+        </div>
+
+
+        <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+             
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; text-align: center;" class="product-title">Dayper$Wipes</p>
+                
+          
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">33 products AVAILABLE</div>
+             <br>
+        
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+            
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./dayper.php">Shop Now</a>
+            </div>
+        </div>
+
+
+      <div style="  min-width: 48%; /* Adjust to show about two cards at once */
+            margin-right: 15px; /* Space between cards */
+            
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;" class="product-card">
+            <button class="scroll-arrow left" style="display: none;">&lt;</button>
+
+            <div style=" width: 100%;
+            height: 150px; /* Fixed height for product image */
+            overflow: hidden;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;" class="product-image-container">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="Broccoli heads" style="width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+            display: block;"  class="product-image">
+            </div>
+
+            <div style="  padding: 0 10px;" class="product-details">
+             
+                <p style="   font-size: 1.1em;
+            font-weight: 500;
+            margin: 0 0 5px 0; " class="product-title">Cosmotics</p>
+                
+          
+                <div style="font-size: 0.7em;
+            color: #007bff; /* Blue color for link-like text */
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block; text-align: center;" class="more-sizes">12 products AVAILABLE</div>
+             <br>
+        
+                <a style="  width: calc(100% - 20px); /* 100% width minus padding */
+            padding: 10px 15px;
+            margin: 15px 10px 0 15px;
+           
+            background-color: #136835;
+            color:#ffffff; /* Primary blue color */
+            border: 1px solid #007bff;
+            border-radius: 50px; /* Pill shape */
+            
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s; text-decoration: none;" href="./cosmotics.php">Shop Now</a>
+            </div>
+        </div>
+
+
+    </div>
+    
+</div>
+</div>
+</section>
+
+
+
+   <section id="food">
+    <div style="   display:flex;
+            flex-wrap: nowrap; /* CRITICAL: Ensures all items stay on one row */
+            justify-content: space-around; /* Distribute space evenly */
+            padding: 20px 10px;
+            gap:20px; 
+            overflow-x: auto; /* Adds horizontal scrolling if they don't fit */
+            -webkit-overflow-scrolling: touch; " class="category-links-container">
+        
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="basicfood.php">
+                <img style=" width: 90%; 
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="Al Fanar Gold Rice">
+            </a>
+        </div>
+
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="packedfood.php">
+                <img style=" width: 90%; 
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="LG Electronics">
+            </a>
+        </div>
+        
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="liquidsoap.php">
+                <img style=" width: 90%; 
+            height: 120%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="Moulinex Appliances">
+            </a>
+        </div>
+
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="powdersoap.php">
+                <img style=" width: 90%; 
+            height: 90%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="Skechers Shoes">
+            </a>
+        </div>
+
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="modes.php">
+                <img style=" width: 90%; 
+            height: 90%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="Skechers Shoes">
+            </a>
+        </div>
+
+        <div style=" /* Ensures the box shrinks only down to a certain size, but doesn't grow */
+            flex: 0 0 auto; 
+            width: 80px; /* Adjusted size for better visibility */
+            height: 80px;
+            
+            border-radius: 50%;
+            overflow: hidden;
+            text-align: center;
+            /* Mimics the circular border/glow from the screenshots */
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8), 
+                        0 0 0 6px #ccc; 
+            transition: transform 0.3s;
+            position: relative;
+            background-color: white; " class="category-box">
+            <a style="   display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;" href="packaged.php">
+                <img style=" width: 90%; 
+            height: 90%;
+            object-fit: contain;
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="Skechers Shoes">
+            </a>
+        </div>
+    </div>
+   </section>
+
+
+<!--About delivery-->
+
+    <div style="margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f6ff;
+      color: #333;">
+<div style="  padding: 20px;
+      background: #eaf0ff;" class="section">
+    <div style="display: flex;
+      align-items: center;
+      margin-bottom: 25px;" class="feature">
+      <i style=" font-size: 40px;
+      color: #00a000;
+      margin-right: 15px;" class="fa-solid fa-truck-fast feature-icon"></i>
+      <div>
+        <div style=" font-size: 20px;
+      font-weight: bold;" class="feature-title">FAST DELIVERY</div>
+        <div class="feature-text">Quick Delivery All over Addis Abeba Without charge</div>
+      </div>
+    </div>
+
+    <div style="display: flex;
+      align-items: center;
+      margin-bottom: 25px;" class="feature">
+      <i style=" font-size: 40px;
+      color: #00a000;
+      margin-right: 15px;" class="fa-solid fa-headset feature-icon"></i>
+      <div>
+        <div style=" font-size: 20px;
+      font-weight: bold;" class="feature-title">QUICK SUPPORT</div>
+        <div style="  font-size: 15px;
+      margin-top: 4px;" class="feature-text">Contact us between 7am to 11pm, 7 days a week</div>
+      </div>
+    </div>
+
+    <div style="display: flex;
+      align-items: center;
+      margin-bottom: 25px;" class="feature">
+      <i style=" font-size: 40px;
+      color: #00a000;
+      margin-right: 15px;" class="fa-solid fa-rotate-left feature-icon"></i>
+      <div>
+        <div style=" font-size: 20px;
+      font-weight: bold;" class="feature-title">3 DAYS RETURN</div>
+        <div style="  font-size: 15px;
+      margin-top: 4px;" class="feature-text">Simply return it within 3 days for an exchange.</div>
+      </div>
+    </div>
+
+    <div style="display: flex;
+      align-items: center;
+      margin-bottom: 25px;" class="feature">
+      <i style=" font-size: 40px;
+      color: #00a000;
+      margin-right: 15px;" class="fa-solid fa-lock feature-icon"></i>
+      <div>
+        <div style=" font-size: 20px;
+      font-weight: bold;" class="feature-title">100% SECURE PAYMENT</div>
+        <div style="  font-size: 15px;
+      margin-top: 4px;" class="feature-text">We ensure secure payment of your orders</div>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+
+ 
+ <!--contact us-->
+ 
+<div style="margin: 0;
+      font-family: Arial, sans-serif;
+      background:#065382;
+      color: white;
+      text-align: center;">
+
+  <h1 style=" margin-top: 10px;
+      font-size: 28px;
+      font-weight: bold;">GET IN TOUCH</h1>
+ 
+
+  <div style="margin-top: 10px;
+      padding: 10px 25px; text-align: left;" class="wrapper">
+
+    <div style=" display: flex;
+      align-items: center;
+      padding: 10px;" class="contact-item">
+      <div style="  width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      flex-shrink: 0;" class="icon-circle">
+      
+      <a href="https://wa.me/+251989498343">
+        <img style="width: 40px;
+      height: 40px; " src="https://res.cloudinary.com/die8hxris/image/upload/v1765983590/zxmxenwneztl2htruxzs.png" alt="WhatsApp" />
+      </div>
+    </a>
+
+      <div style=" text-align: left;" class="text-block">
+        <div style=" font-size: 16px;
+      font-weight: bold;" class="label">WHATSAPP</div>
+        <div style=" font-size: 16px;
+      margin-top: 3px;" class="value">+251989498343</div>
+      </div>
+    </div>
+
+
+    <div style=" display: flex;
+      align-items: center;
+      padding: 10px;" class="contact-item">
+      <div style="  width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      flex-shrink: 0;" class="icon-circle">
+       <a href="tel:+251989498343">
+        <img style="width: 40px;
+      height: 40px;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983516/wpkyjn97nrs0fpuyrag7.png" alt="phone" />
+        </a>
+      </div>
+      <div style=" text-align: left;" class="text-block">
+        <div style=" font-size: 16px;
+      font-weight: bold;" class="label">PHONE</div>
+        <div style=" font-size: 16px;
+      margin-top: 3px;" class="value">+251943975584</div>
+      </div>
+    </div>
+
+
+    <div style=" display: flex;
+      align-items: center;
+      padding: 10px;" class="contact-item">
+      <div style="  width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      flex-shrink: 0;" class="icon-circle">
+      <a href="mailto:ebrohayru77@gmail.com">
+        <img style="width: 40px;
+      height: 40px;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983442/a6s1ktwinzxrgggka1th.png" alt="Email" />
+      </a>
+      </div>
+      <div style=" text-align: left;" class="text-block">
+        <div style=" font-size: 16px;
+      font-weight: bold;" class="label">EMAIL</div>
+        <div style=" font-size: 16px;
+      margin-top: 3px;" class="value">ebrohayru77@gmail.com</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
+<!--FAQ's-->
+ <div style="   margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f7f7;
+    color: #222;">
+
+<div style="  padding: 20px;" class="footer">
+
+    <h2 style="    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;">CONNECT WITH US</h2>
+
+    <div style="    display: flex;
+    gap: 24px;
+    font-size: 32px;
+    margin-bottom: 24px;" class="social-icons">
+        <a style=" color: #222;
+    text-decoration: none;" href="https://www.facebook.com/profile.php?id=100083927815758"><i class="fab fa-facebook-f"></i></a>
+        <a style=" color: #222;
+    text-decoration: none;" href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+
+     <!-- Ebroshop Section (CLOSED by default) -->
+    <div style="   border-top: 1px solid #ddd;
+    padding: 18px 0;" class="section">
+        <div style=" display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;" class="section-header" onclick="toggleSection('adeeg', this)">
+            <h3 style="  margin: 0;
+    font-size: 24px;
+    font-weight: 700;">EbRoShop</h3>
+            <span style="  font-size: 26px;" class="toggle">+</span>
+        </div>
+
+        <div style="margin-top: 16px;" class="links hidden" id="adeeg">
+          <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="home.html">Home</a>
+
+          <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="about.html">About-us</a>
+           
+           <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="faq.html">FAQs</a>
+            <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="contact.html">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Store Policy -->
+    <div style="   border-top: 1px solid #ddd;
+    padding: 18px 0;" class="section">
+        <div style=" display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;" class="section-header" onclick="toggleSection('store', this)">
+            <h3 style="  margin: 0;
+    font-size: 24px;
+    font-weight: 700;">Store Policy</h3>
+            <span style="  font-size: 26px;" class="toggle">+</span>
+        </div>
+
+        <div style="margin-top: 16px;" class="links hidden" id="store">
+           <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="terms.html">Terms Of Service</a>
+           
+           <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="privacy.html">Privacy Policy</a>
+         
+            <a style="  display: block;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 20px;
+    margin: 14px 0;" href="returns.html">Return Policy</a>
+        </div>
+    </div>
+
+    <!-- Contact Us -->
+    <div style=" border-top: 1px solid #ddd;
+    padding: 18px 0;" class="section">
+        <div style=" display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;" class="section-header" onclick="toggleSection('contact', this)">
+            <h3 style="  margin: 0;
+    font-size: 24px;
+    font-weight: 700;">Contact Us</h3>
+            <span style="  font-size: 26px;" class="toggle">+</span>
+        </div>
+
+        <div style="margin-top: 16px;" class="links hidden" id="contact">
+             <a style="  display: block;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
+    margin: 14px 0;" >Phone: <b style="color: #676767;">+251970130755</b></a>
+           <a style="  display: block;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
+    margin: 14px 0;" >Email: <b style="color: #676767;">ebrohayru77@gmail.com</b></a>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+
+<!--Last footer-->
+
+<div style="  margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;">
+<div style=" text-align: center;
+    padding: 40px 20px 30px;" class="footer-bottom">
+
+    <!-- Logo -->
+    <div class="footer-logo">
+        <img style="  max-width: 160px;
+    margin-bottom: 24px;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983370/zz6tex5swhmvjff8aphf.jpg" alt="Adeeg Logo">
+    </div>
+
+    <!-- Copyright -->
+    <div style="  color: #828080;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 40px;" class="footer-text">
+        EbRoShop.Com©2025 All Rights Reserved
+    </div>
+
+    <!-- Payment / Partner Logos (Clickable) -->
+     <div style=" display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;" class="payment-logos">
+        <a href="tel:*889#" target="_self">
+            <img style=" height: 40px;
+    object-fit: contain;
+    transition: transform 0.2s ease;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983122/fqldh9ima4wy9hrsjkhv.jpg" alt="Hormuud">
+        </a>
+
+        <a href="tel:*127#" target="_self">
+            <img style=" height: 40px;
+    object-fit: contain;
+    transition: transform 0.2s ease;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983555/e6oydnwyeoxag8vhar1w.jpg" alt="Somtel">
+        </a>
+    </div>
+
+</div>
+</div>
+
+
+<!--For bottom nav-->
+
+<div style=" padding-bottom: calc(72px + env(safe-area-inset-bottom));">
+
+    <nav style="  position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 72px;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9999;" class="bottom-nav">
+
+  <a href="home.html" style="  flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;" class="nav-item active">
+    <svg style=" width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto 4px;
+    stroke: #666;" viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <path d="M3 10.5L12 3l9 7.5"/>
+      <path d="M5 10v10h14V10"/>
+    </svg>
+    Home
+  </a>
+
+  <a href="search.html" style="  flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;"  class="nav-item">
+    <svg style=" width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto 4px;
+    stroke: #666;"  viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    Search
+  </a>
+  <div class="icon-btn" id="searchBtn" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M21 21l-4-4"/></svg>
+    </div>
+
+  <a href="collection.html" style="  flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;"  class="nav-item">
+    <svg style=" width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto 4px;
+    stroke: #666;"  viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/>
+    </svg>
+    Collection
+  </a>
+
+  <a href="login.html" style="  flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;"  class="nav-item">
+    <svg style=" width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto 4px;
+    stroke: #666;"  viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+    </svg>
+    Account
+  </a>
+
+  <a  style="  flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.html" class="nav-item cart">
+    <span style=" position: absolute;
+    top: 8px;
+    right: 28%;
+    background: #000;
+    color: #fff;
+    font-size: 10px;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 50%;" class="badge">0</span>
+    <svg style=" width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto 4px;
+    stroke: #666;"  viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <circle cx="9" cy="21" r="1"/>
+      <circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l3.6 12.6a2 2 0 0 0 2 1.4h9.4"/>
+      <path d="M7 6h15l-1.5 8H9"/>
+    </svg>
+    Cart
+  </a>
+
+</nav>
+</div>
+
+<script>
+    /*For signup or logout*/
+     // Fetch login status from your existing session checker
+    fetch('check_session.php')
+        .then(response => response.json())
+        .then(data => {
+            const authLink = document.getElementById('auth-link');
+            const authText = document.getElementById('auth-text');
+
+            if (data.loggedIn) {
+                // Change to Logout mode
+                authLink.href = "javascript:void(0)"; // Prevent immediate jump
+                authLink.onclick = function() {
+                    if(confirm("Are you sure you want to log out?")) {
+                        window.location.href = 'logout.php';
+                    }
+                };
+                authText.innerText = "Logout (" + data.name + ")";
+            }
+        })
+        .catch(err => console.error("Session check failed", err));
+
+
+        
+
+/* -------------------------
+   Safe DOM ready wrapper
+   ------------------------- */
+(function(){
+  // product data (editable)
+  const defaultProducts = [
+    { id:1, name:"Rooti Slice Cad...", price:1.00, image:"https://via.placeholder.com/600x400?text=Rooti+Slice", category:"Bread", tags:["slice","white"], description:"Fresh sliced white bread." },
+    { id:2, name:"Rooti Qamadi...", price:1.00, image:"https://via.placeholder.com/600x400?text=Qamadi", category:"Bread", tags:["qamadi","brown"], description:"Soft brown qamadi bread." },
+    { id:3, name:"Rooti Beegar...", price:0.50, image:"https://via.placeholder.com/600x400?text=Beegar", category:"Bread", tags:["beegar","round"], description:"Round beegar bread." },
+    { id:4, name:"Ceesh (Arabic)", price:1.00, image:"https://via.placeholder.com/600x400?text=Ceesh", category:"Flatbread", tags:["arabic","ceesh"], description:"Arabic ceesh soft flatbread." }
+  ];
+  const extraProducts = [
+    { id:5, name:"Pasta Italian", price:1.20, image:"https://via.placeholder.com/600x400?text=Pasta", category:"Food", tags:["pasta","italy"], description:"Premium Italian pasta." },
+    { id:6, name:"Rice 5kg", price:5.00, image:"https://via.placeholder.com/600x400?text=Rice+5kg", category:"Rice", tags:["white","rice"], description:"High quality white rice." },
+    { id:7, name:"Egg Pack", price:3.00, image:"https://via.placeholder.com/600x400?text=Eggs", category:"Dairy", tags:["egg","protein"], description:"Fresh farm eggs." }
+  ];
+  const allProducts = [...defaultProducts, ...extraProducts];
+
+  // DOM elements
+  const hamburger = document.getElementById("hamburgerBtn");
+  const sideMenu = document.getElementById("sideMenu");
+  const menuOverlay = document.getElementById("menuOverlay");
+  const closeMenu = document.getElementById("closeMenu");
+  const searchBtn = document.getElementById("searchBtn");
+  const searchPanel = document.getElementById("searchPanel");
+  const closeSearch = document.getElementById("closeSearch");
+  const searchInput = document.getElementById("searchInput");
+  const searchResults = document.getElementById("searchResults");
+  const cartBtn = document.getElementById("cartBtn");
+  const accountBtn = document.getElementById("accountBtn");
+  const badge = document.getElementById("cartBadge");
+
+  /* -------------------------
+     Cart helpers (persistent)
+     ------------------------- */
+  function loadCart(){
+    try{ return JSON.parse(localStorage.getItem("cartItems")) || []; } catch { return []; }
+  }
+  function saveCart(cart){
+    localStorage.setItem("cartItems", JSON.stringify(cart));
+  }
+  function updateBadge(){
+    const cart = loadCart();
+    const total = cart.reduce((s,i)=> s + (i.qty||0), 0);
+    if(total > 0){
+      badge.style.display = "flex";
+      badge.innerText = total;
+    } else {
+      badge.style.display = "none";
+      badge.innerText = "0";
+    }
+    localStorage.setItem("cartCount", total);
+  }
+  // initialize badge on load
+  updateBadge();
+
+  /* -------------------------
+     Quick add function
+     ------------------------- */
+  window.quickAdd = function(id){
+    const product = allProducts.find(p => p.id == id);
+    if(!product){ alert("Product not found"); return; }
+    const cart = loadCart();
+    const existing = cart.find(it => it.id == product.id);
+    if(existing){
+      existing.qty = (existing.qty || 0) + 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        img: product.image,
+        price: parseFloat(product.price),
+        qty: 1
+      });
+    }
+    saveCart(cart);
+    updateBadge();
+    const short = product.name.length > 30 ? product.name.slice(0,28) + "…" : product.name;
+    alert(short + " added to cart");
+  };
+
+  /* -------------------------
+     Side menu handlers
+     ------------------------- */
+  function openMenu(){
+    sideMenu.style.left = "0";
+    menuOverlay.style.display = "block";
+    sideMenu.setAttribute("aria-hidden","false");
+  }
+  function closeMenuFn(){
+    sideMenu.style.left = "-320px";
+    menuOverlay.style.display = "none";
+    sideMenu.setAttribute("aria-hidden","true");
+  }
+  hamburger.addEventListener("click", openMenu);
+  menuOverlay.addEventListener("click", closeMenuFn);
+  closeMenu.addEventListener("click", closeMenuFn);
+
+  /* -------------------------
+     Search rendering
+     ------------------------- */
+  function escapeHtml(s){
+    return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderProducts(list){
+    if(!Array.isArray(list)) list = [];
+    if(list.length === 0){
+      searchResults.innerHTML = "<div style='padding:18px;color:#777'>No products found</div>";
+      return;
+    }
+    const html = list.map(p => {
+      return `
+        <div class="product-card" data-id="${p.id}">
+          <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
+          <div class="product-name">${escapeHtml(p.name)}</div>
+          <div class="product-price">${escapeHtml(Number(p.price).toFixed(2))} birr</div>
+          <button class="add-btn" onclick="quickAdd(${p.id})">Quick Add</button>
+        </div>
+      `;
+    }).join("");
+    searchResults.innerHTML = "<div class='products-grid'>"+html+"</div>";
+  }
+
+  function showDefaultProducts(){
+    renderProducts(defaultProducts);
+  }
+
+  /* open/close search */
+  searchBtn.addEventListener("click", function(){
+    searchPanel.style.display = "block";
+    searchPanel.setAttribute("aria-hidden","false");
+    searchInput.value = "";
+    showDefaultProducts();
+    setTimeout(()=> searchInput.focus(), 120);
+  });
+  closeSearch.addEventListener("click", function(){
+    searchPanel.style.display = "none";
+    searchPanel.setAttribute("aria-hidden","true");
+    searchResults.innerHTML = "";
+    searchInput.value = "";
+  });
+
+  /* search input handler (match name, category, description, tags) */
+  searchInput.addEventListener("input", function(){
+    const q = (this.value || "").trim().toLowerCase();
+    if(q === ""){
+      showDefaultProducts();
+      return;
+    }
+    const results = allProducts.filter(p => {
+      return (p.name || "").toLowerCase().includes(q)
+        || (p.category || "").toLowerCase().includes(q)
+        || (p.description || "").toLowerCase().includes(q)
+        || (p.tags || []).join(" ").toLowerCase().includes(q);
+    });
+    renderProducts(results);
+  });
+
+  /* -------------------------
+     Navigation buttons
+     ------------------------- */
+  accountBtn.addEventListener("click", ()=> { window.location.href = "login.html"; });
+  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.html"; });
+
+  /* Expose updateBadge so other pages can call window.updateBadge() after adding */
+  window.updateCartBadge = updateBadge;
+
+})();
+
+
+
+
+/*the slide*/
+  const track = document.getElementById('carouselTrack');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dotsContainer = document.getElementById('carouselDots');
+        const dots = document.querySelectorAll('.dot');
+        const slideCount = slides.length;
+        let currentIndex = 0;
+        let autoInterval;
+
+        /**
+         * Moves the carousel track to the specified slide index.
+         */
+        function moveToSlide(index) {
+            if (index < 0) {
+                index = slideCount - 1;
+            } else if (index >= slideCount) {
+                index = 0;
+            }
+
+            currentIndex = index;
+            const percentage = -(currentIndex * (100 / slideCount));
+            track.style.transform = `translateX(${percentage}%)`;
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active');
+                if (i === currentIndex) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        /**
+         * Starts the automatic sliding of the carousel.
+         */
+        function startAutoSlide() {
+            clearInterval(autoInterval); 
+            autoInterval = setInterval(() => {
+                moveToSlide(currentIndex + 1);
+            }, 4000); // Cycles every 5 seconds
+        }
+
+        // --- Event Listeners for Manual Control ---
+        dotsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dot')) {
+                const slideIndex = parseInt(e.target.getAttribute('data-slide'));
+                moveToSlide(slideIndex);
+                startAutoSlide(); // Reset timer on manual interaction
+            }
+        });
+
+        // Manual Drag/Swipe Functionality (Touch and Mouse)
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        function getClientX(e) {
+            return e.touches ? e.touches[0].clientX : e.clientX;
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            startPos = getClientX(e);
+            track.style.transition = 'none'; // Disable smooth transition while dragging
+            clearInterval(autoInterval); // Pause auto-slide
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+            const currentPos = getClientX(e);
+            currentTranslate = prevTranslate + currentPos - startPos;
+            track.style.transform = `translateX(${currentTranslate}px)`;
+        }
+        
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            track.style.transition = 'transform 0.5s ease-in-out'; // Restore transition
+
+            const movedBy = currentTranslate - prevTranslate;
+            const slideWidth = slides[0].offsetWidth;
+
+            // Determine if a slide change should occur (more than 50px movement)
+            if (movedBy < -50) { // Swiped left
+                moveToSlide(currentIndex + 1);
+            } else if (movedBy > 50) { // Swiped right
+                moveToSlide(currentIndex - 1);
+            } else {
+                // Snap back to the current slide
+                moveToSlide(currentIndex);
+            }
+
+            // Recalculate prevTranslate based on the new final position
+            prevTranslate = -(currentIndex * slideWidth);
+            startAutoSlide(); // Resume auto-slide
+        }
+
+        // Mouse listeners
+        track.addEventListener('mousedown', startDrag);
+        track.addEventListener('mousemove', dragMove);
+        track.addEventListener('mouseup', endDrag);
+        track.addEventListener('mouseleave', endDrag); 
+
+        // Touch listeners
+        track.addEventListener('touchstart', startDrag);
+        track.addEventListener('touchmove', dragMove);
+        track.addEventListener('touchend', endDrag);
+
+        // Initialize carousel on load
+        window.onload = () => {
+            prevTranslate = -(currentIndex * slides[0].offsetWidth);
+            startAutoSlide();
+        };
+
+        // Handle window resize to fix slide position
+        window.addEventListener('resize', () => {
+            moveToSlide(currentIndex);
+            prevTranslate = -(currentIndex * slides[0].offsetWidth);
+        });
+
+
+
+        /*for FAQ's*/
+        
+function toggleSection(id, header) {
+    const content = document.getElementById(id);
+    const icon = header.querySelector('.toggle');
+
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.textContent = '−';
+    } else {
+        content.classList.add('hidden');
+        icon.textContent = '+';
+    }
+}
+</script>
+
+</body>
+</html>
