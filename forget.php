@@ -20,7 +20,7 @@ if (isset($_POST['request_reset'])) {
 
     if ($stmt->affected_rows > 0) {
         // --- BREVO API CONFIG ---
-        $apiKey = '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'; // Must start with xkeysib-
+        $apiKey = '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'; // Must start with xkeysib-
         $senderEmail = 'ebroshoponline@gmail.com'; 
 
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
