@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $siteUrl = "https://ebroshop.onrender.com"; // Your Render URL
             
             // Your Cloudinary Logo
-            $logoUrl = "https://res.cloudinary.com/dqh2f6v9v/image/upload/v1712345678/your-logo.png";
+            $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg";
 
             $data = array(
                 "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
@@ -36,11 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <img src='$logoUrl' alt='Logo' style='width: 150px;'>
                     <h1 style='color: #136835;'>Welcome to EbRoShop!</h1>
                     <p style='font-size: 16px; color: #555;'>Hello $fname, your customer account is now active.</p>
-                    <p style='color: #777;'>Next time you shop, login for a faster checkout.</p>
+                    <p style='color: #777;'>Next time you shop with us, login for a faster checkout.</p>
                     <br>
                     <a href='$siteUrl' style='background-color: #136835; color: white; padding: 15px 35px; text-decoration: none; font-size: 18px; border-radius: 50px; display: inline-block; font-weight: bold;'>Visit our store</a>
                     <br><br>
-                    <p style='font-size: 12px; color: #bbb;'>If you have questions, contact us at $senderEmail</p>
+                    <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. You can also reach us by calling our phone number at +251970130755</p>
                 </div>"
             );
 
