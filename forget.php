@@ -1,17 +1,14 @@
 <?php
-// Use the built-in dirname() function instead of DIR or DIR
-$base_path = dirname(FILE);
-
-// PHPMailer requirements
-require $base_path . '/PHPMailer/Exception.php';
-require $base_path . '/PHPMailer/PHPMailer.php';
-require $base_path . '/PHPMailer/SMTP.php';
+// 1. FIXED FILE PATHS (Using __DIR__ with double underscores)
+require __DIR__ . '/PHPMailer/Exception.php';
+require __DIR__ . '/PHPMailer/PHPMailer.php';
+require __DIR__ . '/PHPMailer/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// 1. Database Connection
-include 'db.php';
+// 2. Database Connection
+include 'db.php'; 
 
 // --- PART A: Sending the Link ---
 if (isset($_POST['request_reset'])) {
@@ -41,10 +38,9 @@ if (isset($_POST['request_reset'])) {
             $mail->isHTML(true);
             $mail->Subject = 'Reset Your Password';
             
-            // --- FIX: DYNAMIC LINK DETECTION ---
+            // DYNAMIC LINK DETECTION
             $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
             $host = $_SERVER['HTTP_HOST'];
-            // This works on localhost AND on Render automatically!
             $resetLink = "$protocol://$host/forget.php?token=$token";
 
             $mail->Body    = "<h3>Reset Your Password</h3>
@@ -98,6 +94,7 @@ if (isset($_GET['token'])):
 if (isset($_POST['update_now'])) {
     $token = $_POST['token'];
     $hashed = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+    
     // Update password and clear the token
     $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL WHERE reset_token = ?");
     $stmt->bind_param("ss", $hashed, $token);
