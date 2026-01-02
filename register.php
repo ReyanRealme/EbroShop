@@ -27,20 +27,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Your Cloudinary Logo
             $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
 
-            $data = array(
+           $data = array(
                 "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
                 "to" => array(array("email" => $email, "name" => $fname)),
                 "subject" => "Welcome to EbRoShop!",
                 "htmlContent" => "
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; text-align: center; border-radius:10px;'>
-                    <img src='$logoUrl' alt='Logo' style='width: 150px;'>
-                    <h1 style='color: #136835;'>Welcome to EbRoShop!</h1>
-                    <p style='font-size: 16px; color: #555;'>Hello $fname, your customer account is now active.</p>
-                    <p style='color: #777;'>Next time you shop with us, login for a faster checkout.</p>
-                    <br>
-                    <a href='$siteUrl' style='background-color: #136835; color: white; padding: 15px 35px; text-decoration: none; font-size: 18px; border-radius: 50px; display: inline-block; font-weight: bold;'>Visit our store</a>
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #f0f0f0; padding: 40px 20px; text-align: center; background-color: #ffffff;'>
+                    <div style='margin-bottom: 30px;'>
+                        <img src='$logoUrl' alt='EbRoShop Logo' style='width: 250px; height: auto; display: block; margin: 0 auto;'>
+                    </div>
+
+                    <h1 style='color: #333; font-size: 28px; margin-bottom: 20px;'>Welcome to EbRoShop!</h1>
+                    
+                    <p style='font-size: 18px; color: #666; line-height: 1.6;'>
+                        You've activated your customer account. <br>
+                        Next time you shop with us, log in for faster checkout.
+                    </p>
+                    
                     <br><br>
-                    <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. You can also reach us by calling our phone number at +251970130755</p>
+                    
+                    <a href='$siteUrl' style='background-color: #136835; color: #ffffff; padding: 18px 40px; text-decoration: none; font-size: 20px; border-radius: 8px; display: inline-block; font-weight: bold;'>
+                        Visit our store
+                    </a>
+                    
+                    <br><br><br>
+                    <hr style='border: 0; border-top: 1px solid #eee;'>
+                    
+                    <p style='font-size: 14px; color: #999; margin-top: 20px;'>
+                        If you have any questions, reply to this email or contact us at <br>
+                        <a href='mailto:ebroshoponline@gmail.com' style='color: #136835; text-decoration: none;'>info@ebroshop.com</a>
+                    </p>
                 </div>"
             );
 
