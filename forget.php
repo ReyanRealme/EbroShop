@@ -1,18 +1,7 @@
 <?php
-// 1. Loading PHPMailer (Files must be in the same folder as forget.php)
-require __DIR__ . '/Exception.php';
-require __DIR__ . '/PHPMailer.php';
-require __DIR__ . '/SMTP.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-// 2. Database Connection
 include 'db.php'; 
 
-// ==========================================
-// PART A: SENDING THE RESET LINK
-// ==========================================
+// --- PART A: SENDING THE EMAIL VIA BREVO API ---
 if (isset($_POST['request_reset'])) {
     $email = $_POST['email'];
     $token = bin2hex(random_bytes(32));
@@ -22,67 +11,56 @@ if (isset($_POST['request_reset'])) {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-     $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'ebroshoponline@gmail.com'; 
-            $mail->Password   = 'mfaknagaapurcpjm'; 
-            
-            // Try this specific combination for Render
-            $mail->SMTPSecure = 'tls'; 
-            $mail->Port       = 587; 
+        // --- YOUR BREVO API KEY GOES HERE ---
+        $apiKey = 'xsmtpsib-ae8bc5be041ba16172d1850555236c978502f1b10f55bf488f6b7e7685a0f310-RCfClJTP4XIbJZ23'; 
 
-            // IMPORTANT: This tells the server to ignore some security checks that block connections
-            $mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            );
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+        $host = $_SERVER['HTTP_HOST'];
+        $resetLink = "$protocol://$host/forget.php?token=$token";
 
-            $mail->setFrom('ebroshoponline@gmail.com', 'EbRoShop');
-            $mail->addAddress($email);
-            $mail->isHTML(true);
-            $mail->Subject = 'Reset Your Password';
-            
-            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-            $host = $_SERVER['HTTP_HOST'];
-            $resetLink = "$protocol://$host/forget.php?token=$token";
+        $data = array(
+            "sender" => array("name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"),
+            "to" => array(array("email" => $email)),
+            "subject" => "Reset Your Password",
+            "htmlContent" => "<h3>Reset Your Password</h3><p>Click the link below:</p><a href='$resetLink'>$resetLink</a>"
+        );
 
-            $mail->Body    = "<h3>Reset Your Password</h3><a href='$resetLink'>$resetLink</a>";
+        $ch = curl_init('https://api.brevo.com/v3/smtp/email');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'api-key: ' . $apiKey,
+            'Content-Type: application/json'
+        ));
 
-            $mail->send();
-            echo "<script>alert('Check your email!'); window.location.href='login.html';</script>";
-        } catch (Exception $e) { 
-            echo "<script>alert('Still blocked! Error: " . addslashes($mail->ErrorInfo) . "'); window.history.back();</script>"; 
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode == 201 || $httpCode == 200) {
+            echo "<script>alert('Success! Check your email inbox.'); window.location.href='login.html';</script>";
+        } else {
+            echo "<script>alert('API Error: Email failed to send. Check your API key.'); window.history.back();</script>";
         }
-    } else { 
-        echo "<script>alert('Email not found in our system.'); window.history.back();</script>"; 
+    } else {
+        echo "<script>alert('Email not found.'); window.history.back();</script>";
     }
 }
 
-// ==========================================
-// PART B: SHOWING THE NEW PASSWORD FORM
-// ==========================================
+// --- PART B: THE NEW PASSWORD FORM ---
 if (isset($_GET['token'])): 
     $token = $_GET['token'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Password</title>
+    <title>New Password</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 50px; text-align: center; }
-        .box { max-width: 350px; margin: auto; background: #fff; padding: 30px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { font-size: 20px; text-transform: uppercase; margin-bottom: 20px; color: #136835; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .btn-update { background: #0076ad; color: #fff; padding: 12px; border: none; width: 100%; cursor: pointer; font-weight: bold; text-transform: uppercase; border-radius: 50px; }
-        .btn-update:hover { background: #2d9bf0; }
+        body { font-family: Arial; background: #f4f4f4; text-align: center; padding: 50px; }
+        .box { max-width: 350px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: #0076ad; color: white; border: none; width: 100%; padding: 10px; cursor: pointer; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -91,7 +69,7 @@ if (isset($_GET['token'])):
         <form method="POST" action="forget.php">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
             <input type="password" name="new_pass" placeholder="Enter New Password" required minlength="6">
-            <button type="submit" name="update_now" class="btn-update">Update Password</button>
+            <button type="submit" name="update_now">Update Password</button>
         </form>
     </div>
 </body>
@@ -99,21 +77,17 @@ if (isset($_GET['token'])):
 <?php endif; ?>
 
 <?php
-// ==========================================
-// PART C: UPDATING THE DATABASE
-// ==========================================
+// --- PART C: DATABASE UPDATE ---
 if (isset($_POST['update_now'])) {
     $token = $_POST['token'];
     $hashed = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
-    
     $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL WHERE reset_token = ?");
     $stmt->bind_param("ss", $hashed, $token);
     $stmt->execute();
-    
     if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Success! Your password has been updated.'); window.location.href='login.html';</script>";
+        echo "<script>alert('Password updated!'); window.location.href='login.html';</script>";
     } else {
-        echo "<div style='text-align:center; margin-top:50px;'><h3>Error: Invalid or expired link.</h3><a href='forget.html'>Try again</a></div>";
+        echo "<h3>Invalid Link</h3>";
     }
 }
 ?>
