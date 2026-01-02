@@ -4,7 +4,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // --- 2. DATABASE CONNECTION ---
-// This uses your db.php which pulls from Render Environment Variables
+// If db.php fails, we handle it gracefully here
+if (!file_exists('db.php')) {
+    die("Error: db.php is missing from the server.");
+}
 include 'db.php'; 
 
 // ==========================================
@@ -14,13 +17,12 @@ if (isset($_POST['request_reset'])) {
     $email = $_POST['email'];
     $token = bin2hex(random_bytes(32));
     
-    // Update the user's token
+    // Update the user record
     $stmt = $conn->prepare("UPDATE users SET reset_token = ? WHERE email = ?");
     $stmt->bind_param("ss", $token, $email);
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        // --- BREVO CONFIG (Pulls from Render Env) ---
         $apiKey = getenv('BREVO_API_KEY'); 
         $senderEmail = 'ebroshoponline@gmail.com'; 
 
@@ -32,7 +34,7 @@ if (isset($_POST['request_reset'])) {
             "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
             "to" => array(array("email" => $email)),
             "subject" => "Reset Your Password",
-            "htmlContent" => "<html><body><h3>Reset Your Password</h3><p>Click the link below:</p><a href='$resetLink'>$resetLink</a></body></html>"
+            "htmlContent" => "<html><body><h3>Reset Password</h3><p>Link: <a href='$resetLink'>$resetLink</a></p></body></html>"
         );
 
         $ch = curl_init('https://api.brevo.com/v3/smtp/email');
@@ -50,13 +52,12 @@ if (isset($_POST['request_reset'])) {
         curl_close($ch);
 
         if ($httpCode == 201 || $httpCode == 200) {
-            echo "<script>alert('Success! Check your email.'); window.location.href='login.html';</script>";
+            echo "<script>alert('Success! Check email.'); window.location.href='login.html';</script>";
         } else {
-            echo "<h3>Brevo Error ($httpCode)</h3><pre>$response</pre>";
-            exit;
+            echo "<h3>API Error ($httpCode)</h3><pre>$response</pre>";
         }
     } else {
-        echo "<script>alert('Email not found in database.'); window.history.back();</script>";
+        echo "<script>alert('Email not found.'); window.history.back();</script>";
     }
 }
 
@@ -71,10 +72,10 @@ if (isset($_GET['token'])):
 <head>
     <title>Set New Password</title>
     <style>
-        body { font-family: Arial; background: #f4f4f4; text-align: center; padding: 50px; }
-        .box { max-width: 350px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box;}
-        button { background: #0076ad; color: white; border: none; width: 100%; padding: 10px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        body { font-family: Arial; text-align: center; padding: 50px; background: #f4f4f4; }
+        .box { max-width: 350px; margin: auto; background: white; padding: 30px; border-radius: 8px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: #0076ad; color: white; border: none; width: 100%; padding: 10px; cursor: pointer; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -82,7 +83,7 @@ if (isset($_GET['token'])):
         <h2>New Password</h2>
         <form method="POST" action="forget.php">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-            <input type="password" name="new_pass" placeholder="Enter New Password" required minlength="6">
+            <input type="password" name="new_pass" placeholder="New Password" required minlength="6">
             <button type="submit" name="update_now">Update Password</button>
         </form>
     </div>
@@ -97,14 +98,15 @@ if (isset($_GET['token'])):
 if (isset($_POST['update_now'])) {
     $token = $_POST['token'];
     $hashed = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+    
     $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL WHERE reset_token = ?");
     $stmt->bind_param("ss", $hashed, $token);
     $stmt->execute();
     
     if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Success! Password updated.'); window.location.href='login.html';</script>";
+        echo "<script>alert('Updated! Please login.'); window.location.href='login.html';</script>";
     } else {
-        echo "<h3>Invalid or Expired Link.</h3>";
+        echo "<h3>Link invalid or expired.</h3>";
     }
 }
 ?>
