@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Security: Only allow admins (adjust based on your 'role' column)
 include 'db.php';
 
 // 1. UPDATE STATUS LOGIC
@@ -11,12 +10,15 @@ if (isset($_POST['update_status'])) {
     $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE id = ?");
     $stmt->bind_param("si", $new_status, $order_id);
     $stmt->execute();
-    header("Location: admin_orders.php"); // Refresh
+    header("Location: admin_orders.php"); 
     exit();
 }
 
-// 2. FETCH ALL ORDERS
-$sql = "SELECT o.*, u.first_name, u.last_name FROM orders o 
+// 2. FETCH ALL ORDERS (Adjusting SQL to get product details if they exist in your table)
+// Note: I added 'product_names' to the selection. 
+// If your column name is different (e.g., 'items'), change it below.
+$sql = "SELECT o.*, u.first_name, u.last_name 
+        FROM orders o 
         JOIN users u ON o.user_id = u.id 
         ORDER BY o.created_at DESC";
 $all_orders = $conn->query($sql);
@@ -29,40 +31,29 @@ $all_orders = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management - EBRO Shop</title>
     <style>
-        /* MATCHING YOUR ADMIN DASHBOARD STYLE */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f4; padding: 20px; color: #333; margin: 0; }
-        .container { max-width: 1100px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
+        .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { color: #136835; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 24px; }
-
-        /* Navigation Buttons */
-        .btn-back { background: #0076ad; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; transition: 0.3s; }
-        .btn-back:hover { background: #005a85; }
-
-        /* Table Styling */
-        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #eee; }
-        table { width: 100%; border-collapse: collapse; background: white; min-width: 700px; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #136835; color: white; font-weight: 600; }
+        .btn-back { background: #0076ad; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; }
         
-        /* Status badge colors */
-        .badge { padding: 6px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 11px; text-transform: uppercase; display: inline-block; }
+        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 800px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #136835; color: white; }
+        
+        .product-list { font-weight: bold; color: #0076ad; font-size: 14px; }
+        .badge { padding: 6px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 11px; text-transform: uppercase; }
         .pending { background: #333; }
         .completed { background: #136835; }
         .cancelled { background: #e74c3c; }
-        
-        /* Form elements inside table */
-        select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px; outline: none; }
-        .btn-save { background: #0066ff; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 6px; font-weight: bold; transition: 0.3s; }
-        .btn-save:hover { background: #004fb3; }
 
-        /* Mobile Adjustments */
+        select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; }
+        .btn-save { background: #0066ff; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 6px; font-weight: bold; }
+
         @media (max-width: 600px) {
             body { padding: 10px; }
             .container { padding: 15px; }
-            h1 { font-size: 20px; }
-            .btn-back { width: 100%; text-align: center; box-sizing: border-box; }
-            select, .btn-save { font-size: 16px !important; } /* Stops mobile zoom */
+            select, .btn-save { font-size: 16px !important; }
         }
     </style>
 </head>
@@ -70,7 +61,6 @@ $all_orders = $conn->query($sql);
 
 <div class="container">
     <a href="admin_dashboard.php" class="btn-back">← BACK TO DASHBOARD</a>
-
     <h1>Customer Order Management</h1>
 
     <div class="table-container">
@@ -78,8 +68,8 @@ $all_orders = $conn->query($sql);
             <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>Customer Name</th>
-                    <th>Total Amount</th>
+                    <th>Product Name(s)</th> <th>Customer</th>
+                    <th>Total</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -88,7 +78,10 @@ $all_orders = $conn->query($sql);
                 <?php if ($all_orders->num_rows > 0): ?>
                     <?php while($row = $all_orders->fetch_assoc()): ?>
                     <tr>
-                        <td><strong>#<?php echo $row['id']; ?></strong></td>
+                        <td>#<?php echo $row['id']; ?></td>
+                        <td class="product-list">
+                            <?php echo htmlspecialchars($row['product_names'] ?? 'View Details'); ?>
+                        </td>
                         <td><?php echo htmlspecialchars($row['first_name'] . " " . $row['last_name']); ?></td>
                         <td><strong>ETB <?php echo number_format($row['total_amount'], 2); ?></strong></td>
                         <td>
@@ -99,7 +92,7 @@ $all_orders = $conn->query($sql);
                             <span class="badge <?php echo $class; ?>"><?php echo $row['status']; ?></span>
                         </td>
                         <td>
-                            <form method="POST" style="display:flex; gap: 5px; align-items: center;">
+                            <form method="POST" style="display:flex; gap: 5px;">
                                 <input type="hidden" name="order_id" value="<?php echo $row['id']; ?>">
                                 <select name="new_status">
                                     <option value="Pending" <?php if($row['status'] == 'Pending') echo 'selected'; ?>>Pending</option>
@@ -112,14 +105,11 @@ $all_orders = $conn->query($sql);
                     </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 40px; color: #999;">No orders found yet.</td>
-                    </tr>
+                    <tr><td colspan="6" style="text-align:center;">No orders found.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
-
 </body>
 </html>
