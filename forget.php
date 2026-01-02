@@ -12,7 +12,7 @@ if (isset($_POST['request_reset'])) {
 
     if ($stmt->affected_rows > 0) {
         // --- YOUR BREVO API KEY GOES HERE ---
-        $apiKey = 'xsmtpsib-ae8bc5be041ba16172d1850555236c978502f1b10f55bf488f6b7e7685a0f310-RCfClJTP4XIbJZ23'; 
+        $apiKey = 'xsmtpsib-ae8bc5be041ba16172d1850555236c978502f1b10f55bf488f6b7e7685a0f310-yHq4pcVvdj9VuKr4'; 
 
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
