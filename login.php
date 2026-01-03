@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // 4. REDIRECT BASED ON ROLE
             if ($user['role'] == 'admin') {
                 // Takes you to your special admin tools
-                header("Location: admin_dashboard.php");
+                header("Location: home.html");
             } else {
                 // Takes customers to the shopping page
                 // IMPORTANT: Ensure home.html is now home.php to stay logged in!
