@@ -19,7 +19,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* The dark background area */
+        /* Dark background click area */
         .overlay-mask {
             position: fixed;
             top: 0;
@@ -43,9 +43,9 @@
             overflow-y: auto;
         }
 
-        /* Prevent Flicker: Keep content hidden by default */
-        .flicker-prevent {
-            display: none !important;
+        /* FIX: Content starts invisible so user doesn't see "LOGIN" for a split second */
+        .view-container {
+            display: none;
         }
 
         .side-header {
@@ -114,7 +114,11 @@
             font-size: 14px;
         }
 
-        .btn-blue:hover { background: #f0f8ff; }
+        .btn-login {
+            background: var(--primary-blue);
+            color: #fff;
+            border: none;
+        }
 
         .forgot-link {
             display: block;
@@ -125,7 +129,7 @@
             font-size: 14px;
         }
 
-        .account-menu { list-style: none; padding: 0; }
+        .account-menu { list-style: none; padding: 0; margin: 0; }
         .menu-row { border-bottom: 1px solid #eee; }
         .menu-row a {
             display: block;
@@ -152,7 +156,7 @@
                 <h2 id="display-title">Login</h2>
                 <a href="javascript:history.back()" class="close-x">&times;</a>
             </div>
-            <div id="view-logged-out" class="flicker-prevent">
+            <div id="view-logged-out" class="view-container">
                 <form action="login.php" method="POST">
                     <label class="field-label">Email Address <span class="star">*</span></label>
                     <input type="email" name="email" class="input-box" placeholder="Email Address" required>
@@ -163,7 +167,7 @@
                         <i class="fa-solid fa-eye toggle-icon" onclick="togglePassword()"></i>
                     </div>
 
-                    <button type="submit" class="btn-blue" style="background: var(--primary-blue); color: white;">Login</button>
+                    <button type="submit" class="btn-blue btn-login">Login</button>
                 </form>
                 
                 <a href="forget.html" class="forgot-link">Forgot your password?</a>
@@ -171,26 +175,26 @@
                 <button class="btn-blue" onclick="location.href='register.html'">Create new Account</button>
             </div>
 
-       <div id="view-logged-in" class="hidden">
-    <ul class="account-menu">
-        <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> Account Details</a></li>
-        <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> Addresses</a></li>
-        
-        <li class="menu-row">
-            <a href="javascript:void(0)" onclick="handleAdminRedirect()">
-                <i class="fa-solid fa-user-shield"></i> Admin Panel
-            </a>
-        </li>
+            <div id="view-logged-in" class="view-container">
+                <ul class="account-menu">
+                    <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> Account Details</a></li>
+                    <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> Addresses</a></li>
+                    
+                    <li class="menu-row">
+                        <a href="javascript:void(0)" onclick="handleAdminRedirect()"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+                    </li>
 
-        <li class="menu-row"><a href="change_password.html"><i class="fa-solid fa-lock"></i> Change Your Password</a></li>
-        <li class="menu-row"><a href="javascript:void(0)" onclick="confirmLogout()" style="color: #cc0000;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
-    </ul>
-</div>
+                    <li class="menu-row"><a href="change_password.html"><i class="fa-solid fa-lock"></i> Change Your Password</a></li>
+                    <li class="menu-row"><a href="javascript:void(0)" onclick="confirmLogout()" style="color: #cc0000;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
     <script>
-        // 1. Password Visibility Logic
+        let currentUserRole = "";
+
+        // --- PASSWORD TOGGLE ---
         function togglePassword() {
             const passInput = document.getElementById('login-pass');
             const icon = event.target;
@@ -203,63 +207,47 @@
             }
         }
 
-        // 2. Logout Confirmation
+        // --- LOGOUT ---
         function confirmLogout() {
             if (confirm("Are you sure you want to log out?")) {
                 window.location.href = 'logout.php';
             }
         }
 
-        // 3. Fix: Close overlay when clicking the dark area
+        // --- ADMIN REDIRECT LOGIC ---
+        function handleAdminRedirect() {
+            if (currentUserRole === 'admin') {
+                window.location.href = 'admin_dashboard.php';
+            } else {
+                alert("Access Denied: This area is only for Administrators.");
+            }
+        }
+
+        // --- BACKGROUND CLICK TO GO BACK ---
         const mask = document.getElementById('overlayMask');
         mask.addEventListener('click', (e) => {
-            if (e.target === mask) {
-                window.history.back();
-            }
+            if (e.target === mask) { window.history.back(); }
         });
 
-        // 4. Fix: Fetch session and remove 'flicker-prevent' ONLY when data is ready
-     // Global variable to store the role
-    let currentUserRole = "";
-
-    fetch('check_session.php')
-        .then(response => response.json())
-        .then(data => {
-            const loggedInView = document.getElementById('view-logged-in');
-            const loggedOutView = document.getElementById('view-logged-out');
-
-            if (data.loggedIn) {
-                // User is logged in: Show the menu and set the role
-                currentUserRole = data.role; 
-                document.getElementById('display-title').innerText = "Hi, " + data.name;
-                loggedInView.classList.remove('hidden');
-                loggedOutView.classList.add('hidden');
-            } else {
-                // User is logged out: Show the login form
-                loggedOutView.classList.remove('hidden');
-                loggedInView.classList.add('hidden');
-            }
-        })
-        .catch(err => {
-            // Error fallback: Show the login form so the user isn't stuck
-            document.getElementById('view-logged-out').classList.remove('hidden');
-            console.error("Session check failed:", err);
-        });
-
-    // Admin redirect logic
-    function handleAdminRedirect() {
-        if (currentUserRole === 'admin') {
-            window.location.href = 'admin_dashboard.php';
-        } else {
-            alert("Access Denied: This area is for administrators only.");
-        }
-    }
-
-    function confirmLogout() {
-        if (confirm("Are you sure you want to log out?")) {
-            window.location.href = 'logout.php';
-        }
-    }
+        // --- SESSION CHECK (NO FLICKER) ---
+        fetch('check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                const loggedInView = document.getElementById('view-logged-in');
+                const loggedOutView = document.getElementById('view-logged-out');
+                
+                if (data.loggedIn) {
+                    currentUserRole = data.role; // Set the role from PHP
+                    document.getElementById('display-title').innerText = "Hi, " + data.name;
+                    loggedInView.style.display = 'block'; // Show Menu
+                } else {
+                    loggedOutView.style.display = 'block'; // Show Login Form
+                }
+            })
+            .catch(() => {
+                // If anything breaks, show the login form as fallback
+                document.getElementById('view-logged-out').style.display = 'block';
+            });
     </script>
 </body>
 </html>
