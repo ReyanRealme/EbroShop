@@ -126,19 +126,24 @@ include 'db.php'; // Connects to your database
     <div class="outside-click-area" onclick="history.back()"></div>
 </div>
 
+
 <script>
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
-    // This function runs every time you type a letter
+
+    // Focus input on load
+    setTimeout(() => searchInput.focus(), 400);
+
     searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim();
 
-        if (query.length < 2) {
-            searchResults.innerHTML = '<div class="status-msg">Start typing to find products...</div>';
+        // 1. If input is empty, show the default message
+        if (query.length < 1) {
+            searchResults.innerHTML = '<div class="status-msg">Start typing to find product</div>';
             return;
         }
 
-        // We fetch the results from our backend "fetch_products.php"
+        // 2. Fetch results from your database
         fetch(`fetch_search_results.php?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(products => {
@@ -147,21 +152,34 @@ include 'db.php'; // Connects to your database
                     return;
                 }
 
-                // Map the database products to your exact design
-                searchResults.innerHTML = products.map(p => `
-                    <div class="product-card">
-                        <img src="${p.image}" alt="${p.name}">
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-price">${p.price} Birr</div>
-                        <button class="quick-add-btn" onclick="addToCart(${p.id})">Quick Add</button>
-                    </div>
-                `).join('');
+                // 3. Render the products using your EXACT CSS classes
+                searchResults.innerHTML = products.map(p => {
+                    // Check if item is out of stock
+                    const isSoldOut = (p.stock <= 0 || p.status === 'sold_out');
+
+                    return `
+                        <div class="product-card" style="${isSoldOut ? 'opacity: 0.6;' : ''}">
+                            <img src="${p.image}" alt="${p.name}">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">${parseFloat(p.price).toFixed(2)} birr</div>
+                            
+                            ${isSoldOut 
+                                ? `<button class="quick-add-btn" style="background:#888; cursor:not-allowed;" disabled>Sold Out</button>`
+                                : `<button class="quick-add-btn" onclick="quickAdd(${p.id})">Quick Add</button>`
+                            }
+                        </div>
+                    `;
+                }).join('');
+            })
+            .catch(err => {
+                console.error("Search Error:", err);
+                searchResults.innerHTML = '<div class="status-msg">Error loading products.</div>';
             });
     });
 
-    // Link to your existing Cart logic
-    function addToCart(id) {
-        // You can use your existing Cart.html logic here
+    // Handle the Quick Add button
+    function quickAdd(id) {
+        // Redirect to your cart logic
         window.location.href = "Cart.html?add=" + id;
     }
 </script>
