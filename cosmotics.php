@@ -80,12 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 ";
 // 3. Template Injection
-$html_file = "Cosmotics.html"; 
+$html_file = "cosmotics.html"; 
 if (file_exists($html_file)) {
     $template = file_get_contents($html_file);
     
     // Fix Redirection Error: Change .html links to .php so they stay on the dynamic page
-    $template = str_replace('Cosmotics.html', 'Cosmotics.php', $template);
+    $template = str_replace('cosmotics.html', 'cosmotics.php', $template);
     
     // Inject JS and Products
     $template = str_replace('</body>', $js_code . '</body>', $template);
