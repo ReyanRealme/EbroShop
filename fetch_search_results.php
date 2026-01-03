@@ -5,11 +5,12 @@ include 'db.php';
 $query = isset($_GET['q']) ? $conn->real_escape_string($_GET['q']) : '';
 
 if ($query !== '') {
-    // Search by name or category in your 'products' table
-    $sql = "SELECT * FROM products 
+    // This searches ALL categories and ALL products at once
+    $sql = "SELECT id, name, price, image, stock, status FROM products 
             WHERE name LIKE '%$query%' 
             OR category LIKE '%$query%' 
-            LIMIT 10";
+            OR description LIKE '%$query%'
+            LIMIT 15";
             
     $result = $conn->query($sql);
     $products = [];

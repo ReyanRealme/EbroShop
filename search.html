@@ -127,263 +127,50 @@
 </div>
 
 <script>
-(function(){
-    // Your Data
-    const products = [
-       /*baby products*/
-        { id:1, name:"Hilwa Powder milk 900g", price:1200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766126440/c60hlx1futn6qfamdqat.jpg", category:"Baby Products" },
-        { id:2, name:"Hilwa Powder milk 400g", price:550, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766126900/mjhzfkyjhhfk2btclho7.jpg", category:"Baby Products" },
-        { id:3, name:"Nido Powder milk 900g", price:2500, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766126971/lsordgzozfhlpzm80ntx.jpg", category:"Baby Products" },
-        { id:4, name:"Nido Powder milk 400g", price:1200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127019/kt8jmgrkkkwztlbkcbr2.jpg", category:"Baby Products" },
-        { id:5, name:"Lato Powder milk 400g", price:500, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127045/t1cvkbb1gjq60mzf9ppq.jpg", category:"Baby Products" },
-        { id:6, name:"Lato Powder milk 2.5Kg", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127172/ao3ezthjbcktznga7gvj.jpg", category:"Baby Products" },
-        { id:7, name:"Lato Powder milk 900g", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127136/cppuqy2hs8yercqvsymc.jpg", category:"Baby Products" },
-        { id:8, name:"Nura Powder milk 400g", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127204/ik9r4qnzlyevgv6n8veg.jpg", category:"Baby Products" },
-        { id:9, name:"Nura Powder milk 900g", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127278/p9wdsjuh21hny8vpy1tq.jpg", category:"Baby Products" },
-        { id:10, name:"Nura Powder milk 2.5kg", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127251/l6fficvuro6komukrgcp.jpg", category:"Baby Products" },
-        { id:11, name:"France lait milk 3 ቁጥር", price:1400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127320/lco7dg4yxpfakidwmwr2.jpg", category:"Baby Products" },
-        { id:12, name:"Liptomil milk 1 ቁጥር", price:1700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127353/d0cqbepjo9efojcitocb.jpg", category:"Baby Products" },
-        { id:13, name:"Liptomil milk 2 ቁጥር", price:1800, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127380/xwzqxw3qinq93xe2lqww.jpg", category:"Baby Products" },
-        { id:14, name:"Liptomil milk 3 ቁጥር", price:1600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766127421/kvql885sy9bfhc6mztod.jpg", category:"Baby Products" },
-               
-    /*basic foods*/    
-        { id:15, name:"Brewed coffee-የታጠበ ቡና", price:1400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213178/mivh18hh4g2xccbxn5qd.jpg", category:"Basic foods" },
-        { id:16, name:"1st class coffee-አንደኛ ደረጃ ቡና", price:1300, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213104/bfdfbgau937gkue5sgkm.jpg", category:"Basic foods" },
-        { id:17, name:"Medium grade coffee-መሀከለኛ ደረጃ ቡና", price:1200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766212874/j9gegclmqf7u4gqhlnqs.png", category:"Basic foods" },
-        { id:18, name:"Besmeti Rice", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766212835/azewbiwpuh3novxetusb.png", category:"Basic foods" },
-        { id:19, name:"Rice-የሀገር ውስጥ ሩዝ", price:140, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213077/wlihlejgurbjb0lij43x.jpg", category:"Basic foods" },
-        { id:20, name:"Suger-ሱኳር", price:190, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213047/tawmmktbcojmjl1reh9s.jpg", category:"Basic foods" },
-        { id:21, name:"Red Lentils-ምስር ክክ", price:250, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213304/mkywp0qrlssp3yfzkhk8.jpg", category:"Basic foods" },
-        { id:22, name:"Home Red lentils-የሀገር ውስጥ", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766228805/tosac0ifz37jsca7jbde.jpg", category:"Basic foods" },
-        { id:23, name:"Whole lentils ድፍን ምስር", price:250, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213332/wrtfavhaxno65vdrbron.jpg", category:"Basic foods" },
-        { id:24, name:"Flour-ዱቄት", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766212799/zftvaxcsmz96ulss8fjg.jpg", category:"Basic foods" },
-        { id:25, name:"Mokoroni-ወፍራሙ ሞኮሮኒ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213400/gnsg3upshujmthk9g863.jpg", category:"Basic foods" },
-        { id:26, name:"Mokoroni-ደቃቅ ሞኮሮኒ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213427/xhf7bdxgnpecggljdm85.jpg", category:"Basic foods" },
-        { id:27, name:"Mokoroni-ሹል ሞኮሮኒ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213239/skybklaa0j0mkmeuqicq.jpg", category:"Basic foods" },
-        { id:28, name:"Mokoroni-ጥምዝምዝ ሞኮሮኒ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213274/feckymv86fbl7rrm1mi4.jpg", category:"Basic foods" },
-        { id:29, name:"Pea cake-አተር ክክ", price:180, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766212992/dwad3i8xqysrvd7xxjy3.png", category:"Basic foods" },
-        { id:30, name:"Bean cake-ባቄላ ክክ", price:180, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213472/ca6db0gz4jjyimr4rcv9.jpg", category:"Basic foods" },
-        { id:31, name:"Bean-ባቄላ", price:160, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213138/u28zrlaynxnjngezlwzu.jpg", category:"Basic foods" },
-        { id:32, name:"Popcorn-ፋንድሻ", price:240, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213513/c4wb8kdmeynbmkxdw4vm.jpg", category:"Basic foods" },
-        { id:33, name:"Safflower-ሱፍ", price:250, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766213548/a7wshcybtw8siymxtce1.jpg", category:"Basic foods" },
-        { id:34, name:"Barley flakes-የገብስ ቅንጬ", price:250, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766227978/pj5iuikus7qscb9ze6of.jpg", category:"Basic foods" },
-        { id:35, name:"Oatmeal-የአጃ ቅንጬ", price:280, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766228013/ntku72ykvqol6oftexoi.jpg", category:"Basic foods" },
-        { id:36, name:"Chickpea-ድፍን ሽምብራ", price:160, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766228043/kgpuqk3itqzqf2vf0vmi.jpg", category:"Basic foods" },
-        { id:37, name:"Salt-ጨው", price:40, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766212766/eqt8vet8mq4hbx1akxaj.png", category:"Basic foods" },
-           
-    /*Cooking ingridents*/  
-        { id:38, name:"Oche vegetable ghee", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231168/ovkrqy8vxgi02ssg8sin.png", category:"Cooking ingridents" },
-        { id:39, name:"Sheno vegetable ghee", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231240/iwggehv2vootezge1cyb.png", category:"Cooking ingridents" },
-        { id:40, name:"Laviva Ketchup 5 litter", price:1000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231068/jsosopegculsez9efg0w.png", category:"Cooking ingridents" },
-        { id:41, name:"Laviva Ketchup 2 litter", price:500, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231267/k9twrwhdsxvooiz4rjfx.jpg", category:"Cooking ingridents" },
-        { id:42, name:"Laviva Bottled Ketchup", price:180, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231037/qvxvxwkmxfr4biyufmse.jpg", category:"Cooking ingridents" },
-        { id:43, name:"Dachi Ketchup 5 litter", price:950, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231291/mohsaqchwtejs0xebi9d.jpg", category:"Cooking ingridents" },
-        { id:44, name:"Dachi Ketchup 2 litter", price:550, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231313/v7t83kq6akbpc6rrm1tm.jpg", category:"Cooking ingridents" },
-        { id:45, name:"Dachi Bottled Ketchup", price:160, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231362/kllisldviebydpnpf1my.jpg", category:"Cooking ingridents" },
-        { id:46, name:"Laviva Mustared 2 litter", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231140/fs7hhuiralhnew4ixpp7.jpg", category:"Cooking ingridents" },
-        { id:47, name:"Laviva Bottled Mustared", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231385/ngntt8pwevx7ybis1nco.jpg", category:"Cooking ingridents" },
-        { id:48, name:"White Quaker Oats", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231202/syjkkpcanijzigz0hlor.jpg", category:"Cooking ingridents" },
-        { id:49, name:"Black Quaker Oats", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231424/qslnoc7r8yksdiquhovl.jpg", category:"Cooking ingridents" },
-        { id:50, name:"Merti Tomato paste", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231447/gpfi2h8vspahmn3umzwp.jpg", category:"Cooking ingridents" },
-        { id:51, name:"COrn Flour-የበቆሎ ዱቄት", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766230935/mws4qmshjivu1w9ryox4.jpg", category:"Cooking ingridents" },
-        { id:52, name:"Knorr-ክኖር", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231470/r5pebfwesgqmco1cbg1r.jpg", category:"Cooking ingridents" },
-        { id:53, name:"Addis tea-አዲስ ሻይቅጠል", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766231500/q2fpabiikybxhuw2dxs4.jpg", category:"Cooking ingridents" },
-        
-    /*Cosmotics*/    
-        { id:54, name:"Sunsilk Shampo", price:220, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238128/y5pd2kmdbc5japidfpv5.jpg", category:"Cosmotics " },
-        { id:55, name:"Sunsilk Shampo yellow", price:220, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238174/h4xblfnmynsqqqzehzbz.jpg", category:"Cosmotics " },
-        { id:56, name:"Sunsilk Conditioner", price:220, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238200/zk0upkiejminwcuwoej5.jpg", category:"Cosmotics " },
-        { id:57, name:"Organza Shampo ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238234/k65lqizzvdye68ogxtgs.jpg", category:"Cosmotics " },
-        { id:58, name:"Aloha Lotion ትልቁ ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238279/tow7z07b4u58y6ap8kir.jpg", category:"Cosmotics " },
-        { id:59, name:"Aloha Lotion ትንሹ ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238323/elmr7oqzrid8phlzhnl5.jpg", category:"Cosmotics " },
-        { id:60, name:"Softee Lotion ትልቁ ", price:300, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238356/kananr2lzvccnyvedrm4.jpg", category:"Cosmotics " },
-        { id:61, name:"Vaslin Lotion ትልቁ ", price:300, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238384/vhhf3km5enaouppuy5yx.jpg", category:"Cosmotics " },
-        { id:62, name:"Vaslin Lotion ትንሹ ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238420/aqykytyh5ga60icfmtog.jpg", category:"Cosmotics " },
-        { id:63, name:"Zenith Hair Oil ", price:160, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238446/sydjn44rogmusbb0y1iv.jpg", category:"Cosmotics " },
-        { id:64, name:"Duru የገላ soap", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238532/si0yy3pftcdaxme1z3pt.jpg", category:"Cosmotics " },
-        { id:65, name:"Lifebouy የገላ soap", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766238505/gdvsgmfuwhaml8qfijer.jpg", category:"Cosmotics " },
-              
-    /*Daypers*/
-        { id:66, name:"GoodBaby Dayper 1 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766255943/kvwbgyn5qw3uguiqpxg8.jpg", category:"Daypers " },
-        { id:67, name:"GoodBaby Dayper 2 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256605/tpvcjsmxmkgqjhyye3na.jpg", category:"Daypers " },
-        { id:68, name:"GoodBaby Dayper 3 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256657/jsnzat9kuekgz1d8lxgk.jpg", category:"Daypers " },
-        { id:69, name:"GoodBaby Dayper 4 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256686/hom2dmdkqlapoir7kbbq.jpg", category:"Daypers" },
-        { id:70, name:"GoodBaby Dayper 5 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256721/jrurgle4rrsk73wa4qcb.jpg", category:"Daypers " },
-        { id:71, name:"Abc Dayper 1 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256747/ld39g5hkz9lijz8srxu5.jpg", category:"Daypers " },
-        { id:72, name:"Abc Dayper 2 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256798/alyfqawtkrpb58w0381t.jpg", category:"Daypers " },
-        { id:73, name:"Abc Dayper 3 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256833/hmusvhktwd9wdxqlf1xp.jpg", category:"Daypers " },
-        { id:74, name:"Abc Dayper 4 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256896/ufyitxjjc5vqmtqpdb8l.jpg", category:"Daypers " },
-        { id:75, name:"Abc Dayper 5 ቁጥር", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766256982/looka382q6ytmltjtiow.jpg", category:"Daypers " },
-          { id:76, name:"Yes Dayper 2 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257052/bjfrbc7f4gkduzmgrmww.jpg", category:"Daypers " },
-          { id:77, name:"Yes Dayper 3 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257098/ppn2ikortbjr2xxmjghz.jpg", category:"Daypers " },
-          { id:78, name:"Yes Dayper 4 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257331/owsejr4xjb9qpmgcovcr.jpg", category:"Daypers " },
-          { id:79, name:"Yes Dayper 5 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257201/rwwwveqoinqdo2q5tgjc.jpg", category:"Daypers " },
-        { id:80, name:"B&B Dayper 2 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257372/ezdscwsws4i11yb2ezfj.jpg", category:"Daypers " },
-        { id:81, name:"B&B Dayper 3 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257425/tcvbj2ezoypd0pjfemx5.jpg", category:"Daypers " },
-        { id:82, name:"B&B Dayper 4 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257467/z5ijrttwlrdvrvoyi4f9.jpg", category:"Daypers " },
-        { id:83, name:"B&B Dayper 5 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257605/ub1lntoayt7obhbvexwg.jpg", category:"Daypers " },
-           { id:84, name:"Love Dayper 2 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766302925/inzz9pjinfdbpjy2jdab.jpg", category:"Daypers " },
-           { id:85, name:"Love Dayper 3 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766302952/sfu6d4ndnvn8vi8sfq3b.jpg", category:"Daypers " },
-           { id:86, name:"Love Dayper 4 ቁጥር", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766302984/l5lnlfjjsqnydkvykzae.jpg", category:"Daypers " },
-        { id:87, name:"GoodBaby Dayper 2 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766257148/sanvfshuc92i48wr2kto.jpg", category:"Daypers " },
-        { id:88, name:"GoodBaby Dayper 3 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303011/a4kmkyqmnmvpcqb6fubr.jpg", category:"Daypers " },
-        { id:89, name:"GoodBaby Dayper 4 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303043/hrcr5kemmghsadgzqkrh.jpg", category:"Daypers " },
-           { id:90, name:"Abc Dayper 2 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303075/mljzthzac24zptvpziwf.jpg", category:"Daypers " },
-           { id:91, name:"Abc Dayper 3 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303234/ygfwopfvfulg8hpp3nn0.jpg", category:"Daypers " },
-           { id:92, name:"Abc Dayper 4 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303167/whuq6pltuajzrdt1pebq.jpg", category:"Daypers " },
-       { id:93, name:"B&B Dayper 2 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303198/c2nzdcyk4yg5st3h2crg.jpg", category:"Daypers " },
-       { id:94, name:"B&B Dayper 3 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303261/qtuz7fiijgr13kxxuoxi.jpg", category:"Daypers " },
-       { id:95, name:"B&B Dayper 4 ቁጥር ትንሹ", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766303291/t2aeiqdmbk64snymbkfl.jpg", category:"Daypers " },
-           { id:96, name:"GoodBaby Wipes", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766305824/haq4zp71ec5hdl9uexrk.jpg", category:"Daypers " },
-           { id:97, name:"B&B Wipes", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766305882/ajxw7gqpxqsgvphuhzvf.jpg", category:"Daypers " },
-           { id:98, name:"Abc Wipes", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766305851/uodvcqiuj2mzmfdsuzim.jpg", category:"Daypers " },
-                        
-     /*Food oils*/ 
-     { id:99, name:"Omaar Sunflower oil 5 litter", price:1850, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315377/i1max6wlhwctaouqlzwh.jpg", category:"Food oils " },
-     { id:100, name:"Omaar Sunflower oil 3 litter", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315401/hrh0wounxaxsk6ekohui.jpg", category:"Food oils " },
-     { id:101, name:"Omaar Sunflower oil 1 litter", price:430, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315433/sc2mogxwr4goucf0qrnc.jpg", category:"Food oils " },
-        { id:102, name:"Hilwa Sunflower oil 5 litter", price:1700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315459/pp42n5c8p92rzefayeag.jpg", category:"Food oils " },
-        { id:103, name:"Hilwa Sunflower oil 3 litter", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315483/pird5l62u4v4fdq0uvhs.jpg", category:"Food oils " },
-        { id:104, name:"Hilwa Sunflower oil 1 litter", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315509/iixhivyhckn5fhc8rlu3.jpg", category:"Food oils " },
-     { id:105, name:"Orkide Sunflower oil 5 litter", price:1700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315533/h7ivvxp5vbq6b5lp4umd.jpg", category:"Food oils " },
-     { id:106, name:"Orkide Sunflower oil 3 litter", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315556/opbgskp5voo0jq9rlraq.jpg", category:"Food oils " },
-     { id:107, name:"Orkide Sunflower oil 1 litter", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315578/y7d4zvikxiffvv5inr2q.jpg", category:"Food oils " },
-         { id:108, name:"Selam Sunflower oil 5 litter", price:1700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315638/y7i7zv5muytnsqqrhoq9.jpg", category:"Food oils " },
-         { id:109, name:"Selam Sunflower oil 3 litter", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315666/srq31sqlje37818hmdos.jpg", category:"Food oils " },
-         { id:110, name:"Selam Sunflower oil 1 litter", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315707/m79zoho6op2zgunbiwwi.jpg", category:"Food oils " },
-     { id:111, name:"Liba Sunflower oil 5 litter", price:1700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315732/wwbzzmyniyvey1yfeocx.jpg", category:"Food oils " },
-     { id:112, name:"Liba Sunflower oil 3 litter", price:1100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315763/eg0b8f3blkcuyypeo1c0.jpg", category:"Food oils " },
-     { id:113, name:"Liba Sunflower oil 1 litter", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766315796/dwqiec6hendfdz9bf8kt.jpg", category:"Food oils " },
-         
-     /*liquid soap*/
-      { id:114, name:"Largo 5 litter", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766318857/vxy4d9ve5xp1brznmaxi.jpg", category:"liquid soap" },
-      { id:115, name:"Largo 2 litter", price:320, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766318890/b7ia7u49gcgf2fyofsn8.jpg", category:"liquid soap" },
-      { id:116, name:"Largo 1 litter", price:170, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766318929/ctfmkoobwnibbnbzqpxq.jpg", category:"liquid soap" },
-         { id:117, name:"Berekina 5 litter", price:550, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319024/sn6ehauu4swlz8lipuvd.jpg", category:"liquid soap" },
-         { id:118, name:"Berekina 1 litter", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319062/yyluhxovzp8zpnsjvgog.jpg", category:"liquid soap" },
-      { id:119, name:"Netoal Largo 5 litter", price:500, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319205/nurpdwze1ildpieif8vn.jpg", category:"liquid soap" },
-      { id:120, name:"Netoal Largo 2 litter", price:320, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319232/x24vwbf3qrrkqdeuqs8g.jpg", category:"liquid soap" },
-      { id:121, name:"Netoal Largo 1 litter", price:170, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319261/nvnkilq0pbt9vzmqkrfu.jpg", category:"liquid soap" },
-        { id:122, name:"Netoal Berekina 5 litter", price:450, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319296/grtmpiz0rt69brviqkxe.jpg", category:"liquid soap" },
-        { id:123, name:"Netoal handsoap(የጅ) 5 litter", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319325/zoulwhnot6jijix2xzc0.jpg", category:"liquid soap" },
-        { id:124, name:"Netoal Dishsoap(የእቃ) 5 litter", price:450, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319350/myvcz8jjory6nkfos3hu.jpg", category:"liquid soap" },
-        { id:125, name:"Dettol toilet cleaner", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319382/wkh7vmmn6zfsl7mddpox.jpg", category:"liquid soap" },
-     { id:126, name:"Diva የልብስ ሳሙና", price:80, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319407/kopstbmofooqnh9c5kyy.jpg", category:"liquid soap" },
-     { id:127, name:"555 የልብስ ሳሙና", price:90, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766319439/conupu8lr8lggvcvip8p.jpg", category:"liquid soap" },
-     
-     /*Modes and softs*/
-      { id:128, name:"Rose Sanitary pad", price:85, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766378144/cjgwgx3lpbxqgwfqgiym.jpg", category:"Modes and softs" },
-      { id:129, name:"Eve Sanitary pad", price:85, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766379798/yzyfyuvk9xsazy9oiy9e.jpg", category:"Modes and softs" },
-      { id:130, name:"Eve comfort Sanitary pad", price:85, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766379859/qghcnovdegv4o7qvheh7.jpg", category:"Modes and softs" },
-      { id:131, name:"Comfort Sanitary pad", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766379888/w1rfhtr8yud9okgm2xin.jpg", category:"Modes and softs" },
-         { id:132, name:"Viva Soft ተመዛዥ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380291/olicjwwcp8z2zfvkwfnu.jpg", category:"Modes and softs" },
-         { id:133, name:"Bravo Soft ተመዛዥ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766379981/p4xn6eorwo7n6gpmap9g.jpg", category:"Modes and softs" },
-         { id:134, name:"Abc Soft ተመዛዥ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766379935/ygshtlflrgv2zvwmnsrw.jpg", category:"Modes and softs" },
-     { id:135, name:"Viva Soft የገበታ", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380459/nd4u5cbfkxw4rwvbcwm6.jpg", category:"Modes and softs" },
-     { id:136, name:"Bravo Soft የገበታ", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380315/thbtiloqpcar8bora2xz.jpg", category:"Modes and softs" },
-     { id:137, name:"Abc Soft የገበታ", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380486/mt9dejgnwiwhlhhjlc4d.jpg", category:"Modes and softs" },
-        { id:138, name:"Viva Soft ክብ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380555/klhuoybmewftfnsblvqd.jpg", category:"Modes and softs" },
-        { id:139, name:"Bravo Soft ክብ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380529/kdyaarrj17khslpmunog.jpg", category:"Modes and softs" },
-        { id:140, name:"Abc Soft ክብ", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766380579/jbwgork2cunwo3pugrhq.jpg", category:"Modes and softs" },
-     
-     /*Other ingridents*/   
-     { id:141, name:"Mahder berber-ማህደር በርበሬ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384563/y7nkqkarzcxnkvmaflsy.jpg", category:"Other ingridents" },
-     { id:142, name:"Mahder Shiro-ማህደር ሽሮ", price:150, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384705/etzr5zqpnjl1hprmpubs.jpg", category:"Other ingridents" },
-     { id:143, name:"Mahder Beso-ማህደር በሶ", price:60, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384618/c2b2a9qar4pz5efzkfll.jpg", category:"Other ingridents" },
-     { id:144, name:"Mahder Mitmita-ማህደር ሚጥሚጣ", price:130, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384590/zhozph62tjlewvbkpaub.jpg", category:"Other ingridents" },
-     { id:145, name:"Mahder Gomenzer-ማህደር ጎመንዘር", price:60, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384645/allsczmu382gz5jorinx.jpg", category:"Other ingridents" },
-     { id:146, name:"Mahder Erd-ማህደር እርድ", price:60, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766384674/jgsll54u0sqb9mbucl4b.jpg", category:"Other ingridents" },
-    
-     /*Packaged goods*/
-     { id:147, name:"Netulla checolate 400g", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766386883/hnz7ebsop02lnkytpr3i.jpg", category:"Packaged goods" },
-     { id:148, name:"Tesfaye Peanut Butter 1kg", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766386920/eafflmh5hwan8cmvknzz.jpg", category:"Packaged goods" },
-     { id:149, name:"Tesfaye Peanut Butter 500g", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766386946/z66bnijhnuggizv55lnw.png", category:"Packaged goods" },
-     { id:150, name:"Rosa Peanut Butter 1kg", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766386969/ndx0bn6limasd67orooc.jpg", category:"Packaged goods" },
-     { id:151, name:"Rosa Peanut Butter 500g", price:320, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766386994/fzlfbcostgqq52komojk.jpg", category:"Packaged goods" },
-     { id:152, name:"Vimto", price:300, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387026/pq7jhynfreagrbpxsitx.jpg", category:"Packaged goods" },
-     { id:153, name:"Dark Soya sauce", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387054/byoa6qaatowdafugpzbm.jpg", category:"Packaged goods" },
-     { id:154, name:"Light Soya sauce", price:330, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387087/nmalsuylr0xbsam85sob.jpg", category:"Packaged goods" },
-     { id:155, name:"Al berekah jam", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387107/xij2cizwpruk39cvtahv.jpg", category:"Packaged goods" },
-     { id:156, name:"Sardins", price:220, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387133/eeick6c3mppca2bsmmay.jpg", category:"Packaged goods" },
-     { id:157, name:"Full Modams-ፉል የጣሳ", price:180, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387161/ssidjjqlqcwo5uvz3qhf.jpg", category:"Packaged goods" },
-     { id:158, name:"Pinapples-አናናስ የጣሳ", price:320, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387185/mbd1y8ktw7jin2a1lwq6.jpg", category:"Packaged goods" },
-     { id:159, name:"Herman Mayonniase 1kg", price:800, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387215/fumszgqwiseetnqcsxuc.png", category:"Packaged goods" },
-     { id:160, name:"Herman Mayonniase 350g", price:350, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387247/nkx3otinxuo8ssqc8uc8.png", category:"Packaged goods" },
-     { id:161, name:"Omaar Tuna", price:200, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387682/znztdcuypqlrhdrndkp6.jpg", category:"Packaged goods" },
-     { id:162, name:"More Coffee 100g", price:600, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387707/tcqtrkdij776cihedih0.jpg", category:"Packaged goods" },
-     { id:163, name:"Nece Coffee 100g", price:700, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387775/bajsdahnkbqhp6jedysx.jpg", category:"Packaged goods" },
-     { id:164, name:"Nece Coffee 50g", price:500, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766387798/no0ho8hrvhtsmtbdp69c.jpg", category:"Packaged goods" },
-     
-    /*Packed foods*/ 
-     { id:165, name:"Qudewa Rice", price:400, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406702/uelxsgv5yeytgj1nrfky.jpg", category:"Packed foods" },
-     { id:166, name:"Asad Rice", price:380, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406725/rb0ag6vdvhcqhjjhsczu.jpg", category:"Packed foods" },
-     { id:167, name:"Ok Pasta", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406417/pixpuxsc31mi2g0voyph.jpg", category:"Packed foods" },
-     { id:168, name:"Mawel Pasta", price:120, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406449/ydnmnxyr0xxg08bbalu8.jpg", category:"Packed foods" },
-     { id:169, name:"Alvima Pasta", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406475/fmbapmzkwuukyxdbz6gx.jpg", category:"Packed foods" },
-     { id:170, name:"Vera Pasta", price:100, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406496/pegycaejp3d5cguvnmpw.jpg", category:"Packed foods" },
-     { id:171, name:"Testy soya", price:50, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406522/jzoblkovtyk6yyde8yas.jpg", category:"Packed foods" },
-     { id:172, name:"Sossi soya", price:45, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406551/zsv0wrbzzcos0kyj7bjv.jpg", category:"Packed foods" },
-     { id:173, name:"Elsa kolo-ኤልሳ ቆሎ 1kg", price:650, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406581/e7u4pkmwgglolqkjsbnl.jpg", category:"Packed foods" },
-     { id:174, name:"Z kolo-ዜድ ቆሎ 1kg", price:450, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406610/vlblzmoczj38upooyuhc.jpg", category:"Packed foods" },
-     { id:175, name:"Dabo kolo-ዳቦ ቆሎ 500g", price:130, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406649/m59unziflroj8ne5mczz.jpg", category:"Packed foods" },
-     { id:176, name:"Dabo kolo-ዳቦ ቆሎ 250g", price:70, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766406678/fcyhbfzn4lnckpnku4bm.jpg", category:"Packed foods" },
-    
-     /*Laundery powder*/
-      { id:177, name:"Arial Omo 1kg", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641147/hurbtzlmpuzjy7fp8e3p.jpg", category:"Laundery powder" },
-      { id:178, name:"Arial Omo 500g", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641206/u0eymvjflizpf6qghwzs.jpg", category:"Laundery powder" },
-      { id:179, name:"Sunlight Omo 1kg", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641244/jdfcgd3syjxvqkcgko9a.jpg", category:"Laundery powder" },
-      { id:180, name:"Sunlight Omo 500g", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641278/keybz5ux9e1ithfhrqag.jpg", category:"Laundery powder" },
-      { id:181, name:"555 Omo 1kg", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641319/oshvk0ffpwrjo9elfzho.jpg", category:"Laundery powder" },
-      { id:182, name:"555 Omo 500g", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641343/ckqqduonf8ym7c7zjf2d.jpg", category:"Laundery powder" },
-      { id:183, name:"Crown Omo ", price:20000, image:"https://res.cloudinary.com/die8hxris/image/upload/v1766641370/c2p3s4dg1ynae5au0nou.jpg", category:"Laundery powder" },
-    
-      ];
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
 
-    const CART_KEY = "cartItems";
-    const searchInput = document.getElementById("searchInput");
-    const searchResults = document.getElementById("searchResults");
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim();
 
-    function loadCart() { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
-    function saveCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
-
-    window.quickAdd = function(id) {
-        const product = products.find(p => p.id === id);
-        if(!product) return;
-        const cart = loadCart();
-        const existing = cart.find(i => i.id === id);
-        if(existing) { existing.qty += 1; } 
-        else { cart.push({ ...product, qty: 1 }); }
-        saveCart(cart);
-        window.location.href = "Cart.html";
-    };
-
-    function render(list) {
-        if (list.length === 0) {
-            searchResults.innerHTML = '<div class="status-msg">No products found</div>';
+        if (query.length < 2) {
+            searchResults.innerHTML = '<div class="status-msg">Start typing to find products...</div>';
             return;
         }
-        searchResults.innerHTML = list.map(p => `
-            <div class="product-card">
-                <img src="${p.image}">
-                <div class="product-name">${p.name}</div>
-                <div class="product-price">${p.price.toFixed(2)} birr</div>
-                <button class="quick-add-btn" onclick="quickAdd(${p.id})">Quick Add</button>
-            </div>
-       ` ).join("");
-    }
 
-    searchInput.addEventListener("input", () => {
-        const q = searchInput.value.toLowerCase().trim();
-        if (!q) {
-            searchResults.innerHTML = '<div class="status-msg">Start typing to find product</div>';
-            return;
-        }
-        const filtered = products.filter(p => p.name.toLowerCase().includes(q));
-        render(filtered);
+        // Fetch from the new PHP file we will create below
+        fetch(`fetch_search_results.php?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(products => {
+                if (products.length === 0) {
+                    searchResults.innerHTML = '<div class="status-msg">No products found</div>';
+                    return;
+                }
+
+                searchResults.innerHTML = products.map(p => {
+                    // SOLD OUT SYSTEM LOGIC
+                    // Checks if stock is 0 or status is 'sold_out'
+                    const isSoldOut = (p.stock <= 0 || p.status === 'sold_out');
+                    
+                    return `
+                        <div class="product-card" style="${isSoldOut ? 'opacity: 0.7;' : ''}">
+                            <img src="${p.image}" alt="${p.name}">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">${p.price} Birr</div>
+                            
+                            ${isSoldOut 
+                                ? `<button class="quick-add-btn" style="background:#888; cursor:not-allowed;" disabled>Sold Out</button>`
+                                : `<button class="quick-add-btn" onclick="quickAdd(${p.id})">Quick Add</button>`
+                            }
+                        </div>
+                    `;
+                }).join('');
+            });
     });
 
-    setTimeout(() => searchInput.focus(), 400);
-})();
+    function quickAdd(id) {
+        window.location.href = "Cart.html?add=" + id;
+    }
 </script>
 
 </body>
