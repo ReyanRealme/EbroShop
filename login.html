@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +12,14 @@
             --border-light: #ddd;
         }
 
-        body,
-        html {
+        body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: Arial, sans-serif;
         }
 
+        /* The dark background area */
         .overlay-mask {
             position: fixed;
             top: 0;
@@ -36,11 +35,17 @@
         .sidebar {
             background: #fff;
             width: 85%;
-            max-width: 300px;
+            max-width: 380px;
             height: 100%;
             padding: 25px;
             box-sizing: border-box;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* Prevent Flicker: Keep content hidden by default */
+        .flicker-prevent {
+            display: none !important;
         }
 
         .side-header {
@@ -70,9 +75,7 @@
             font-size: 14px;
         }
 
-        .star {
-            color: #cc0000;
-        }
+        .star { color: #cc0000; }
 
         .password-container {
             position: relative;
@@ -87,10 +90,7 @@
             box-sizing: border-box;
         }
 
-        .input-box-pass {
-            margin-bottom: 0;
-            padding-right: 40px;
-        }
+        .input-box-pass { padding-right: 40px; }
 
         .toggle-icon {
             position: absolute;
@@ -103,7 +103,7 @@
 
         .btn-blue {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: #fff;
             color: var(--primary-blue);
             border: 2px solid var(--primary-blue);
@@ -111,7 +111,10 @@
             cursor: pointer;
             margin-bottom: 15px;
             text-transform: uppercase;
+            font-size: 14px;
         }
+
+        .btn-blue:hover { background: #f0f8ff; }
 
         .forgot-link {
             display: block;
@@ -122,15 +125,8 @@
             font-size: 14px;
         }
 
-        .account-menu {
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu-row {
-            border-bottom: 1px solid #eee;
-        }
-
+        .account-menu { list-style: none; padding: 0; }
+        .menu-row { border-bottom: 1px solid #eee; }
         .menu-row a {
             display: block;
             padding: 15px 0;
@@ -139,36 +135,24 @@
             font-size: 16px;
         }
 
-        /* Style for the icons in the menu */
         .menu-row a i {
             width: 25px;
             color: var(--primary-blue);
             margin-right: 10px;
             text-align: center;
         }
-
-        .hidden {
-            display: none;
-        }
-
-
-        .hidden { display: none !important; }
-    /* This prevents the "jump" or flicker on load */
-          #view-logged-out, #view-logged-in {
-           display: none;
-    }
     </style>
 </head>
 
 <body>
 
-    <div class="overlay-mask">
+    <div class="overlay-mask" id="overlayMask">
         <div class="sidebar">
             <div class="side-header">
                 <h2 id="display-title">Login</h2>
                 <a href="javascript:history.back()" class="close-x">&times;</a>
             </div>
-            <div id="view-logged-out">
+            <div id="view-logged-out" class="flicker-prevent">
                 <form action="login.php" method="POST">
                     <label class="field-label">Email Address <span class="star">*</span></label>
                     <input type="email" name="email" class="input-box" placeholder="Email Address" required>
@@ -179,13 +163,15 @@
                         <i class="fa-solid fa-eye toggle-icon" onclick="togglePassword()"></i>
                     </div>
 
-                    <button type="submit" class="btn-blue">Login</button>
+                    <button type="submit" class="btn-blue" style="background: var(--primary-blue); color: white;">Login</button>
                 </form>
+                
                 <a href="forget.html" class="forgot-link">Forgot your password?</a>
+                
                 <button class="btn-blue" onclick="location.href='register.html'">Create new Account</button>
             </div>
 
-            <div id="view-logged-in" class="hidden">
+            <div id="view-logged-in" class="flicker-prevent">
                 <ul class="account-menu">
                     <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> Account Details</a></li>
                     <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> Addresses</a></li>
@@ -197,34 +183,10 @@
     </div>
 
     <script>
-         // 1. We check the session immediately
-    fetch('check_session.php')
-        .then(response => response.json())
-        .then(data => {
-            const loggedInView = document.getElementById('view-logged-in');
-            const loggedOutView = document.getElementById('view-logged-out');
-
-            if (data.loggedIn) {
-                // User is logged in: Show status, keep form hidden
-                document.getElementById('display-title').innerText = "Hi, " + data.name;
-                loggedInView.style.display = 'block';
-                loggedOutView.style.display = 'none';
-            } else {
-                // User is NOT logged in: Show login form
-                loggedOutView.style.display = 'block';
-                loggedInView.style.display = 'none';
-            }
-        })
-        .catch(err => {
-            // Fallback: show login form if error occurs
-            document.getElementById('view-logged-out').style.display = 'block';
-        });
-
-     //2
+        // 1. Password Visibility Logic
         function togglePassword() {
             const passInput = document.getElementById('login-pass');
             const icon = event.target;
-            
             if (passInput.type === "password") {
                 passInput.type = "text";
                 icon.classList.replace("fa-eye", "fa-eye-slash");
@@ -234,22 +196,39 @@
             }
         }
 
+        // 2. Logout Confirmation
         function confirmLogout() {
             if (confirm("Are you sure you want to log out?")) {
                 window.location.href = 'logout.php';
             }
         }
 
+        // 3. Fix: Close overlay when clicking the dark area
+        const mask = document.getElementById('overlayMask');
+        mask.addEventListener('click', (e) => {
+            if (e.target === mask) {
+                window.history.back();
+            }
+        });
+
+        // 4. Fix: Fetch session and remove 'flicker-prevent' ONLY when data is ready
         fetch('check_session.php')
             .then(response => response.json())
             .then(data => {
+                const loggedInView = document.getElementById('view-logged-in');
+                const loggedOutView = document.getElementById('view-logged-out');
+                
                 if (data.loggedIn) {
-                    document.getElementById('view-logged-out').classList.add('hidden');
-                    document.getElementById('view-logged-in').classList.remove('hidden');
+                    loggedInView.classList.remove('flicker-prevent');
                     document.getElementById('display-title').innerText = "Hi, " + data.name;
+                } else {
+                    loggedOutView.classList.remove('flicker-prevent');
                 }
+            })
+            .catch(() => {
+                // Show login form if session check fails
+                document.getElementById('view-logged-out').classList.remove('flicker-prevent');
             });
     </script>
-
 </body>
 </html>
