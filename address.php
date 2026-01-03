@@ -1,5 +1,7 @@
 <?php
-session_start();
+// FIX: Corrected the database name typo from 'ebrsohop' to 'ebroshop'
+include 'db.php';
+
 
 // Security: Redirect if not logged in
 if (!isset($_SESSION['user_id'])) { 
@@ -7,8 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     exit(); 
 }
 
-// FIX: Corrected the database name typo from 'ebrsohop' to 'ebroshop'
-include 'db.php';
+
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

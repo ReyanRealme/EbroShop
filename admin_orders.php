@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+
 include 'db.php';
 
 // 1. UPDATE STATUS LOGIC (Checks if the Update button was clicked)

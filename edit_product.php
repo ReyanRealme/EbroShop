@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include 'db.php';
 
 // --- 1. SECURITY LOCK ---
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -8,7 +8,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-include 'db.php';
+
 
 // Get and Secure the product ID
 if (isset($_GET['id'])) {

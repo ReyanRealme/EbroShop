@@ -1,12 +1,12 @@
 <?php
 
-session_start();
+include 'db.php';
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
 }
 
-include 'db.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];

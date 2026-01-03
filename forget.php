@@ -1,5 +1,5 @@
 <?php
-
+include 'db.php'; 
 // --- 1. ERROR REPORTING ---
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 if (!file_exists('db.php')) {
     die("Error: db.php is missing from the server.");
 }
-include 'db.php'; 
+
 
 // ==========================================
 // PART A: SENDING THE RESET LINK

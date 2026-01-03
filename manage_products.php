@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include 'db.php';
 
 // --- 1. SECURITY LOCK (Re-enabled) ---
 // We uncomment this so ONLY logged-in admins can access this file
@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-include 'db.php';
+
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
