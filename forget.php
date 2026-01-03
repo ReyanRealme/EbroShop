@@ -153,7 +153,7 @@ if (isset($_GET['token'])):
 </head>
 <body>
     <div class="box">
-        <h2>Enter New Password Here👇</h2>
+        <h2 style='color:#136835;'>Enter New Password</h2>
         <p style="color: #666; font-size: 14px;">Enter a strong password for your EbRoShop account.</p>
         <form method="POST" action="forget.php">
             <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
@@ -200,7 +200,7 @@ if (isset($_POST['update_now'])) {
     $stmt->execute();
     
     if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Updated! Please login.'); window.location.href='login.html';</script>";
+        echo "<script>alert('Your password has been successfully changed! Please login.'); window.location.href='login.html';</script>";
     } else {
         echo "<h3>Link invalid or expired.</h3>";
     }
