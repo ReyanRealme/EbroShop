@@ -1,13 +1,13 @@
 <?php
-// check_session.php
-include 'db.php'; // This ensures the 30-day persistent session is used
+include 'db.php'; 
 header('Content-Type: application/json');
 
-$response = ['loggedIn' => false, 'name' => ''];
+$response = ['loggedIn' => false, 'name' => '', 'role' => ''];
 
 if (isset($_SESSION['user_id'])) {
     $response['loggedIn'] = true;
     $response['name'] = $_SESSION['full_name'] ?? 'User';
+    $response['role'] = $_SESSION['role'] ?? 'customer'; // Added role
 }
 
 echo json_encode($response);
