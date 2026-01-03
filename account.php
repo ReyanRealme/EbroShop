@@ -784,13 +784,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
    <br>
    <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif; background: #fff; margin: 0; padding: 20px; color: #333; } ">
-    <div  class="header-title">My Account</div>
+     <div  class="header-title">My Account</div>
 
-    <div class="section-title">Order History</div>
+     <div class="section-title">Order History</div>
 
-    <?php if (!$orders || $orders->num_rows == 0): ?>
+     <?php if (!$orders || $orders->num_rows == 0): ?>
         <p style="color:#185282;">No orders yet.</p>
-    <?php else: ?>
+     <?php else: ?>
         <?php while($row = $orders->fetch_assoc()): ?>
             <?php 
                 // Logic for colors
@@ -832,7 +832,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
 
     <a href="login.html" class="btn-outline">Return to Back</a>
-    
+        </div>
 
 
     <br>
