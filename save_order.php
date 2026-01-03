@@ -1,21 +1,19 @@
 <?php
-session_start();
+// 1. ONLY include db.php. 
+// It already handles the 30-day session start and database connection.
+include 'db.php';
+
 header('Content-Type: application/json');
 
-// 1. Security Check: Must be logged in
+// 2. Security Check: Must be logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
     exit();
 }
 
-include 'db.php';
+// No need to check $conn->connect_error here because db.php handles the die() if it fails.
 
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
-    exit();
-}
-
-// 2. Get the data from the JavaScript Fetch request
+// 3. Get the data from the JavaScript Fetch request
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data) {
@@ -30,7 +28,7 @@ $payment = mysqli_real_escape_string($conn, $data['payment']);
 $total   = $data['total'];
 $cart    = $data['cart'];
 
-// 3. Start Transaction (Ensures both tables save correctly or neither does)
+// 4. Start Transaction
 $conn->begin_transaction();
 
 try {
@@ -39,7 +37,7 @@ try {
     $stmt1->bind_param("issds", $user_id, $name, $phone, $total, $payment);
     $stmt1->execute();
     
-    $order_id = $conn->insert_id; // Get the ID of the order we just created
+    $order_id = $conn->insert_id; 
 
     // Insert each item into 'order_items' table
     $stmt2 = $conn->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
@@ -50,6 +48,11 @@ try {
     }
 
     $conn->commit();
+    
+    // IMPORTANT: Only clear the CART session if you use one, 
+    // NEVER use session_destroy() here.
+    // unset($_SESSION['cart']); 
+
     echo json_encode(['success' => true, 'order_id' => $order_id]);
 
 } catch (Exception $e) {
