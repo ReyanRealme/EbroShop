@@ -69,31 +69,63 @@ include 'db.php';
                 }
 
                 searchResults.innerHTML = products.map(p => {
-                    // Sold out if status is 'sold_out' or 'out of stock'
-                    const isSoldOut = (p.status === 'sold_out' || p.status === 'out of stock');
+                    // Match your database 'status' column
+                    const isSoldOut = (p.status.toLowerCase() === 'sold_out' || p.status.toLowerCase() === 'out of stock');
 
                     return `
-                        <div class="product-card" style="${isSoldOut ? 'opacity: 0.6;' : ''}">
+                        <div class="product-card" style="position: relative; ${isSoldOut ? 'opacity: 0.6;' : ''}">
+                            ${isSoldOut ? '<div style="position:absolute; top:10px; right:10px; background:red; color:white; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold; z-index:1;">SOLD OUT</div>' : ''}
+                            
                             <img src="${p.image_url}" alt="${p.name}">
                             <div class="product-name">${p.name}</div>
                             <div class="product-price">${parseFloat(p.price).toFixed(2)} birr</div>
                             
-                            ${isSoldOut 
-                                ? `<button class="quick-add-btn" style="background:#888; cursor:not-allowed;" disabled>Sold Out</button>`
-                                : `<button class="quick-add-btn" onclick="quickAdd(${p.id})">Quick Add</button>`
-                            }
+                            <button class="quick-add-btn" 
+                                    style="background: ${isSoldOut ? '#888' : '#008cff'}; cursor: ${isSoldOut ? 'not-allowed' : 'pointer'};"
+                                    onclick="handleAddToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                                ${isSoldOut ? 'Sold Out' : 'Quick Add'}
+                            </button>
                         </div>
                     `;
                 }).join('');
             })
             .catch(err => {
                 console.error("Search Error:", err);
-                searchResults.innerHTML = '<div class="status-msg">Error: Check db.php connection</div>';
             });
     });
 
-    function quickAdd(id) {
-        window.location.href = "Cart.html?add=" + id;
+    function handleAddToCart(product) {
+        const isSoldOut = (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock');
+        
+        if (isSoldOut) {
+            alert("Sorry! This product is currently sold out and cannot be added to your cart.");
+            return;
+        }
+
+        // 1. Get current cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // 2. Check if item exists
+        const index = cart.findIndex(item => item.id === product.id);
+        
+        if (index !== -1) {
+            cart[index].qty += 1;
+        } else {
+            // Add new item with quantity 1
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: parseFloat(product.price),
+                image: product.image_url,
+                qty: 1
+            });
+        }
+        
+        // 3. Save back to localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // 4. Redirect to Cart page
+        window.location.href = "Cart.html";
     }
 </script>
 </body>
