@@ -150,6 +150,13 @@
         .hidden {
             display: none;
         }
+
+
+        .hidden { display: none !important; }
+    /* This prevents the "jump" or flicker on load */
+          #view-logged-out, #view-logged-in {
+           display: none;
+    }
     </style>
 </head>
 
@@ -190,6 +197,30 @@
     </div>
 
     <script>
+         // 1. We check the session immediately
+    fetch('check_session.php')
+        .then(response => response.json())
+        .then(data => {
+            const loggedInView = document.getElementById('view-logged-in');
+            const loggedOutView = document.getElementById('view-logged-out');
+
+            if (data.loggedIn) {
+                // User is logged in: Show status, keep form hidden
+                document.getElementById('display-title').innerText = "Hi, " + data.name;
+                loggedInView.style.display = 'block';
+                loggedOutView.style.display = 'none';
+            } else {
+                // User is NOT logged in: Show login form
+                loggedOutView.style.display = 'block';
+                loggedInView.style.display = 'none';
+            }
+        })
+        .catch(err => {
+            // Fallback: show login form if error occurs
+            document.getElementById('view-logged-out').style.display = 'block';
+        });
+
+     //2
         function togglePassword() {
             const passInput = document.getElementById('login-pass');
             const icon = event.target;
