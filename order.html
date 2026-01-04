@@ -1154,14 +1154,14 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
 
-
 <script>
-    /* For signup or logout */
+    /* 1. For signup or logout */
     fetch('check_session.php')
         .then(response => response.json())
         .then(data => {
             const authLink = document.getElementById('auth-link');
             const authText = document.getElementById('auth-text');
+
             if (data.loggedIn) {
                 authLink.href = "javascript:void(0)";
                 authLink.onclick = function() {
@@ -1174,14 +1174,14 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         })
         .catch(err => console.error("Session check failed", err));
 
+    /* 2. Cart Loading */    
     const CART_KEY = "cartItems";
-    // FIXED: Added || symbol here
-    const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    const cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; // Fixed symbols
     const productsDiv = document.getElementById("products");
     let subtotal = 0;
     let isLoggedIn = false;
 
-    /* 1. CHECK SESSION IN BACKGROUND */
+    /* 3. CHECK SESSION IN BACKGROUND */
     fetch('check_session.php')
         .then(response => response.json())
         .then(data => {
@@ -1193,44 +1193,47 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             }
         });
 
-    /* RENDER PRODUCTS */
+    /* 4. RENDER PRODUCTS (Receipt View) */
     if(cart.length === 0){
-        productsDiv.innerHTML = "<p>No products in your bag</p>";
+      if(productsDiv) productsDiv.innerHTML = "<p>No products in your bag</p>";
     }
     cart.forEach(p=>{
-        subtotal += p.price * p.qty;
-        // FIXED: Added || for images
-        productsDiv.innerHTML += `
+      subtotal += p.price * p.qty;
+      if(productsDiv) {
+          productsDiv.innerHTML += `
             <div class="product">
-                <div class="qty-badge">${p.qty}</div>
-                <img src="${p.img || p.image || 'https://via.placeholder.com/150'}">
-                <div class="info">
-                    <strong>${p.name}</strong>
-                    ETB ${(p.price * p.qty).toFixed(2)}
-                </div>
+              <div class="qty-badge">${p.qty}</div>
+              <img src="${p.image || p.img || 'https://via.placeholder.com/150'}">
+              <div class="info">
+                <strong>${p.name}</strong>
+                ETB ${(p.price * p.qty).toFixed(2)}
+              </div>
             </div>
-        `;
+          `;
+      }
     });
-    document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
-    document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
+    
+    if(document.getElementById("subtotal")) document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
+    if(document.getElementById("total")) document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
 
-    /* PAYMENT TOGGLE */
+    /* 5. PAYMENT TOGGLE */
     document.querySelectorAll("input[name='pay']").forEach(r=>{
-        r.addEventListener("change",()=>{
-            const uploadBox = document.getElementById("uploadBox");
-            if(r.value === "Transfer" && r.checked){
-                uploadBox.style.display = "block";
-            } else {
-                uploadBox.style.display = "none";
-            }
-        });
+      r.addEventListener("change",()=>{
+        const uploadBox = document.getElementById("uploadBox");
+        if(r.value === "Transfer" && r.checked){
+          uploadBox.style.display = "block";
+        } else {
+          uploadBox.style.display = "none";
+        }
+      });
     });
 
     function smallCloudinary(url) {
-        if(!url) return "https://via.placeholder.com/150";
-        return url.replace("/upload/", "/upload/w_300,h_300,c_fit,q_60,f_jpg/");
+      if(!url) return "https://via.placeholder.com/150";
+      return url.replace("/upload/", "/upload/w_300,h_300,c_fit,q_60,f_jpg/");
     }
 
+    /* 6. ORDER BUTTON LOGIC */
     function handleOrderClick() {
         const name = document.getElementById("name").value.trim();
         const phone = document.getElementById("phone").value.trim();
@@ -1247,25 +1250,26 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 window.location.href = "login.html"; 
             } else {
                 document.getElementById('main-content').innerHTML = `
-                    <div class="denied-container">
-                        <h2 class="denied-text" style="color:red;">Order Not Allowed</h2>
-                        <p>Ordering is only allowed for registered members. Please create an account or login to continue.</p>
+                    <div class="denied-container" style="text-align:center; padding:40px;">
+                        <h2 style="color:red;">Order Not Allowed</h2>
+                        <p>Ordering is only allowed for registered members. Please login to continue.</p>
                         <br>
-                        <button onclick="window.location.href='home.html'" style="padding:15px; background:#007bff; color:#fff; border:none; border-radius:25px; cursor:pointer; width:100%;">BACK TO HOME</button>
+                        <button onclick="window.location.href='home.html'" style="padding:15px; background:#136835; color:#fff; border:none; border-radius:25px; cursor:pointer; width:100%;">BACK TO HOME</button>
                     </div>
                 `;
             }
         }
     }
 
-    /* ------------------------- Handle Order Logic ------------------------- */
+    /* 7. FINAL SUBMIT (Telegram + Email) */
     async function submitOrder() {
+      try {
         const name = document.getElementById("name").value.trim();
         const phone = document.getElementById("phone").value.trim();
         const payment = document.querySelector("input[name='pay']:checked").value;
         const proof = document.getElementById("proof");
 
-        // 1. THIS IS THE ADDED PART FOR EMAIL
+        // --- PART A: SEND TO EMAIL (order.php) ---
         const emailData = new FormData();
         emailData.append('name', name);
         emailData.append('phone', phone);
@@ -1274,102 +1278,82 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         emailData.append('totalPrice', subtotal);
 
         fetch('order.php', { method: 'POST', body: emailData })
-            .then(res => res.json())
-            .catch(err => console.log("Email tracking..."));
+          .then(res => res.json())
+          .catch(err => console.log("Email Processed"));
 
-        // 2. SEND TO TELEGRAM (Your original logic)
+        // --- PART B: SEND TO TELEGRAM ---
         const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
         const CHAT_ID = "5335234629";
         const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-        let tgMsg = `🛒 *NEW ORDER - EBRO SHOP*\n\n`;
-        tgMsg += `👤 *Name:* ${name}\n`;
+        let tgMsg = `🟢 *NEW ORDER - EBRO SHOP* 🟢\n\n`;
+        tgMsg += `👤 *Customer:* ${name}\n`;
         tgMsg += `📞 *Phone:* ${phone}\n`;
-        tgMsg += `💳 *Pay:* ${payment}\n\n`;
-        tgMsg += `📦 *Products:* \n`;
+        tgMsg += `💳 *Payment:* ${payment}\n`;
+        tgMsg += `───────────────────\n`;
+        tgMsg += `🛒 *Items Ordered:*\n`;
         cart.forEach(p => {
-            tgMsg += `- ${p.name} (x${p.qty})\n`;
+          tgMsg +=` ▪️ ${p.name} (x${p.qty}) - ETB ${(p.price * p.qty).toFixed(2)}\n`;
         });
-        tgMsg += `\n💰 *Total: ETB ${subtotal.toFixed(2)}*`;
+        tgMsg +=`───────────────────\n`;
+        tgMsg += `💰 *TOTAL: ETB ${subtotal.toFixed(2)}*\n✅✅ *Finished* ✅✅`;
 
-        try {
-            await fetch(`${API}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg, parse_mode: "Markdown" })
-            });
+        // Send Text Message
+        await fetch(`${API}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg, parse_mode: "Markdown" })
+        });
 
-            /* SEND TRANSFER PROOF */
-            if (payment === "Transfer" && proof.files.length) {
-                const form = new FormData();
-                form.append("chat_id", CHAT_ID);
-                form.append("document", proof.files[0]);
-                form.append("caption", "💳 Transfer Proof");
-                await fetch(`${API}/sendDocument`, { method: "POST", body: form });
-            }
-
-            localStorage.removeItem(CART_KEY);
-            alert("Success! Your order has been sent.");
-            window.location.href = "success.html";
-
-        } catch (error) {
-            console.error("Order Error:", error);
-            alert("Something went wrong. Please try again.");
+        // Send Photo if Transfer
+        if (payment === "Transfer" && proof && proof.files.length > 0) {
+          const form = new FormData();
+          form.append("chat_id", CHAT_ID);
+          form.append("document", proof.files[0]);
+          form.append("caption", "💳 Payment Receipt from " + name);
+          await fetch(`${API}/sendDocument`, { method: "POST", body: form });
         }
+
+        localStorage.removeItem(CART_KEY);
+        alert("Success! Your order has been placed.");
+        window.location.href = "home.html"; // Fixed: Goes to home instead of Not Found error
+
+      } catch (error) {
+        console.error("Order Error:", error);
+        alert("Something went wrong. Please try again.");
+      }
     }
 
-    // Bind button
-    const btnOrder = document.querySelector(".btn-order");
-    if(btnOrder) btnOrder.onclick = handleOrderClick;
+    // Bind function to button
+    const mainBtn = document.querySelector(".btn-order");
+    if(mainBtn) mainBtn.onclick = handleOrderClick;
 
-    /* ------------------------- Header & Search Part ------------------------- */
+    /* 8. HEADER & SEARCH LOGIC (Original) */
     (function(){
-        const allProducts = [
-            { id:1, name:"Rooti Slice Cad...", price:1.00, image:"https://via.placeholder.com/600x400", category:"Bread", tags:["slice"], description:"Fresh bread" },
-            { id:2, name:"Rooti Qamadi...", price:1.00, image:"https://via.placeholder.com/600x400", category:"Bread", tags:["qamadi"], description:"Soft bread" }
-        ];
+      const defaultProducts = [
+        { id:1, name:"Rooti Slice Cad...", price:1.00, image:"https://via.placeholder.com/600x400?text=Rooti+Slice", category:"Bread" },
+        { id:2, name:"Rooti Qamadi...", price:1.00, image:"https://via.placeholder.com/600x400?text=Qamadi", category:"Bread" }
+      ];
+      
+      const hamburger = document.getElementById("hamburgerBtn");
+      const sideMenu = document.getElementById("sideMenu");
+      const menuOverlay = document.getElementById("menuOverlay");
+      const badge = document.getElementById("cartBadge");
 
-        const hamburger = document.getElementById("hamburgerBtn");
-        const sideMenu = document.getElementById("sideMenu");
-        const menuOverlay = document.getElementById("menuOverlay");
-        const badge = document.getElementById("cartBadge");
-
-        function updateBadge(){
-            const c = JSON.parse(localStorage.getItem("cartItems")) || [];
-            const total = c.reduce((s,i)=> s + (i.qty||0), 0);
-            if(badge) {
-                badge.style.display = total > 0 ? "flex" : "none";
-                badge.innerText = total;
-            }
+      function updateBadge(){
+        const cartArr = JSON.parse(localStorage.getItem("cartItems")) || [];
+        const total = cartArr.reduce((s,i)=> s + (i.qty||0), 0);
+        if(badge) {
+            badge.style.display = total > 0 ? "flex" : "none";
+            badge.innerText = total;
         }
-        updateBadge();
-
-        window.quickAdd = function(id){
-            const product = allProducts.find(p => p.id == id);
-
-            if(!product) return;
-            let c = JSON.parse(localStorage.getItem("cartItems")) || [];
-            const existing = c.find(it => it.id == product.id);
-            if(existing){ existing.qty++; } 
-            else { c.push({ id: product.id, name: product.name, img: product.image, price: product.price, qty: 1 }); }
-            localStorage.setItem("cartItems", JSON.stringify(c));
-            updateBadge();
-            alert(product.name + " added!");
-        };
-
-        if(hamburger) hamburger.onclick = () => { sideMenu.style.left = "0"; menuOverlay.style.display = "block"; };
-        if(menuOverlay) menuOverlay.onclick = () => { sideMenu.style.left = "-320px"; menuOverlay.style.display = "none"; };
+      }
+      updateBadge();
+      if(hamburger) hamburger.onclick = () => { sideMenu.style.left = "0"; menuOverlay.style.display = "block"; };
+      if(menuOverlay) menuOverlay.onclick = () => { sideMenu.style.left = "-320px"; menuOverlay.style.display = "none"; };
     })();
 
-    /* About part animations */
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
-
-    /* FAQ */
+    /* FAQ Toggle */
     function toggleSection(id, header) {
         const content = document.getElementById(id);
         const icon = header.querySelector('.toggle');
