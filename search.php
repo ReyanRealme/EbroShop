@@ -52,7 +52,7 @@ include 'db.php';
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
-    // Focus search box on open
+    // Focus on search input when page opens
     setTimeout(() => searchInput.focus(), 400);
 
     searchInput.addEventListener('input', () => {
@@ -63,7 +63,6 @@ include 'db.php';
             return;
         }
 
-        // Fetch products from database
         fetch(`fetch_search_results.php?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(products => {
@@ -73,7 +72,7 @@ include 'db.php';
                 }
 
                 searchResults.innerHTML = products.map(p => {
-                    // Check if sold out based on your database "status" column
+                    // Check status for Sold Out system
                     const isSoldOut = (p.status.toLowerCase() === 'sold_out' || p.status.toLowerCase() === 'out of stock');
 
                     return ` 
@@ -86,7 +85,7 @@ include 'db.php';
                             
                             <button class="quick-add-btn" 
                                     style="background: ${isSoldOut ? '#888' : '#008cff'}; cursor: ${isSoldOut ? 'not-allowed' : 'pointer'};"
-                                    onclick='handleQuickAdd(${JSON.stringify(p)})'>
+                                    onclick='addToCartFromSearch(${JSON.stringify(p)})'>
                                 ${isSoldOut ? 'Sold Out' : 'Quick Add'}
                             </button>
                         </div>
@@ -95,43 +94,44 @@ include 'db.php';
             })
             .catch(err => {
                 console.error("Search Error:", err);
-                searchResults.innerHTML = '<div class="status-msg">Error loading products</div>';
             });
     });
 
-    // THE SYSTEM TO ADD TO CART AND REDIRECT
-    function handleQuickAdd(product) {
+    // THIS FUNCTION MATCHES YOUR FILENAME "search.html" LOGIC EXACTLY
+    function addToCartFromSearch(product) {
+        // 1. Sold Out Check
         const status = product.status.toLowerCase();
-        
-        // 1. If Sold Out, show alert and STOP
         if (status === 'sold_out' || status === 'out of stock') {
-            alert("Sorry! This item is currently sold out.");
+            alert("This product is sold out!");
             return;
         }
 
-        // 2. Get current cart from LocalStorage
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        // 2. Use the EXACT storage key from your search.html
+        const CART_KEY = "EBRO_CART"; 
         
-        // 3. Check if product already exists in cart
-        const existingIndex = cart.findIndex(item => item.id === product.id);
+        // 3. Load existing cart
+        let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
         
-        if (existingIndex !== -1) {
-            cart[existingIndex].qty += 1;
+        // 4. Check if item exists (using id from database)
+        const existingItem = cart.find(item => item.id === product.id);
+        
+        if (existingItem) {
+            existingItem.qty += 1;
         } else {
-            // Add new item (Mapping image_url to image for Cart.html)
+            // 5. Add product using the database column names
             cart.push({
                 id: product.id,
                 name: product.name,
                 price: parseFloat(product.price),
-                image: product.image_url, 
+                image: product.image_url, // Maps image_url to image
                 qty: 1
             });
         }
         
-        // 4. Save updated cart
-        localStorage.setItem('cart', JSON.stringify(cart));
+        // 6. Save back to EBRO_CART
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
         
-        // 5. Redirect to Cart page
+        // 7. Redirect to Cart
         window.location.href = "Cart.html";
     }
 </script>
