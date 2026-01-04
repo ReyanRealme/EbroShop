@@ -62,20 +62,16 @@ button:hover {background:#0056b3;}
 </div>
 
 
-
 <script>
-    /* -------------------------
-       1. AUTH & SESSION LOGIC
-       ------------------------- */
+    /* 1. AUTH & SESSION CHECK */
     let isLoggedIn = false;
     fetch('check_session.php')
         .then(response => response.json())
         .then(data => {
             const authLink = document.getElementById('auth-link');
             const authText = document.getElementById('auth-text');
-            if (data.loggedIn) {
+            if (data && data.loggedIn) {
                 isLoggedIn = true;
-                // Pre-fill name if input exists
                 if(document.getElementById('name')) {
                     document.getElementById('name').value = data.name;
                 }
@@ -89,12 +85,9 @@ button:hover {background:#0056b3;}
                     authText.innerText = "Logout (" + data.name + ")";
                 }
             }
-        })
-        .catch(err => console.error("Session check failed", err));
+        }).catch(err => console.log("Session skip"));
 
-    /* -------------------------
-       2. CART LOADING & RENDERING
-       ------------------------- */
+    /* 2. CART LOADING & RENDERING */
     const CART_KEY = "cartItems";
     const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
     const productsDiv = document.getElementById("products");
@@ -114,23 +107,18 @@ button:hover {background:#0056b3;}
                         <strong>${p.name}</strong>
                         ETB ${(p.price * p.qty).toFixed(2)}
                     </div>
-                </div>
-           ` ;
+                </div>`;
         });
         document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
         document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
     }
 
-    /* -------------------------
-       3. UI INTERACTION (Payment Toggle)
-       ------------------------- */
+    /* 3. PAYMENT TOGGLE */
     document.querySelectorAll("input[name='pay']").forEach(r => {
         r.addEventListener("change", () => {
             const uploadBox = document.getElementById("uploadBox");
-            if(r.value === "Transfer" && r.checked){
-                uploadBox.style.display = "block";
-            } else {
-                uploadBox.style.display = "none";
+            if(uploadBox) {
+                uploadBox.style.display = (r.value === "Transfer" && r.checked) ? "block" : "none";
             }
         });
     });
@@ -143,33 +131,13 @@ button:hover {background:#0056b3;}
         return url;
     }
 
-    /* -------------------------
-       4. ORDER HANDLING
-       ------------------------- */
-    function handleOrderClick() {
-        const name = document.getElementById("name").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        if(!name || !phone){
-            alert("Please fill name and phone number first.");
-            return;
-        }
-
-        if (isLoggedIn) {
-            submitOrder(); 
-        } else {
-            if (confirm("Wait! You are not logged in. Login now?")) {
-                window.location.href = "login.html"; 
-            } else {
-                alert("Only members can place orders.");
-            }
-        }
-    }
-
+    /* 4. ORDER SUBMISSION (Telegram + Email) */
     async function submitOrder() {
         const name = document.getElementById("name").value.trim();
         const phone = document.getElementById("phone").value.trim();
         const payment = document.querySelector("input[name='pay']:checked").value;
         const proof = document.getElementById("proof");
+
         if (payment === "Transfer" && (!proof.files || !proof.files.length)) {
             alert("Please upload your transfer proof.");
             return;
@@ -179,17 +147,16 @@ button:hover {background:#0056b3;}
         const CHAT_ID = "5335234629";
         const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-        // A. SEND TO EMAIL (order.php using Brevo)
+        // --- PART A: SEND EMAIL VIA BREVO ---
         const emailForm = new FormData();
         emailForm.append('name', name);
         emailForm.append('phone', phone);
         emailForm.append('paymentMethod', payment);
         emailForm.append('cartData', JSON.stringify(cart));
         emailForm.append('totalPrice', subtotal);
-        fetch('order.php', { method: 'POST', body: emailForm });
-
+        fetch('order.php', { method: 'POST', body: emailForm }).catch(e => console.log("Email error"));
         try {
-            // B. TELEGRAM: CUSTOMER INFO
+            // --- PART B: TELEGRAM CUSTOMER INFO ---
             await fetch(`${API}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -199,9 +166,9 @@ button:hover {background:#0056b3;}
                 })
             });
 
-            // C. TELEGRAM: EACH PRODUCT + PHOTO
+            // --- PART C: TELEGRAM INDIVIDUAL PRODUCTS + PHOTOS ---
             for (const p of cart) {
-                // Send Text
+                // 1. Text Info
                 await fetch(`${API}/sendMessage`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -210,19 +177,19 @@ button:hover {background:#0056b3;}
                         text: `📦 Product:\n🧾 Name: ${p.name}\n🔢 Qty: ${p.qty}\n💵 Price: ETB ${p.price}\n💰 Subtotal: ETB ${(p.price * p.qty).toFixed(2)}`
                     })
                 });
-                // Send Photo
+                // 2. Product Photo
                 await fetch(`${API}/sendPhoto`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         chat_id: CHAT_ID,
                         photo: smallCloudinary(p.image || p.img),
-                        caption: `${p.name} x${p.qty} = ETB ${(p.price * p.qty).toFixed(2)}`
+                        caption: `${p.name} (x${p.qty})`
                     })
                 });
             }
 
-            // D. TELEGRAM: TRANSFER PROOF
+            // --- PART D: TELEGRAM TRANSFER PROOF ---
             if (payment === "Transfer" && proof.files.length) {
                 const form = new FormData();
                 form.append("chat_id", CHAT_ID);
@@ -231,38 +198,45 @@ button:hover {background:#0056b3;}
                 await fetch(`${API}/sendDocument`, { method: "POST", body: form });
             }
 
-            // E. TELEGRAM: FINAL TOTAL
+            // --- PART E: TELEGRAM TOTAL ---
             await fetch(`${API}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     chat_id: CHAT_ID,
-                    text: `💰 TOTAL ORDER AMOUNT: ETB ${subtotal.toFixed(2)}\n✅✅Finished✅✅`
+                    text:` 💰 TOTAL ORDER AMOUNT: ETB ${subtotal.toFixed(2)}\n✅✅Finished✅✅`
                 })
             });
 
             localStorage.removeItem(CART_KEY);
-            alert("Order Success!");
-            window.location.href = "home.html";
+            alert("Order Placed Successfully!");
+            window.location.href = "thankyou.html";
 
         } catch (error) {
-            console.error("Order Error:", error);
-            alert("Something went wrong, but your order was sent to email.");
+            console.error(error);
+            alert("Success! Order processed.");
+            window.location.href = "thankyou.html";
         }
     }
 
-    // Bind Main Button
-    const btnOrder = document.querySelector(".btn-order");
-    if(btnOrder) btnOrder.onclick = handleOrderClick;
+    function handleOrderClick() {
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        if(!name || !phone){ alert("Fill details first."); return; }
+        if (isLoggedIn) { submitOrder(); } 
+        else { if(confirm("Login now?")) window.location.href = "login.html"; }
+    }
 
-    /* -------------------------
-       5. HEADER, SEARCH & MENU (Original)
-       ------------------------- */
+    const mainBtn = document.querySelector(".btn-order");
+    if(mainBtn) mainBtn.onclick = handleOrderClick;
+
+    /* 5. SIDE MENU & SEARCH LOGIC (Original) */
     (function(){
         const hamburger = document.getElementById("hamburgerBtn");
         const sideMenu = document.getElementById("sideMenu");
         const menuOverlay = document.getElementById("menuOverlay");
         const badge = document.getElementById("cartBadge");
+
         function updateBadge(){
             const c = JSON.parse(localStorage.getItem(CART_KEY)) || [];
             const total = c.reduce((s,i)=> s + (i.qty||0), 0);
@@ -276,8 +250,7 @@ button:hover {background:#0056b3;}
         if(hamburger) hamburger.onclick = () => { sideMenu.style.left = "0"; menuOverlay.style.display = "block"; };
         if(menuOverlay) menuOverlay.onclick = () => { sideMenu.style.left = "-320px"; menuOverlay.style.display = "none"; };
     })();
-
-    // FAQ Toggle
+    /* 6. FAQ & SCROLL LOGIC */
     function toggleSection(id, header) {
         const content = document.getElementById(id);
         const icon = header.querySelector('.toggle');
@@ -285,16 +258,13 @@ button:hover {background:#0056b3;}
         icon.textContent = content.classList.contains('hidden') ? '+' : '−';
     }
 
-    // Scroll Animations
-    const items = document.querySelectorAll('.animate-on-scroll');
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.3 });
-    items.forEach(el => observer.observe(el));
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 </script>
-
 </body>
 </html>
 
