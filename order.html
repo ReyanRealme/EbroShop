@@ -1315,18 +1315,51 @@ async function submitOrder() {
 
 
 
-    // Add this inside your existing sendOrder() function in order.html
-function sendOrder() {
+
+
+
+
+   function sendOrder() {
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
     const address = document.getElementById('address').value;
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    const paymentElement = document.querySelector('input[name="payment"]:checked');
+    
+    if(!name || !phone || !address || !paymentElement) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const paymentMethod = paymentElement.value;
     const cart = JSON.parse(localStorage.getItem('EBRO_CART')) || [];
     const totalPrice = document.getElementById('totalPrice').innerText.replace('$', '');
 
+    // 1. TELEGRAM MESSAGE (Keeping your current style)
+    let message = `📝 *New Order from EbRo-Shop*\n\n`;
+    message += `👤 *Name:* ${name}\n`;
+    message += `📞 *Phone:* ${phone}\n`;
+    message += `📍 *Address:* ${address}\n`;
+    message += `💳 *Payment:* ${paymentMethod}\n\n`;
+    message += `🛒 *Items:* \n`;
+    
+    cart.forEach(item => {
+        message += `- ${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+    });
+    
+    message += `\n💰 *Total Price: $${totalPrice}*`;
 
+    const botToken = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk"; // Use your actual token
+    const chatId = "5335234629";     // Use your actual chat ID
+    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-  // --- PHP EMAIL PART ---
+    // 2. SEND TO TELEGRAM
+    fetch(telegramUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+    });
+
+    // 3. SEND TO EMAIL (order.php)
     const formData = new FormData();
     formData.append('name', name);
     formData.append('phone', phone);
@@ -1335,92 +1368,18 @@ function sendOrder() {
     formData.append('cartData', JSON.stringify(cart));
     formData.append('totalPrice', totalPrice);
 
-    // Send to PHP
     fetch('order.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        // Success!
+    .then(() => {
+        // Clear cart and finish
         localStorage.removeItem('EBRO_CART');
         window.location.href = "success.html";
     })
-    .catch(error => console.error('Error:', error));
+    .catch(err => console.log("Email error: ", err));
 }
 
-
-
-
-
-
-
-
-    // 3. SEND TO TELEGRAM (Only after DB success)
-    const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
-    const CHAT_ID = "5335234629";
-    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-
-    /* SEND CUSTOMER INFO */
-    await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `🟢NEW ORDER (Order ID: #${dbResult.order_id})🟢\n👤 Name: ${name}\n📞 Phone: ${phone}\n💳 Payment: ${payment}`
-      })
-    });
-
-    /* SEND PRODUCTS */
-    for (const p of cart) {
-      await fetch(`${API}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: `📦 Product:\n🧾 Name: ${p.name}\n🔢 Qty: ${p.qty}\n💵 Price: ETB ${p.price}\n💰 Subtotal: ETB ${(p.price * p.qty).toFixed(2)}`
-        })
-      });
-
-      await fetch(`${API}/sendDocument`, {
-        method: "POST",
-        body: (() => {
-          const f = new FormData();
-          f.append("chat_id", CHAT_ID);
-          f.append("document", smallCloudinary(p.image));
-          f.append("caption", `${p.name} x${p.qty} = ETB ${(p.price * p.qty).toFixed(2)}`);
-          return f;
-        })()
-      });
-    }
-
-    /* SEND TRANSFER PROOF */
-    if (payment === "Transfer" && proof.files.length) {
-      const form = new FormData();
-      form.append("chat_id", CHAT_ID);
-      form.append("document", proof.files[0]);
-      form.append("caption", "💳 Transfer Proof");
-      await fetch(`${API}/sendDocument`, { method: "POST", body: form });
-    }
-
-    /* SEND TOTAL + FINISHED */
-    await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `💰 TOTAL ORDER AMOUNT: ETB ${subtotal.toFixed(2)}\n✅✅Finished✅✅`
-      })
-    });
-
-    localStorage.removeItem(CART_KEY);
-    window.location.href = "thankyou.html";
-
-  } catch (error) {
-    console.error("Order Error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-}
 
 
 
