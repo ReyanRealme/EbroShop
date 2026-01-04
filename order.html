@@ -1153,9 +1153,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </nav>
 </div>
 
+
 <script>
-      /*For signup or logout*/
-     // Fetch login status from your existing session checker
+    /* ------------------------- 
+       1. AUTH / SESSION CHECK 
+       ------------------------- */
+    let isLoggedIn = false;
+
     fetch('check_session.php')
         .then(response => response.json())
         .then(data => {
@@ -1163,415 +1167,247 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             const authText = document.getElementById('auth-text');
 
             if (data.loggedIn) {
-                // Change to Logout mode
-                authLink.href = "javascript:void(0)"; // Prevent immediate jump
-                authLink.onclick = function() {
-                    if(confirm("Are you sure you want to log out?")) {
-                        window.location.href = 'logout.php';
-                    }
-                };
-                authText.innerText = "Logout (" + data.name + ")";
+                isLoggedIn = true;
+                // Pre-fill name if logged in
+                if(document.getElementById('name')) {
+                    document.getElementById('name').value = data.name;
+                }
+                // Handle Logout UI
+                if(authLink && authText) {
+                    authLink.href = "javascript:void(0)";
+                    authLink.onclick = function() {
+                        if(confirm("Are you sure you want to log out?")) {
+                            window.location.href = 'logout.php';
+                        }
+                    };
+                    authText.innerText = "Logout (" + data.name + ")";
+                }
             }
         })
         .catch(err => console.error("Session check failed", err));
 
+    /* ------------------------- 
+       2. RENDER CART PRODUCTS 
+       ------------------------- */
+    const CART_KEY = "cartItems";
+    const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    const productsDiv = document.getElementById("products");
+    let subtotal = 0;
 
-        
-const CART_KEY = "cartItems";
-const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-const productsDiv = document.getElementById("products");
-let subtotal = 0;
-let isLoggedIn = false;
+    if(productsDiv) {
+        if(cart.length === 0){
+            productsDiv.innerHTML = "<p>No products in your bag</p>";
+        } else {
+            cart.forEach(p => {
+                subtotal += p.price * p.qty;
+                productsDiv.innerHTML += `
+                    <div class="product">
+                        <div class="qty-badge">${p.qty}</div>
+                        <img src="${p.img || p.image || 'https://via.placeholder.com/150'}">
+                        <div class="info">
+                            <strong>${p.name}</strong>
+                            ETB ${(p.price * p.qty).toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
+        document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
+    }
 
-/* 1. CHECK SESSION IN BACKGROUND */
-fetch('check_session.php')
-    .then(response => response.json())
-    .then(data => {
-        if (data.loggedIn) {
-            isLoggedIn = true;
-            // Pre-fill name if user is already logged in
-            if(!document.getElementById('name').value) {
-                document.getElementById('name').value = data.name;
+    /* ------------------------- 
+       3. PAYMENT & ORDER LOGIC 
+       ------------------------- */
+
+    // Toggle Payment Proof upload box
+    document.querySelectorAll("input[name='pay']").forEach(r => {
+        r.addEventListener("change", () => {
+            const uploadBox = document.getElementById("uploadBox");
+            if(r.value === "Transfer" && r.checked){
+                uploadBox.style.display = "block";
+            } else {
+                uploadBox.style.display = "none";
+            }
+        });
+    });
+
+    // Handle the Order Button Click
+    function handleOrderClick() {
+        const nameInput = document.getElementById("name");
+        const phoneInput = document.getElementById("phone");
+        const name = nameInput ? nameInput.value.trim() : "";
+        const phone = phoneInput ? phoneInput.value.trim() : "";
+
+        if(!name || !phone){
+            alert("Please fill name and phone number first.");
+            return;
+        }
+
+        if (isLoggedIn) {
+            submitOrder(); 
+        } else {
+            const userChoice = confirm("Wait! You are not logged in. Would you like to login now to complete your order?");
+            if (userChoice) {
+                window.location.href = "login.html"; 
+            } else {
+                const mainContent = document.getElementById('main-content');
+                if(mainContent) {
+                    mainContent.innerHTML = `
+                    <div class="denied-container" style="text-align:center; padding:50px;">
+                            <h2 style="color:red;">Order Not Allowed</h2>
+                            <p>Ordering is only allowed for registered members. Please create an account or login to continue.</p>
+                            <br>
+                            <button onclick="window.location.href='home.html'" style="padding:15px; background:#007bff; color:#fff; border:none; border-radius:25px; cursor:pointer; width:100%;">BACK TO HOME</button>
+                        </div>
+                    `;
+                }
             }
         }
-    });
-
-/* RENDER PRODUCTS (Your original design) */
-if(cart.length === 0){
-  productsDiv.innerHTML = "<p>No products in your bag</p>";
-}
-cart.forEach(p=>{
-  subtotal += p.price * p.qty;
-  productsDiv.innerHTML += `
-    <div class="product">
-      <div class="qty-badge">${p.qty}</div>
-      <img src="${p.image || 'https://via.placeholder.com/150'}">
-      <div class="info">
-        <strong>${p.name}</strong>
-        ETB ${(p.price * p.qty).toFixed(2)}
-      </div>
-    </div>
-  `;
-});
-document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
-document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
-
-/* PAYMENT TOGGLE */
-document.querySelectorAll("input[name='pay']").forEach(r=>{
-  r.addEventListener("change",()=>{
-    const uploadBox = document.getElementById("uploadBox");
-    if(r.value === "Transfer" && r.checked){
-      uploadBox.style.display = "block";
-    } else {
-      uploadBox.style.display = "none";
-    }
-  });
-});
-
-function smallCloudinary(url) {
-  if(!url) return "https://via.placeholder.com/150";
-  return url.replace("/upload/", "/upload/w_300,h_300,c_fit,q_60,f_jpg/");
-}
-
-/* 2. UPDATED ORDER BUTTON LOGIC */
-function handleOrderClick() {
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-
-    // STEP 1: Check if Name and Phone are filled first
-    if(!name || !phone){
-        alert("Please fill name and phone number first.");
-        return; // Stop here
     }
 
-    // STEP 2: Only after name/phone are filled, check if logged in
-    if (isLoggedIn) {
-        submitOrder(); // Continue to Telegram
-    } else {
-        const userChoice = confirm("Wait! You are not logged in. Would you like to login now to complete your order?");
-        
-        if (userChoice) {
-            window.location.href = "login.html"; 
-        } else {
-            // Display "Not Allowed" message as requested
-            document.getElementById('main-content').innerHTML = `
-                <div class="denied-container">
-                    <h2 class="denied-text" style="color:red;">Order Not Allowed</h2>
-                    <p>Ordering is only allowed for registered members. Please create an account or login to continue.</p>
-                    <br>
-                    <button onclick="window.location.href='home.html'" style="padding:15px; background:#007bff; color:#fff; border:none; border-radius:25px; cursor:pointer; width:100%;">BACK TO HOME</button>
-                </div>
-            `;
+    // Final Submission (Telegram + Email)
+    async function submitOrder() {
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const payment = document.querySelector("input[name='pay']:checked").value;
+        const proof = document.getElementById("proof");
+
+        const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
+        const CHAT_ID = "5335234629";
+        const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+        // A. SEND TO EMAIL (order.php)
+        const emailData = new FormData();
+        emailData.append('name', name);
+        emailData.append('phone', phone);
+        emailData.append('paymentMethod', payment);
+        emailData.append('cartData', JSON.stringify(cart));
+        emailData.append('totalPrice', subtotal);
+
+        fetch('order.php', { method: 'POST', body: emailData })
+            .then(res => res.json())
+            .catch(err => console.log("Email tracking..."));
+
+        // B. SEND TO TELEGRAM
+        let tgMsg = `🛒 *NEW ORDER - EBRO SHOP*\n\n`;
+        tgMsg += `👤 *Name:* ${name}\n`;
+        tgMsg += `📞 *Phone:* ${phone}\n`;
+        tgMsg += `💳 *Pay:* ${payment}\n\n`;
+        tgMsg += `📦 *Products:* \n`;
+        cart.forEach(p => {
+            tgMsg +=` - ${p.name} (x${p.qty})\n`;
+        });
+        tgMsg += `\n💰 *Total: ETB ${subtotal.toFixed(2)}*`;
+
+        try {
+            // Send Text Data
+            await fetch(`${API}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg, parse_mode: "Markdown" })
+            });
+
+            // Send Transfer Proof if it exists
+            if (payment === "Transfer" && proof && proof.files.length > 0) {
+                const form = new FormData();
+                form.append("chat_id", CHAT_ID);
+                form.append("document", proof.files[0]);
+                form.append("caption", `💳 Transfer Proof from ${name}`);
+                await fetch(`${API}/sendDocument`, { method: "POST", body: form });
+            }
+
+            localStorage.removeItem(CART_KEY);
+            alert("Success! Your order has been sent.");
+            window.location.href = "success.html";
+        } catch (e) {
+            console.error(e);
+            alert("Error sending order to Telegram.");
         }
     }
-}
 
+    // Connect function to button
+    const orderBtn = document.querySelector(".btn-order");
+    if(orderBtn) orderBtn.onclick = handleOrderClick;
 
+    /* ------------------------- 
+       4. SHARED HEADER & SEARCH (allProducts) 
+       ------------------------- */
+    (function(){
+        const allProducts = [
+            { id:1, name:"Rooti Slice Cad...", price:1.00, image:"https://via.placeholder.com/600x400", category:"Bread", tags:["slice"], description:"Fresh bread" },
+            { id:2, name:"Rooti Qamadi...", price:1.00, image:"https://via.placeholder.com/600x400", category:"Bread", tags:["qamadi"], description:"Soft bread" },
+            { id:3, name:"Rooti Beegar...", price:0.50, image:"https://via.placeholder.com/600x400", category:"Bread", tags:["beegar"], description:"Round bread" },
+            { id:4, name:"Ceesh (Arabic)", price:1.00, image:"https://via.placeholder.com/600x400", category:"Flatbread", tags:["arabic"], description:"Flatbread" },
+            { id:5, name:"Pasta Italian", price:1.20, image:"https://via.placeholder.com/600x400", category:"Food", tags:["pasta"], description:"Pasta" },
+            { id:6, name:"Rice 5kg", price:5.00, image:"https://via.placeholder.com/600x400", category:"Rice", tags:["white"], description:"Rice" },
+            { id:7, name:"Egg Pack", price:3.00, image:"https://via.placeholder.com/600x400", category:"Dairy", tags:["egg"], description:"Eggs" }
+        ];
 
+        const hamburger = document.getElementById("hamburgerBtn");
+        const sideMenu = document.getElementById("sideMenu");
+        const menuOverlay = document.getElementById("menuOverlay");
+        const searchBtn = document.getElementById("searchBtn");
+        const searchInput = document.getElementById("searchInput");
+        const badge = document.getElementById("cartBadge");
 
-/* ------------------------- Handle Order Logic ------------------------- */
-  async function submitOrder() {
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const payment = document.querySelector("input[name='pay']:checked").value;
+        window.updateCartBadge = function(){
+            const c = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const total = c.reduce((s,i)=> s + (i.qty||0), 0);
+            if(badge) {
+                badge.style.display = total > 0 ? "flex" : "none";
+                badge.innerText = total;
+            }
+        };
+        updateCartBadge();
 
-    if (!name || !phone) {
-      alert("Please enter Name and Phone");
-      return;
-    }
+        window.quickAdd = function(id){
+            const product = allProducts.find(p => p.id == id);
+            if(!product) return;
+            let c = JSON.parse(localStorage.getItem("cartItems")) || [];
+            const existing = c.find(it => it.id == product.id);
+            if(existing){ existing.qty++; } 
+            else { c.push({ id: product.id, name: product.name, img: product.image, price: product.price, qty: 1 }); }
+            localStorage.setItem("cartItems", JSON.stringify(c));
+            updateCartBadge();
+            alert(product.name + " added!");
+        };
 
-    // 1. SEND TO EMAIL (order.php)
-    const emailData = new FormData();
-    emailData.append('name', name);
-    emailData.append('phone', phone);
-    emailData.append('paymentMethod', payment);
-    emailData.append('cartData', JSON.stringify(cart));
-    emailData.append('totalPrice', subtotal);
+        if(hamburger) hamburger.addEventListener("click", () => { sideMenu.style.left = "0"; menuOverlay.style.display = "block"; });
+        if(menuOverlay) menuOverlay.addEventListener("click", () => { sideMenu.style.left = "-320px"; menuOverlay.style.display = "none"; });
+        
+        if(searchInput) {
+            searchInput.addEventListener("input", function(){
+                const q = this.value.toLowerCase();
+                const results = allProducts.filter(p => p.name.toLowerCase().includes(q));
+                const resultsDiv = document.getElementById("searchResults");
+                if(resultsDiv) resultsDiv.innerHTML = results.map(p => <div onclick="quickAdd(${p.id})">${p.name}</div>).join('');
+            });
+        }
+    })();
 
-    fetch('order.php', { method: 'POST', body: emailData })
-      .then(res => res.json())
-      .then(data => console.log("Email Sent"))
-      .catch(err => console.log("Email Error"));
-
-    // 2. SEND TO TELEGRAM
-    const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
-    const CHAT_ID = "5335234629";
-    const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
-    let tgMsg = `🛒 *NEW ORDER - EBRO SHOP*\n\n`;
-    tgMsg += `👤 *Name:* ${name}\n`;
-    tgMsg += `📞 *Phone:* ${phone}\n`;
-    tgMsg += `💳 *Pay:* ${payment}\n\n`;
-    tgMsg += `📦 *Products:* \n`;
-    cart.forEach(p => {
-      tgMsg += `- ${p.name} (x${p.qty})\n`;
-    });
-    tgMsg += `\n💰 *Total: ETB ${subtotal.toFixed(2)}*`;
-
-    try {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg, parse_mode: "Markdown" })
-      });
-
-      localStorage.removeItem(CART_KEY);
-      alert("Success! Your order has been sent.");
-      window.location.href = "success.html";
-    } catch (e) {
-      alert("Error sending Telegram message.");
-    }
-  }
-
-  // Bind the function to your button
-  document.querySelector(".btn-order").onclick = submitOrder;
-
-  /* ------------------------- Toggle Payment proof ------------------------- */
-
-
-
-
-    /* SEND TRANSFER PROOF */
-    if (payment === "Transfer" && proof.files.length) {
-      const form = new FormData();
-      form.append("chat_id", CHAT_ID);
-      form.append("document", proof.files[0]);
-      form.append("caption", "💳 Transfer Proof");
-      await fetch(`${API}/sendDocument`, { method: "POST", body: form });
-    }
-
-    /* SEND TOTAL + FINISHED */
-    await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `💰 TOTAL ORDER AMOUNT: ETB ${subtotal.toFixed(2)}\n✅✅Finished✅✅`
-      })
-    });
-
-    localStorage.removeItem(CART_KEY);
-    window.location.href = "thankyou.html";
-
-  
-   } catch (error) {
-    console.error("Order Error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-
-
-
-
-
-
-
-
-
-
-
- /*header part*/
-/* -------------------------
-   Safe DOM ready wrapper
-   ------------------------- */
-(function(){
-  // product data (editable)
-  const defaultProducts = [
-    { id:1, name:"Rooti Slice Cad...", price:1.00, image:"https://via.placeholder.com/600x400?text=Rooti+Slice", category:"Bread", tags:["slice","white"], description:"Fresh sliced white bread." },
-    { id:2, name:"Rooti Qamadi...", price:1.00, image:"https://via.placeholder.com/600x400?text=Qamadi", category:"Bread", tags:["qamadi","brown"], description:"Soft brown qamadi bread." },
-    { id:3, name:"Rooti Beegar...", price:0.50, image:"https://via.placeholder.com/600x400?text=Beegar", category:"Bread", tags:["beegar","round"], description:"Round beegar bread." },
-    { id:4, name:"Ceesh (Arabic)", price:1.00, image:"https://via.placeholder.com/600x400?text=Ceesh", category:"Flatbread", tags:["arabic","ceesh"], description:"Arabic ceesh soft flatbread." }
-  ];
-  const extraProducts = [
-    { id:5, name:"Pasta Italian", price:1.20, image:"https://via.placeholder.com/600x400?text=Pasta", category:"Food", tags:["pasta","italy"], description:"Premium Italian pasta." },
-    { id:6, name:"Rice 5kg", price:5.00, image:"https://via.placeholder.com/600x400?text=Rice+5kg", category:"Rice", tags:["white","rice"], description:"High quality white rice." },
-    { id:7, name:"Egg Pack", price:3.00, image:"https://via.placeholder.com/600x400?text=Eggs", category:"Dairy", tags:["egg","protein"], description:"Fresh farm eggs." }
-  ];
-  const allProducts = [...defaultProducts, ...extraProducts];
-
-  // DOM elements
-  const hamburger = document.getElementById("hamburgerBtn");
-  const sideMenu = document.getElementById("sideMenu");
-  const menuOverlay = document.getElementById("menuOverlay");
-  const closeMenu = document.getElementById("closeMenu");
-  const searchBtn = document.getElementById("searchBtn");
-  const searchPanel = document.getElementById("searchPanel");
-  const closeSearch = document.getElementById("closeSearch");
-  const searchInput = document.getElementById("searchInput");
-  const searchResults = document.getElementById("searchResults");
-  const cartBtn = document.getElementById("cartBtn");
-  const accountBtn = document.getElementById("accountBtn");
-  const badge = document.getElementById("cartBadge");
-
-  /* -------------------------
-     Cart helpers (persistent)
-     ------------------------- */
-  function loadCart(){
-    try{ return JSON.parse(localStorage.getItem("cartItems")) || []; } catch { return []; }
-  }
-  function saveCart(cart){
-    localStorage.setItem("cartItems", JSON.stringify(cart));
-  }
-  function updateBadge(){
-    const cart = loadCart();
-    const total = cart.reduce((s,i)=> s + (i.qty||0), 0);
-    if(total > 0){
-      badge.style.display = "flex";
-      badge.innerText = total;
-    } else {
-      badge.style.display = "none";
-      badge.innerText = "0";
-    }
-    localStorage.setItem("cartCount", total);
-  }
-  // initialize badge on load
-  updateBadge();
-
-  /* -------------------------
-     Quick add function
-     ------------------------- */
-  window.quickAdd = function(id){
-    const product = allProducts.find(p => p.id == id);
-    if(!product){ alert("Product not found"); return; }
-    const cart = loadCart();
-    const existing = cart.find(it => it.id == product.id);
-    if(existing){
-      existing.qty = (existing.qty || 0) + 1;
-    } else {
-      cart.push({
-        id: product.id,
-        name: product.name,
-        img: product.image,
-        price: parseFloat(product.price),
-        qty: 1
-      });
-    }
-    saveCart(cart);
-    updateBadge();
-    const short = product.name.length > 30 ? product.name.slice(0,28) + "…" : product.name;
-    alert(short + " added to cart");
-  };
-
-  /* -------------------------
-     Side menu handlers
-     ------------------------- */
-  function openMenu(){
-    sideMenu.style.left = "0";
-    menuOverlay.style.display = "block";
-    sideMenu.setAttribute("aria-hidden","false");
-  }
-  function closeMenuFn(){
-    sideMenu.style.left = "-320px";
-    menuOverlay.style.display = "none";
-    sideMenu.setAttribute("aria-hidden","true");
-  }
-  hamburger.addEventListener("click", openMenu);
-  menuOverlay.addEventListener("click", closeMenuFn);
-  closeMenu.addEventListener("click", closeMenuFn);
-
-  /* -------------------------
-     Search rendering
-     ------------------------- */
-  function escapeHtml(s){
-    return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  function renderProducts(list){
-    if(!Array.isArray(list)) list = [];
-    if(list.length === 0){
-      searchResults.innerHTML = "<div style='padding:18px;color:#777'>No products found</div>";
-      return;
-    }
-    const html = list.map(p => {
-      return `
-        <div class="product-card" data-id="${p.id}">
-          <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
-          <div class="product-name">${escapeHtml(p.name)}</div>
-          <div class="product-price">${escapeHtml(Number(p.price).toFixed(2))} birr</div>
-          <button class="add-btn" onclick="quickAdd(${p.id})">Quick Add</button>
-        </div>
-      `;
-    }).join("");
-    searchResults.innerHTML = "<div class='products-grid'>"+html+"</div>";
-  }
-
-  function showDefaultProducts(){
-    renderProducts(defaultProducts);
-  }
-
-  /* open/close search */
-  searchBtn.addEventListener("click", function(){
-    searchPanel.style.display = "block";
-    searchPanel.setAttribute("aria-hidden","false");
-    searchInput.value = "";
-    showDefaultProducts();
-    setTimeout(()=> searchInput.focus(), 120);
-  });
-  closeSearch.addEventListener("click", function(){
-    searchPanel.style.display = "none";
-    searchPanel.setAttribute("aria-hidden","true");
-    searchResults.innerHTML = "";
-    searchInput.value = "";
-  });
-
-  /* search input handler (match name, category, description, tags) */
-  searchInput.addEventListener("input", function(){
-    const q = (this.value || "").trim().toLowerCase();
-    if(q === ""){
-      showDefaultProducts();
-      return;
-    }
-    const results = allProducts.filter(p => {
-      return (p.name || "").toLowerCase().includes(q)
-        || (p.category || "").toLowerCase().includes(q)
-        || (p.description || "").toLowerCase().includes(q)
-        || (p.tags || []).join(" ").toLowerCase().includes(q);
-    });
-    renderProducts(results);
-  });
-
-  /* -------------------------
-     Navigation buttons
-     ------------------------- */
-  accountBtn.addEventListener("click", ()=> { window.location.href = "login.html"; });
-  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.html"; });
-
-  /* Expose updateBadge so other pages can call window.updateBadge() after adding */
-  window.updateCartBadge = updateBadge;
-
-})();
-
-
-
-
-
-    //about part Animate only when visible on scroll
-    const items = document.querySelectorAll('.animate-on-scroll');
+    /* ------------------------- 
+       5. FAQ & ANIMATIONS 
+       ------------------------- */
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
     }, { threshold: 0.3 });
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-    items.forEach(el => observer.observe(el));
-
-
-
-            /*for FAQ's*/
-        
-function toggleSection(id, header) {
-    const content = document.getElementById(id);
-    const icon = header.querySelector('.toggle');
-
-    if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        icon.textContent = '−';
-    } else {
-        content.classList.add('hidden');
-        icon.textContent = '+';
+    function toggleSection(id, header) {
+        const content = document.getElementById(id);
+        const icon = header.querySelector('.toggle');
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.textContent = '−';
+        } else {
+            content.classList.add('hidden');
+            icon.textContent = '+';
+        }
     }
-}
 </script>
+
 </body>
 </html>
