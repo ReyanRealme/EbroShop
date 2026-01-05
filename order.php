@@ -40,14 +40,15 @@ if ($input && $apiKey) {
     }
 
 
-    // --- ADD THIS BLOCK HERE ---
-    // This saves the order to the database so it appears in history
-    $sql_history = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
-                    VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
-    $conn->query($sql_history);
-    // ---------------------------
+  // 1. ADD THIS TO STOP THE HTML ERRORS FROM BREAKING JSON
+ob_clean(); 
 
-    
+// 2. ADD THIS TO SAVE THE ORDER (Fixes Order History)
+$sql_history = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
+                VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
+$conn->query($sql_history);
+
+
     // --- SEND EMAIL TO THE CUSTOMER ---
     if ($customerEmail) {
         $rows = "";
