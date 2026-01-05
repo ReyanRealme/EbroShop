@@ -1276,43 +1276,43 @@ const dbResult = await dbResponse.json();
 // ... rest of the code ...
     // 2. Send to Telegram (Images as Files/Documents)
     /* --- IMPROVED TELEGRAM SENDING --- */
-// (Inside your submitOrder function after the fetch to order.php)
+/* --- INSIDE YOUR JAVASCRIPT submitOrder() FUNCTION --- */
 
 const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
 const CHAT_ID = "5335234629";
 const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-// 1. Send Header Info
+// 1. Send Main Order Info Header
 await fetch(`${API}/sendMessage`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     chat_id: CHAT_ID,
-    text: `🔔 *NEW ORDER RECEIVED* 🔔\n\n🆔 *Order ID:* #${dbResult.order_id}\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
+    text: `📦 *NEW ORDER: #${dbResult.order_id}*\n━━━━━━━━━━━━━━━\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
     parse_mode: "Markdown"
   })
 });
 
-// 2. Send Products as Documents (Files) with Detailed Captions
+// 2. Send each product as a separate File with details in the caption
 for (const p of cart) {
-    const itemSub = (p.price * p.qty).toFixed(2);
+    const itemTotal = (p.price * p.qty).toFixed(2);
     const docForm = new FormData();
     docForm.append("chat_id", CHAT_ID);
     docForm.append("document", smallCloudinary(p.image || p.img));
-    docForm.append("caption", `📦 *Product:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemSub}`);
+    docForm.append("caption", `🔹 *Item:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemTotal}`);
     docForm.append("parse_mode", "Markdown");
 
     await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
 }
 
-// 3. Send Transfer Proof if exists
+// 3. Send Transfer Proof if selected
 if (payment === "Transfer" && proof.files.length) {
     const pForm = new FormData();
     pForm.append("chat_id", CHAT_ID);
     pForm.append("document", proof.files[0]);
-    pForm.append("caption", `💳 *TRANSFER PROOF*\n👤 From: ${name}\n📞 ${phone}`);
-    pForm.append("parse_mode", "Markdown");
+    pForm.append("caption", `💳 *TRANSFER PROOF*\nCustomer: ${name}`);
     await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
+}
 }
 
 // 4. Send Closing Message
@@ -1326,12 +1326,12 @@ await fetch(`${API}/sendMessage`, {
   })
 });
 
-    localStorage.removeItem(CART_KEY);
-    window.location.href = "thankyou.html";
+localStorage.removeItem(CART_KEY);
+window.location.href = "thankyou.html";
 
-  } catch (error) {
-    alert("System Error: " + error.message);
-  }
+} catch (error) {
+  alert("System Error: " + error.message);
+}
 }
 
 
