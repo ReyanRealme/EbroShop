@@ -789,6 +789,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <label style="color: #0c2c4e;">Phone*</label>
   <div class="input"><span>📞</span><input id="phone" placeholder="Enter your phone number"></div>
 
+<input type="hidden" id="userEmail" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>">
+
   <div class="radio">
     <label><input type="radio" name="pay" value="Cash" checked> Cash</label>
     <label><input type="radio" name="pay" value="Transfer"> Transfer</label>
@@ -1248,6 +1250,8 @@ function handleOrderClick() {
 async function submitOrder() {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
+  // Get the email from the hidden input we just added
+  const email = document.getElementById("userEmail").value; 
   const payment = document.querySelector("input[name='pay']:checked").value;
   const proof = document.getElementById("proof");
 
@@ -1258,10 +1262,10 @@ async function submitOrder() {
   
   alert("Processing your order... Please wait.");
 
-  try {
-    const orderData = { name, phone, payment, total: subtotal, cart };
+ try {
+    // Include 'email' in the data sent to order.php
+    const orderData = { name, phone, email, payment, total: subtotal, cart }; 
 
-    // 1. Send to PHP for Email Receipt
     const dbResponse = await fetch('order.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
