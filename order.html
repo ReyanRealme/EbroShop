@@ -1256,18 +1256,12 @@ async function submitOrder() {
   if (!name || !phone) { alert("Please fill name and phone"); return; }
   if (payment === "Transfer" && !proof.files.length) { alert("Please upload proof"); return; }
 
-  alert("Processing your order, please wait...");
+  alert("Sending your receipt to email...");
 
   try {
-    const orderData = {
-      name: name,
-      phone: phone,
-      payment: payment,
-      total: subtotal, 
-      cart: cart      
-    };
+    const orderData = { name, phone, payment, total: subtotal, cart };
 
-    // --- EMAIL SENDING START ---
+    // CALL PHP
     const dbResponse = await fetch('order.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1276,41 +1270,33 @@ async function submitOrder() {
 
     const dbResult = await dbResponse.json();
 
-    // IF EMAIL FAILS, SHOW ALERT WITH REASON
+    // IF EMAIL FAILS, SHOW REASON
     if (!dbResult.success) {
       alert("❌ EMAIL ERROR: " + dbResult.message);
-      return; // Stop here so you can fix the error
+      return; 
     }
-    // --- EMAIL SENDING SUCCESS ---
 
-    // 3. SEND TO TELEGRAM (This only runs if Email worked)
+    // TELEGRAM PART (This runs only if Email was successful)
     const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
     const CHAT_ID = "5335234629";
     const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
+    // Send Customer Info to Telegram
     await fetch(`${API}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: `🟢NEW ORDER (Order ID: #${dbResult.order_id})🟢\n👤 Name: ${name}\n📞 Phone: ${phone}\n💳 Payment: ${payment}`
+        text: `🟢NEW ORDER🟢\n👤 Name: ${name}\n📞 Phone: ${phone}\n💳 Payment: ${payment}`
       })
     });
 
+    // Send each product as a Document (File)
     for (const p of cart) {
-      await fetch(`${API}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: `📦 Product:\n🧾 Name: ${p.name}\n🔢 Qty: ${p.qty}\n💵 Price: ETB ${p.price}\n💰 Subtotal: ETB ${(p.price * p.qty).toFixed(2)}`
-        })
-      });
-
       const docForm = new FormData();
       docForm.append("chat_id", CHAT_ID);
       docForm.append("document", smallCloudinary(p.image || p.img));
-      docForm.append("caption", `${p.name} x${p.qty}`);
+      docForm.append("caption", `${p.name} x${p.qty} = ETB ${(p.price * p.qty).toFixed(2)}`);
       await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
     }
 
@@ -1322,20 +1308,11 @@ async function submitOrder() {
       await fetch(`${API}/sendDocument`, { method: "POST", body: form });
     }
 
-    await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `💰 TOTAL ORDER AMOUNT: ETB ${subtotal.toFixed(2)}\n✅✅Finished✅✅`
-      })
-    });
-
     localStorage.removeItem(CART_KEY);
     window.location.href = "thankyou.html";
 
   } catch (error) {
-    alert("CRITICAL ERROR: " + error.message);
+    alert("System Error: " + error.message);
   }
 }
 
