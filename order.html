@@ -1245,95 +1245,95 @@ function handleOrderClick() {
 }
 
 
-
 async function submitOrder() {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const payment = document.querySelector("input[name='pay']:checked").value;
   const proof = document.getElementById("proof");
 
-  if (!name || !phone) { alert("Please fill name and phone"); return; }
+  if (!name || !phone) { 
+    alert("Please fill in your name and phone number."); 
+    return; 
+  }
   
-  alert("Sending email receipt...");
+  alert("Processing your order... Please wait.");
 
   try {
     const orderData = { name, phone, payment, total: subtotal, cart };
 
-    // 1. Send to PHP for Email
-    // ... inside submitOrder function ...
-const dbResponse = await fetch('order.php', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(orderData)
-});
+    // 1. Send to PHP for Email Receipt
+    const dbResponse = await fetch('order.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    });
 
-// Add this line to check if the response is actually OK before parsing JSON
-if (!dbResponse.ok) {
-    throw new Error("Server response was not OK");
+    const dbResult = await dbResponse.json();
+
+    if (!dbResult.success) {
+      alert("❌ EMAIL ERROR: " + dbResult.message);
+      // We continue to Telegram even if email fails so you don't lose the order
+    }
+
+    // 2. Telegram Configuration
+    const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
+    const CHAT_ID = "5335234629";
+    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+    // 3. Send Main Order Header to Telegram
+    await fetch(`${API}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: `🔔 *NEW ORDER RECEIVED* 🔔\n\n🆔 *Order ID:* #${dbResult.order_id || 'N/A'}\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
+        parse_mode: "Markdown"
+      })
+    });
+
+    // 4. Send Products as Documents with Detailed Captions
+    for (const p of cart) {
+      const itemSub = (p.price * p.qty).toFixed(2);
+      const docForm = new FormData();
+      docForm.append("chat_id", CHAT_ID);
+      docForm.append("document", smallCloudinary(p.image || p.img));
+      docForm.append("caption", `📦 *Product:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemSub}`);
+      docForm.append("parse_mode", "Markdown");
+      
+      await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
+    }
+
+    // 5. Send Transfer Proof if selected
+    if (payment === "Transfer" && proof.files.length > 0) {
+      const pForm = new FormData();
+      pForm.append("chat_id", CHAT_ID);
+      pForm.append("document", proof.files[0]);
+      pForm.append("caption", `💳 *TRANSFER PROOF*\n👤 From: ${name}\n📞 ${phone}`);
+      pForm.append("parse_mode", "Markdown");
+      
+      await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
+    }
+
+    // 6. Send Closing Confirmation Message
+    await fetch(`${API}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: `✅ *ORDER PROCESSING STARTED*\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
+        parse_mode: "Markdown"
+      })
+    });
+
+    // 7. Cleanup and Redirect
+    localStorage.removeItem(CART_KEY);
+    window.location.href = "thankyou.html";
+
+  } catch (error) {
+    console.error("Order Error:", error);
+    alert("System Error: " + error.message);
+  }
 }
-
-const dbResult = await dbResponse.json();
-// ... rest of the code ...
-    // 2. Send to Telegram (Images as Files/Documents)
-    /* --- IMPROVED TELEGRAM SENDING --- */
-/* --- INSIDE YOUR JAVASCRIPT submitOrder() FUNCTION --- */
-
-const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
-const CHAT_ID = "5335234629";
-const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-
-// 1. Send Main Order Info Header
-await fetch(`${API}/sendMessage`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    chat_id: CHAT_ID,
-    text: `📦 *NEW ORDER: #${dbResult.order_id}*\n━━━━━━━━━━━━━━━\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
-    parse_mode: "Markdown"
-  })
-});
-
-// 2. Send each product as a separate File with details in the caption
-for (const p of cart) {
-    const itemTotal = (p.price * p.qty).toFixed(2);
-    const docForm = new FormData();
-    docForm.append("chat_id", CHAT_ID);
-    docForm.append("document", smallCloudinary(p.image || p.img));
-    docForm.append("caption", `🔹 *Item:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemTotal}`);
-    docForm.append("parse_mode", "Markdown");
-
-    await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
-}
-
-// 3. Send Transfer Proof if selected
-if (payment === "Transfer" && proof.files.length) {
-    const pForm = new FormData();
-    pForm.append("chat_id", CHAT_ID);
-    pForm.append("document", proof.files[0]);
-    pForm.append("caption", `💳 *TRANSFER PROOF*\nCustomer: ${name}`);
-    await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
-}
-}
-
-// 4. Send Closing Message
-await fetch(`${API}/sendMessage`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    chat_id: CHAT_ID,
-    text: `✅ *ORDER PROCESSING STARTED*\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
-    parse_mode: "Markdown"
-  })
-});
-
-localStorage.removeItem(CART_KEY);
-window.location.href = "thankyou.html";
-
-} catch (error) {
-  alert("System Error: " + error.message);
-}
-}
-
 
 
 
