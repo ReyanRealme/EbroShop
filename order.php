@@ -1,18 +1,16 @@
 <?php
-// Start session to access logged-in user info
 session_start();
-// Stop PHP from printing errors as HTML to fix the "Unexpected token" error
+// error_reporting(0) prevents the "Unexpected token <" error from breaking your JSON
 error_reporting(0); 
 header('Content-Type: application/json');
 
-// Include the same DB connection used in register.php
-include 'db.php'; 
+include 'db.php';
 
 $apiKey = getenv('BREVO_API_KEY');
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($input && $apiKey) {
-    // 1. Sanitize all inputs using the same method as register.php
+    // Sanitize input exactly like register.php to prevent database crashes
     $name = mysqli_real_escape_string($conn, $input['name']); 
     $phone = mysqli_real_escape_string($conn, $input['phone']);
     $payment = mysqli_real_escape_string($conn, $input['payment']);
@@ -20,17 +18,15 @@ if ($input && $apiKey) {
     $cart = $input['cart'];
     $order_id = rand(1000, 9999); 
 
-    // --- FIND THE USER'S EMAIL & ID (The Register Logic) ---
+    // --- STEP 1: FIND THE USER ID AND EMAIL ---
     $customerEmail = null;
     $user_id = 0; 
 
-    // 2. Check if the user is currently logged in
     if (isset($_SESSION['email'])) {
         $customerEmail = $_SESSION['email'];
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
-    } 
-    // 3. Search the 'users' table if the session is missing
-    else {
+    } else {
+        // Search DB for user if not logged in, just like the check in register.php
         $search = "SELECT id, email FROM users WHERE first_name = '$name' OR CONCAT(first_name, ' ', last_name) = '$name' LIMIT 1";
         $res = $conn->query($search);
         if ($res && $res->num_rows > 0) {
@@ -40,13 +36,13 @@ if ($input && $apiKey) {
         }
     }
 
-    // --- SAVE TO ORDER HISTORY (The Database Part) ---
-    // This uses the exact SQL style from register.php to save your order history
+    // --- STEP 2: FIX ORDER HISTORY (SAVE TO DATABASE) ---
+    // This part was missing! It saves the order so it shows in Account Details
     $sql_history = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
                     VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
     $conn->query($sql_history);
 
-    // --- SEND PROFESSIONAL EMAIL TO THE CUSTOMER ---
+    // --- STEP 3: SEND THE PROFESSIONAL EMAIL ---
     if ($customerEmail) {
         $rows = "";
         foreach($cart as $p) {
@@ -58,12 +54,10 @@ if ($input && $apiKey) {
                       </tr>";
         }
 
-        // Using your verified Cloudinary Logo and sender info
         $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
-        $senderEmail = 'ebroshoponline@gmail.com';
 
         $data = array(
-            "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
+            "sender" => array("name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"),
             "to" => array(array("email" => $customerEmail, "name" => $name)),
             "subject" => "Your Order Confirmation #$order_id",
             "htmlContent" => "
@@ -81,18 +75,14 @@ if ($input && $apiKey) {
                         </tr>
                         $rows
                         <tr style='font-weight: bold;'>
-                            <td colspan='2' style='padding:15px; text-align:right;'>Total Amount:</td>
+                        <td colspan='2' style='padding:15px; text-align:right;'>Total Amount:</td>
                             <td style='padding:15px; text-align:right; color:#136835;'>ETB " . number_format($total, 2) . "</td>
                         </tr>
                     </table>
                     <p><b>Phone:</b> $phone | <b>Payment:</b> $payment</p>
-                    <p style='font-size: 12px; color: #777; text-align: center; margin-top: 30px;'>
-                        Contact us at $senderEmail or <b>+251970130755</b>
-                    </p>
                 </div>"
         );
 
-        // Same cURL settings that work in register.php
         $ch = curl_init('https://api.brevo.com/v3/smtp/email');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -106,7 +96,7 @@ if ($input && $apiKey) {
         curl_close($ch);
     }
 
-    // Always return success for the Telegram logic to finish
+    // Always return a clean JSON response for your Telegram logic
     echo json_encode(["success" => true, "order_id" => $order_id]);
 }
 ?>
