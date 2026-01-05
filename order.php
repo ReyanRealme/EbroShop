@@ -1,12 +1,18 @@
 <?php
 header('Content-Type: application/json');
 
-// Get the API Key from Render Environment Variables
+// 1. Get the Key from Render Environment Variables
 $apiKey = getenv('BREVO_API_KEY'); 
 
+// 2. Read the data sent from your script
 $input = json_decode(file_get_contents('php://input'), true);
 
-if ($input && $apiKey) {
+if (!$apiKey) {
+    echo json_encode(["success" => false, "message" => "Server Error: BREVO_API_KEY is missing in Render settings."]);
+    exit;
+}
+
+if ($input) {
     $name = $input['name'];
     $phone = $input['phone'];
     $payment = $input['payment'];
@@ -14,7 +20,7 @@ if ($input && $apiKey) {
     $cart = $input['cart'];
     $order_id = rand(1000, 9999); 
 
-    // Build product rows for email
+    // Build Email Table
     $rows = "";
     foreach($cart as $p) {
         $st = $p['price'] * $p['qty'];
@@ -25,17 +31,10 @@ if ($input && $apiKey) {
         "sender" => ["name" => "EbRo Shop", "email" => "system@ebroshop.com"],
         "to" => [["email" => "ebroshoponline@gmail.com"]],
         "subject" => "New Order #$order_id - $name",
-        "htmlContent" => "<h3>New Order Received</h3>
-                          <p><b>Customer:</b> $name</p>
-                          <p><b>Phone:</b> $phone</p>
-                          <p><b>Payment:</b> $payment</p>
-                          <table border='1' cellpadding='5' style='border-collapse:collapse;'>
-                            <tr style='background:#f4f4f4;'><th>Product</th><th>Qty</th><th>Subtotal</th></tr>
-                            $rows
-                          </table>
-                          <h4>Total: ETB " . number_format($total, 2) . "</h4>"
+        "htmlContent" => "<h3>Order Details</h3><table border='1'>$rows</table><h4>Total: ETB $total</h4>"
     ];
 
+    // 3. Send using Brevo
     $ch = curl_init('https://api.brevo.com/v3/smtp/email');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -47,14 +46,19 @@ if ($input && $apiKey) {
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
     curl_close($ch);
 
-    if ($httpCode < 300) {
+    if ($httpCode >= 200 && $httpCode < 300) {
         echo json_encode(["success" => true, "order_id" => $order_id]);
     } else {
-        echo json_encode(["success" => false, "message" => "Email failed to send. Check API Key."]);
+        // This sends the specific error back to your screen alert
+        echo json_encode([
+            "success" => false, 
+            "message" => "Brevo API Error (Code: $httpCode). Response: " . $response
+        ]);
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Missing data or API Key not found in Environment Variables."]);
+    echo json_encode(["success" => false, "message" => "No data received by the server."]);
 }
 ?>
