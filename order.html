@@ -1260,19 +1260,20 @@ async function submitOrder() {
     const orderData = { name, phone, payment, total: subtotal, cart };
 
     // 1. Send to PHP for Email
-    const dbResponse = await fetch('order.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    });
+    // ... inside submitOrder function ...
+const dbResponse = await fetch('order.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(orderData)
+});
 
-    const dbResult = await dbResponse.json();
+// Add this line to check if the response is actually OK before parsing JSON
+if (!dbResponse.ok) {
+    throw new Error("Server response was not OK");
+}
 
-    if (!dbResult.success) {
-      alert("❌ EMAIL ERROR: " + dbResult.message);
-      return; 
-    }
-
+const dbResult = await dbResponse.json();
+// ... rest of the code ...
     // 2. Send to Telegram (Images as Files/Documents)
     const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
     const CHAT_ID = "5335234629";
