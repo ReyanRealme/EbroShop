@@ -1,27 +1,38 @@
 <?php
 session_start();
-// Hide all database/system errors from the output
 error_reporting(0);
 header('Content-Type: application/json');
 
-// 1. Get the Key from Render Environment
-$apiKey = getenv('BREVO_API_KEY'); 
+include 'db.php'; // Needed to find the user's email if session is gone
 
-// 2. Get Input from JavaScript
+$apiKey = getenv('BREVO_API_KEY'); 
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($input && $apiKey) {
-    $name = $input['name'];
+    $name = mysqli_real_escape_string($conn, $input['name']);
     $phone = $input['phone'];
     $payment = $input['payment'];
     $total = $input['total'];
     $cart = $input['cart'];
     $order_id = rand(1000, 9999); 
 
-    // --- FIX: If session email is missing, send to your shop email as backup ---
-    $customerEmail = isset($_SESSION['email']) ? $_SESSION['email'] : "ebroshoponline@gmail.com";
+    // --- LOGIC TO FIND USER EMAIL ---
+    $customerEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
 
-    // Build Email Table
+    if (!$customerEmail) {
+        // Look up email by the name provided in the form
+        $search = "SELECT email FROM users WHERE first_name LIKE '%$name%' LIMIT 1";
+        $res = $conn->query($search);
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $customerEmail = $row['email'];
+        } else {
+            // Final fallback to you so the order isn't lost
+            $customerEmail = "ebroshoponline@gmail.com"; 
+        }
+    }
+
+    // Build Table for Email
     $rows = "";
     foreach($cart as $p) {
         $st = $p['price'] * $p['qty'];
@@ -32,29 +43,22 @@ if ($input && $apiKey) {
                   </tr>";
     }
 
-    // BREVO EMAIL DATA
     $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
     $data = [
-        "sender" => ["name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"],
+        "sender" => ["name" => "EbRo Shop", "email" => "ebroshoponline@gmail.com"],
         "to" => [["email" => $customerEmail, "name" => $name]],
-        "subject" => "Receipt for Order #$order_id - EbRo Shop",
+        "subject" => "Your EbRo Shop Receipt #$order_id",
         "htmlContent" => "
-            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;'>
-                <img src='$logoUrl' style='width: 200px; display: block; margin-bottom: 20px;'>
-                <h2 style='color: #136835;'>Thank you for your order!</h2>
-                <p>Hello $name, your order has been received and is being processed.</p>
-                <table style='width: 100%; border-collapse: collapse; margin-top: 15px;'>
-                    <tr style='background: #f8f8f8;'>
-                        <th style='padding: 10px; border: 1px solid #ddd;'>Product</th>
-                        <th style='padding: 10px; border: 1px solid #ddd;'>Qty</th>
-                        <th style='padding: 10px; border: 1px solid #ddd;'>Price</th>
-                    </tr>
+            <div style='font-family: Arial; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;'>
+                <img src='$logoUrl' style='width: 180px; margin-bottom: 20px;'>
+                <h2 style='color: #136835;'>Order Confirmed!</h2>
+                <p>Hello $name, thank you for shopping with us. Your order is being prepared.</p>
+                <table style='width: 100%; border-collapse: collapse;'>
+                    <tr style='background: #f4f4f4;'><th>Item</th><th>Qty</th><th>Subtotal</th></tr>
                     $rows
                 </table>
-                <h3 style='text-align: right;'>Total Amount: ETB " . number_format($total, 2) . "</h3>
-                <p><strong>Phone:</strong> $phone | <strong>Payment:</strong> $payment</p>
-                <hr style='border: 0; border-top: 1px solid #eee;'>
-                <p style='font-size: 12px; color: #777;'>Contact us at ebroshoponline@gmail.com or +251970130755</p>
+                <h3 style='text-align: right;'>Total: ETB " . number_format($total, 2) . "</h3>
+                <p><b>Phone:</b> $phone<br><b>Payment:</b> $payment</p>
             </div>"
     ];
 
@@ -62,19 +66,10 @@ if ($input && $apiKey) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'api-key: ' . $apiKey,
-        'Content-Type: application/json',
-        'Accept: application/json'
-    ]);
-
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['api-key: '.$apiKey, 'Content-Type: application/json']);
+    curl_exec($ch);
     curl_close($ch);
 
-    // Return success to the browser so Telegram logic can finish
     echo json_encode(["success" => true, "order_id" => $order_id]);
-} else {
-    echo json_encode(["success" => false, "message" => "Missing data or API key."]);
 }
-?>
+?
