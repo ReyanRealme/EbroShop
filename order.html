@@ -1247,55 +1247,50 @@ function handleOrderClick() {
 }
 
 
-async function submitOrder() {
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  // Get the email from the hidden input we just added
-  const email = document.getElementById("userEmail").value; 
-  const payment = document.querySelector("input[name='pay']:checked").value;
-  const proof = document.getElementById("proof");
+document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  if (!name || !phone) { 
-    alert("Please fill in your name and phone number."); 
-    return; 
-  }
-  
-  alert("Processing your order... Please wait.");
+    const name = document.getElementById('customerName').value;
+    const phone = document.getElementById('customerPhone').value;
+    const address = document.getElementById('customerAddress').value;
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
 
- try {
-    // Include 'email' in the data sent to order.php
-    const orderData = { name, phone, email, payment, total: subtotal, cart }; 
-
-    const dbResponse = await fetch('order.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    });
-
-
-
- // 1. Get the response as text first to handle the <br /> error
-const rawText = await dbResponse.text();
-
-try {
-    // 2. THE CLEANER: Skip the <br /><b> errors and find the JSON data
-    const jsonStart = rawText.indexOf('{');
-    if (jsonStart === -1) throw new Error("No data found");
-    
-    const cleanJSON = rawText.substring(jsonStart);
-    const dbResult = JSON.parse(cleanJSON);
-
-    if (dbResult.success) {
-        localStorage.removeItem('cart');
-        alert("Order Placed Successfully! ID: " + dbResult.order_id);
-        window.location.href = "account.html"; 
-    } else {
-        alert("Server Error: " + (dbResult.error || "Unknown error"));
+    if (!name || !phone || !address || !payment) {
+        alert("Please fill all details!");
+        return;
     }
-} catch (error) {
-    console.error("Server Response was:", rawText);
-    alert("System Error: Check the console for details.");
-}
+
+    const orderData = { name, phone, address, payment, total: totalAmount, cart: cart };
+
+    try {
+        const dbResponse = await fetch('order.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+
+        const rawText = await dbResponse.text();
+        const jsonStart = rawText.indexOf('{');
+        
+        if (jsonStart !== -1) {
+            const cleanJSON = rawText.substring(jsonStart);
+            const dbResult = JSON.parse(cleanJSON); // Fixed variable location
+
+            if (dbResult.success) {
+                localStorage.removeItem('cart');
+                alert("Order Placed Successfully! ID: " + dbResult.order_id);
+                window.location.href = "account.html"; 
+            } else {
+                alert("Error: " + (dbResult.error || "Unknown error"));
+            }
+        } else {
+            alert("The server sent an error. Check the console.");
+            console.log("Server error content:", rawText);
+        }
+    } catch (error) {
+        alert("System Error: Could not connect to server.");
+    }
+});
 
 
 
@@ -1358,11 +1353,7 @@ try {
     localStorage.removeItem(CART_KEY);
     window.location.href = "thankyou.html";
 
-  } catch (error) {
-    console.error("Order Error:", error);
-    alert("System Error: " + error.message);
-  }
-}
+
 
 
 
