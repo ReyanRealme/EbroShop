@@ -1249,7 +1249,7 @@ function handleOrderClick() {
 document.getElementById('checkout-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Collect Constants
+    // 1. COLLECT ALL DATA
     const name = document.getElementById('customerName').value;
     const phone = document.getElementById('customerPhone').value;
     const email = document.getElementById('customerEmail')?.value || ""; 
@@ -1262,16 +1262,19 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
         return;
     }
 
-    // PREPARE FORMDATA (Crucial for Images)
+    // 2. PREPARE FORMDATA
     const formData = new FormData();
     formData.append('name', name);
     formData.append('phone', phone);
     formData.append('email', email);
     formData.append('address', address);
     formData.append('payment', payment);
-    formData.append('total', totalAmount);
-    formData.append('cart', JSON.stringify(cart));
-    if (proofFile) formData.append('proof', proofFile);
+    formData.append('total', typeof totalAmount !== 'undefined' ? totalAmount : 0);
+    formData.append('cart', JSON.stringify(typeof cart !== 'undefined' ? cart : []));
+    
+    if (proofFile) {
+        formData.append('proof', proofFile);
+    }
 
     try {
         const response = await fetch('order.php', {
@@ -1280,9 +1283,16 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
         });
 
         const text = await response.text();
-        // CLEANER: Removes PHP warnings if they exist
-        const cleanJson = text.substring(text.indexOf('{'));
-        const result = JSON.parse(cleanJson);
+        
+        // This find the JSON part even if there are PHP errors
+        const jsonStart = text.indexOf('{');
+        if (jsonStart === -1) {
+            console.error("Server raw response:", text);
+            alert("Server Error: No valid response from order.php");
+            return;
+        }
+
+        const result = JSON.parse(text.substring(jsonStart));
 
         if (result.success) {
             localStorage.removeItem('cart');
@@ -1292,8 +1302,8 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
             alert("Error: " + result.error);
         }
     } catch (err) {
-        console.error(err);
-        alert("System Error. Check console.");
+        console.error("Fetch error:", err);
+        alert("System Error: Could not connect to server.");
     }
 });
 
