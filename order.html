@@ -1249,65 +1249,51 @@ function handleOrderClick() {
 document.getElementById('checkout-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. GET ALL CONSTANTS (Including Email and Proof)
+    // Collect Constants
     const name = document.getElementById('customerName').value;
     const phone = document.getElementById('customerPhone').value;
-    const email = document.getElementById('customerEmail')?.value || ""; // Crucial for Brevo Email
+    const email = document.getElementById('customerEmail')?.value || ""; 
     const address = document.getElementById('customerAddress').value;
     const payment = document.querySelector('input[name="payment"]:checked')?.value;
-    const proofFile = document.getElementById('payment-proof')?.files[0]; // Crucial for Telegram Proof
+    const proofFile = document.getElementById('payment-proof')?.files[0];
 
-    // Basic Validation
     if (!name || !phone || !address || !payment) {
-        alert("Please fill all required details!");
+        alert("Please fill all details!");
         return;
     }
 
-    // 2. PREPARE FORMDATA (Used to send the Image Proof file to PHP)
+    // PREPARE FORMDATA (Crucial for Images)
     const formData = new FormData();
     formData.append('name', name);
     formData.append('phone', phone);
     formData.append('email', email);
     formData.append('address', address);
     formData.append('payment', payment);
-    formData.append('total', totalAmount); // Uses the global totalAmount variable
-    formData.append('cart', JSON.stringify(cart)); // Uses the global cart variable
-    
-    if (proofFile) {
-        formData.append('proof', proofFile);
-    }
+    formData.append('total', totalAmount);
+    formData.append('cart', JSON.stringify(cart));
+    if (proofFile) formData.append('proof', proofFile);
 
     try {
-        // 3. SEND TO SERVER
-        const dbResponse = await fetch('order.php', {
+        const response = await fetch('order.php', {
             method: 'POST',
-            body: formData // Note: No 'Content-Type' header needed for FormData
+            body: formData
         });
 
-        // 4. CLEAN THE RESPONSE (Fixes the "Unexpected Token" error from your screenshot)
-        const rawText = await dbResponse.text();
-        const jsonStart = rawText.indexOf('{');
-        
-        if (jsonStart !== -1) {
-            const cleanJSON = rawText.substring(jsonStart);
-            const dbResult = JSON.parse(cleanJSON);
+        const text = await response.text();
+        // CLEANER: Removes PHP warnings if they exist
+        const cleanJson = text.substring(text.indexOf('{'));
+        const result = JSON.parse(cleanJson);
 
-            if (dbResult.success) {
-                // SUCCESS: Clear cart and redirect
-                localStorage.removeItem('cart');
-                alert("Order Placed Successfully! ID: " + dbResult.order_id);
-                window.location.href = "account.html"; 
-            } else {
-                alert("Order Failed: " + (dbResult.error || "Unknown error"));
-            }
+        if (result.success) {
+            localStorage.removeItem('cart');
+            alert("Order Placed Successfully!");
+            window.location.href = "account.html";
         } else {
-            // This happens if PHP crashes and sends only <br> errors
-            console.error("Server Error Response:", rawText);
-            alert("The server sent an invalid response. Check the console.");
+            alert("Error: " + result.error);
         }
-    } catch (error) {
-        console.error("Connection Error:", error);
-        alert("System Error: Could not connect to the server.");
+    } catch (err) {
+        console.error(err);
+        alert("System Error. Check console.");
     }
 });
 
