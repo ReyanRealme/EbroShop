@@ -1,7 +1,7 @@
 <?php
-ob_start(); // <--- ADD THIS HERE
+// Start session to access logged-in user info
 session_start();
-error_reporting(0);
+error_reporting(0); 
 header('Content-Type: application/json');
 
 // Include the same DB connection used in register.php
@@ -20,15 +20,19 @@ if ($input && $apiKey) {
     $order_id = rand(1000, 9999); 
 
 
-    // 1. GET THE USER ID (Add this inside your user search block)
-$user_id = $_SESSION['user_id'] ?? 0;
+    // 1. Get the User ID from the database based on the name provided
+$user_query = "SELECT id FROM users WHERE first_name = '$name' LIMIT 1";
+$user_result = $conn->query($user_query);
+$user_id = ($user_result && $user_result->num_rows > 0) ? $user_result->fetch_assoc()['id'] : 0;
 
-// 2. SAVE TO DATABASE (Add this before the email starts)
-$sql_history = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
-                VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
-$conn->query($sql_history);
+// 2. THE SAVE COMMAND (This is what was missing)
+$sql_save = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
+             VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
 
-
+if (!$conn->query($sql_save)) {
+    // If it fails, we need to know why
+    error_log("Database Error: " . $conn->error);
+}
 
     // --- FIND THE USER'S EMAIL (The "Register Logic" Fix) ---
     $customerEmail = null;
@@ -36,25 +40,17 @@ $conn->query($sql_history);
     // 1. First, check if the email is in the current session
     if (isset($_SESSION['email'])) {
         $customerEmail = $_SESSION['email'];
-        $user_id = $_SESSION['user_id']; // <--- ADD THIS LINE
     } 
     // 2. If not, search the 'users' table for the registered email
     else {
         // We look for a match in first_name (like Rebyu)
-        $search = "SELECT id, email FROM users WHERE first_name = '$name' LIMIT 1"; // <--- ADD 'id' HERE
+        $search = "SELECT email FROM users WHERE first_name = '$name' OR CONCAT(first_name, ' ', last_name) = '$name' LIMIT 1";
         $res = $conn->query($search);
         if ($res && $res->num_rows > 0) {
             $row = $res->fetch_assoc();
             $customerEmail = $row['email'];
-            $user_id = $row['id']; // <--- ADD THIS LINE
         }
     }
-
-
-
-
-
-
 
     // --- SEND EMAIL TO THE CUSTOMER ---
     if ($customerEmail) {
@@ -114,7 +110,6 @@ $conn->query($sql_history);
         curl_close($ch);
     }
 
-    ob_end_clean(); // Clears hidden <br /> warnings
-echo json_encode(["success" => true, "order_id" => $order_id]);
+    echo json_encode(["success" => true, "order_id" => $order_id]);
 }
 ?>
