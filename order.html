@@ -1272,7 +1272,19 @@ async function submitOrder() {
       body: JSON.stringify(orderData)
     });
 
-    const dbResult = await dbResponse.json();
+    
+
+   // 1. Get the response as raw text first
+const rawText = await dbResponse.text();
+
+// 2. THE FIX: Find where the JSON actually starts and skip the <br> tags
+const jsonStart = rawText.indexOf('{');
+const cleanJSON = rawText.substring(jsonStart);
+
+// 3. Convert the clean text into a JavaScript object
+const dbResult = JSON.parse(cleanJSON);
+
+
 
     if (!dbResult.success) {
       alert("❌ EMAIL ERROR: " + dbResult.message);

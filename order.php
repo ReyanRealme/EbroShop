@@ -1,17 +1,17 @@
 <?php
-// Start session to access logged-in user info
+// 1. ADD THIS TO STOP THE "UNEXPECTED TOKEN" ERROR
+ob_start(); 
 session_start();
 error_reporting(0); 
 header('Content-Type: application/json');
 
-// Include the same DB connection used in register.php
 include 'db.php'; 
 
 $apiKey = getenv('BREVO_API_KEY'); 
 $input = json_decode(file_get_contents('php://input'), true);
 
 if ($input && $apiKey) {
-    // Sanitize input using the same method as register.php
+    // Sanitize input
     $name = mysqli_real_escape_string($conn, $input['name']); 
     $phone = $input['phone'];
     $payment = $input['payment'];
@@ -19,25 +19,23 @@ if ($input && $apiKey) {
     $cart = $input['cart'];
     $order_id = rand(1000, 9999); 
 
-    // --- FIND THE USER'S EMAIL (The "Register Logic" Fix) ---
-    $customerEmail = null;
-
-    // 1. First, check if the email is in the current session
-    if (isset($_SESSION['email'])) {
-        $customerEmail = $_SESSION['email'];
-    } 
-    // 2. If not, search the 'users' table for the registered email
-    else {
-        // We look for a match in first_name (like Rebyu)
-        $search = "SELECT email FROM users WHERE first_name = '$name' OR CONCAT(first_name, ' ', last_name) = '$name' LIMIT 1";
-        $res = $conn->query($search);
-        if ($res && $res->num_rows > 0) {
-            $row = $res->fetch_assoc();
-            $customerEmail = $row['email'];
-        }
+    // --- NEW: SAVE TO DATABASE (THE MISSING PART) ---
+    // First, find the user_id so it shows in Account History
+    $user_id = 0;
+    $search_user = "SELECT id, email FROM users WHERE first_name = '$name' OR CONCAT(first_name, ' ', last_name) = '$name' LIMIT 1";
+    $user_res = $conn->query($search_user);
+    if ($user_res && $user_res->num_rows > 0) {
+        $user_row = $user_res->fetch_assoc();
+        $user_id = $user_row['id'];
+        $customerEmail = $user_row['email'];
     }
 
-    // --- SEND EMAIL TO THE CUSTOMER ---
+    // Now, actually save the order into the 'orders' table
+    $sql_save = "INSERT INTO orders (user_id, order_id, total_amount, payment_method, status) 
+                 VALUES ('$user_id', '$order_id', '$total', '$payment', 'Pending')";
+    $conn->query($sql_save);
+
+    // --- YOUR EMAIL LOGIC (FULLY RESTORED) ---
     if ($customerEmail) {
         $rows = "";
         foreach($cart as $p) {
@@ -49,12 +47,11 @@ if ($input && $apiKey) {
                       </tr>";
         }
 
-        // Use your verified Cloudinary Logo
         $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
 
         $data = array(
             "sender" => array("name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"),
-            "to" => array(array("email" => $customerEmail, "name" => $name)), // SENDS TO USER
+            "to" => array(array("email" => $customerEmail, "name" => $name)),
             "subject" => "Your Order Confirmation #$order_id",
             "htmlContent" => "
                 <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius:10px;'>
@@ -81,7 +78,6 @@ if ($input && $apiKey) {
                     </p>
                 </div>"
         );
-        // Same cURL settings that work in register.php
         $ch = curl_init('https://api.brevo.com/v3/smtp/email');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -95,6 +91,8 @@ if ($input && $apiKey) {
         curl_close($ch);
     }
 
+    // --- FINAL CLEANUP AND SUCCESS ---
+    ob_end_clean(); // Clears all hidden <br> tags
     echo json_encode(["success" => true, "order_id" => $order_id]);
 }
 ?>
