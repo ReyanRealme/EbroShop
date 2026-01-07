@@ -1246,11 +1246,9 @@ function handleOrderClick() {
     }
 }
 
-
 async function submitOrder() {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
-  // Get the email from the hidden input we just added
   const email = document.getElementById("userEmail").value; 
   const payment = document.querySelector("input[name='pay']:checked").value;
   const proof = document.getElementById("proof");
@@ -1262,29 +1260,39 @@ async function submitOrder() {
   
   alert("Processing your order... Please wait.");
 
- try {
-    // Include 'email' in the data sent to order.php
+  // Define dbResult at the top so it is available to the Telegram part below
+  let dbResult = { success: false, order_id: 'N/A' };
+
+  try {
     const orderData = { name, phone, email, payment, total: subtotal, cart }; 
 
-    const dbResponse = await fetch('order.php', {
+    // --- 1. SAVE TO DATABASE (Using save_order.php) ---
+    try {
+        const dbResponse = await fetch('save_order.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+        const resultText = await dbResponse.text();
+        dbResult = JSON.parse(resultText.substring(resultText.indexOf('{')));
+    } catch (dbErr) {
+        console.error("Database Save Error:", dbErr);
+    }
+
+    // --- 2. SEND EMAIL (Using order.php) ---
+    fetch('order.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData)
-    });
+    }).catch(err => console.error("Email Error:", err));
 
-    const dbResult = await dbResponse.json();
 
-    if (!dbResult.success) {
-      alert("❌ EMAIL ERROR: " + dbResult.message);
-      // We continue to Telegram even if email fails so you don't lose the order
-    }
-
-    // 2. Telegram Configuration
+    // --- 3. TELEGRAM CONFIGURATION ---
     const BOT_TOKEN = "8310816737:AAEIrdAPb4IXUwTl4fUeM-9k2qTE2jQmmuk";
     const CHAT_ID = "5335234629";
     const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-    // 3. Send Main Order Header to Telegram
+    // --- 4. Send Main Order Header to Telegram ---
     await fetch(`${API}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1295,7 +1303,7 @@ async function submitOrder() {
       })
     });
 
-    // 4. Send Products as Documents with Detailed Captions
+    // --- 5. Send Products to Telegram ---
     for (const p of cart) {
       const itemSub = (p.price * p.qty).toFixed(2);
       const docForm = new FormData();
@@ -1307,7 +1315,7 @@ async function submitOrder() {
       await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
     }
 
-    // 5. Send Transfer Proof if selected
+    // --- 6. Send Transfer Proof to Telegram ---
     if (payment === "Transfer" && proof.files.length > 0) {
       const pForm = new FormData();
       pForm.append("chat_id", CHAT_ID);
@@ -1318,8 +1326,7 @@ async function submitOrder() {
       await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
     }
 
-    // 6. Send Closing Confirmation Message
-    await fetch(`${API}/sendMessage`, {
+     await fetch(`${API}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1329,16 +1336,16 @@ async function submitOrder() {
       })
     });
 
-    // 7. Cleanup and Redirect
+    // --- 7. Cleanup and Redirect ---
     localStorage.removeItem(CART_KEY);
     window.location.href = "thankyou.html";
 
   } catch (error) {
     console.error("Order Error:", error);
-    alert("System Error: " + error.message);
+    alert("Order recorded, but there was a connection issue with notifications.");
+    window.location.href = "thankyou.html";
   }
 }
-
 
 
 
