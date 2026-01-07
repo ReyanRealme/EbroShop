@@ -1264,23 +1264,13 @@ async function submitOrder() {
 
  try {
     // Include 'email' in the data sent to order.php
-   /* Keep your Telegram code above this exactly as it is */
+    const orderData = { name, phone, email, payment, total: subtotal, cart }; 
 
-const orderData = {
-    name: name,
-    phone: phone,
-    payment: payment,
-    email: document.getElementById('customerEmail')?.value || "", // ADD THIS LINE
-    total: subtotal,
-    cart: cart
-};
-
-// This sends the data to your PHP to save and send Email
-fetch('order.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(orderData)
-});
+    const dbResponse = await fetch('order.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    });
 
     const dbResult = await dbResponse.json();
 
