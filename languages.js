@@ -1,6 +1,12 @@
+
 // Dictionary for the About.html content
 const ebroTranslations = {
-    "en": {
+    "en": { 
+        /*common for all pages*/  
+         "common1": "Signup",
+
+
+
         "about": "by Ebro Gurage Tone",
         "true":"Select Language",
         "mission_h": "Our Mission",
@@ -8,6 +14,7 @@ const ebroTranslations = {
         "footer": "© 2025 EbRo-Shop. All rights reserved."
     },
     "am": {
+        "common1": "ይመዝገቡ",
         "about": "በኢብሮ ጉራጌ ቶን",
          "true":"ቋንቋ ይምረጡ",
         "mission_h": "ተልዕኳችን",
