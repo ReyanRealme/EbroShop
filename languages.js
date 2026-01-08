@@ -3,23 +3,64 @@
 const ebroTranslations = {
     "en": { 
         /*common for all pages*/  
+        /*Overlay Menu*/
          "common1": "Signup",
+         "common2": "Home",
+         "common3": "About-us",
+         "common4": "Contact-us",
+         "common5": "FAQs",
+         "common6": "Terms of Service",
+         "common7": "Return Policy",
+         "common8": "Privacy Policy",
+         "common9": "Products",
+         "common10": "Basic Food",
+         "common11": "Cooking Ingridient",
+         "common12": "Baby Products",
+         "common13": "HealthCare",
+         "common14": "Packaged Goods",
+         "common15": "Powder Soap",
+         "common16": "Dayper&Wipes",
+         "common17": "Packed Foods",
+         "common18": "Spices Powder",
+         "common19": "Food Oils",
+         "common20": "Modes&Softs",
+         "common21": "Liquid Soap",
+         "common22": "Additional",
+         "common23": "Our Hosts",
+         "common24": "Developer",
 
 
-
-        "about": "by Ebro Gurage Tone",
-        "true":"Select Language",
-        "mission_h": "Our Mission",
-        "story_h": "Our Story",
-        "footer": "© 2025 EbRo-Shop. All rights reserved."
+       
     },
     "am": {
         "common1": "ይመዝገቡ",
-        "about": "በኢብሮ ጉራጌ ቶን",
-         "true":"ቋንቋ ይምረጡ",
-        "mission_h": "ተልዕኳችን",
-        "story_h": "ታሪካችን",
-        "footer": "© 2025 EbRo-Shop. መብቱ በህግ የተጠበቀ ነው።"
+        "common2": "ዋና ገፅ",  
+        "common3": "ስለ እኛ",
+        "common4": "ያግኙን",
+        "common5": "ተደጋጋሚ ጥያቄዎች",
+        "common6": "የአገልግሎት ውል",
+        "common7": "የመመለሻ ህጎች",
+        "common8": "የግላዊነት መመርያ",
+        "common9": "ምርቶቻችን",
+        "common10": "የመሬት እቃዎች", 
+        "common11": "ምግብ መስረያ ግባቶች",
+        "common12": "የህፃናት ወተት",
+        "common13": "ንፅህና መጠበቂዎች",
+        "common14": "የታሸጉ እቃዎች",
+        "common15": "የዱቄት ሳሙና",
+        "common16": "ዳይፐር እና ዋይፕስ",
+        "common17": "የታሸጉ ምግቦች",
+        "common18": "ቅመማቅመም ዱቄቶች",
+        "common19": "የምግብ ዘይት",
+        "common20": "ሞዲየስ እና ሶፍት",
+        "common21": "ፈሳሽ ሳሙና",
+        "common22": "በተጨማሪ",
+        "common23": "አስተናጋጆቻችን",
+        "common24": "ወብሳይቱ ገንቢ",
+
+
+       
+       
     }
 };
 
