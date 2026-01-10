@@ -467,31 +467,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <body>
 
 
-<div id="language-overlay" class="overlay">
-    <div class="overlay-card">
-        <h2>Select Language / ቋንቋ ይምረጡ</h2>
-        
-        <div class="radio-group">
-            <label class="radio-container">
-                <input type="radio" name="lang" value="en" checked>
-                <span class="checkmark"></span>
-                <img src="https://flagcdn.com/w40/gb.png" alt="English Flag">
-                <span class="lang-label">English</span>
-            </label>
-
-            <label class="radio-container">
-                <input type="radio" name="lang" value="am">
-                <span class="checkmark"></span>
-                <img src="https://flagcdn.com/w40/et.png" alt="Ethiopian Flag">
-                <span class="lang-label">አማርኛ</span>
-            </label>
-        </div>
-
-        <button id="continue-btn" onclick="applyLanguage()">Continue / ቀጥል</button>
-    </div>
-</div>
-
-
 
 
 
@@ -2884,62 +2859,6 @@ function toggleSection(id, header) {
 }
 
 
-
-
-/*for home language*/
-const ebroTranslations = {
-    "en": {
-        "nav_home": "Home",
-        "nav_about": "About",
-        "hero_title": "About Ebro-Shop"
-    },
-    "am": {
-        "nav_home": "መነሻ",
-        "nav_about": "ስለ እኛ",
-        "hero_title": "ስለ EbRo-Shop"
-    }
-};
-
-function applyLanguage() {
-    const selectedLang = document.querySelector('input[name="lang"]:checked').value;
-    
-    // Save to browser memory
-    localStorage.setItem("userLanguage", selectedLang);
-    
-    // Run the translation
-    setLanguage(selectedLang);
-}
-
-function setLanguage(lang) {
-    document.documentElement.lang = lang;
-
-    // Update all text with data-keys
-    const elements = document.querySelectorAll("[data-key]");
-    elements.forEach(el => {
-        const key = el.getAttribute("data-key");
-        if (ebroTranslations[lang][key]) {
-            el.innerText = ebroTranslations[lang][key];
-        }
-    });
-
-    // Hide overlay and show content
-    document.getElementById('language-overlay').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-}
-
-// When page loads, check if they already picked a language
-window.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem("userLanguage");
-    
-    if (savedLang) {
-        // If they already chose, skip the overlay
-        setLanguage(savedLang);
-    } else {
-        // If first time, show the overlay (default behavior)
-        document.getElementById('language-overlay').style.display = 'flex';
-        document.getElementById('main-content').style.display = 'none';
-    }
-});
 </script>
 <script src="languages.js"></script>
 </body>
