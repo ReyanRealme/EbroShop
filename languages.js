@@ -40,9 +40,12 @@ const ebroTranslations = {
          "commonB10": "Privacy Policy",
          "commonB11": "Return Policy",
          "commonB12": "Contact us",
-         "commonB13": "Phone",
-         "commonB14": "Email",
-         "commonB15": "EbRoShop.Com©2025 All Rights Reserved, Powered by Realme ",
+         "commonB13": "Phone ➡",
+         "commonB14": "Email ➡",
+         "commonB15": "EbRoShop.Com©2025 All Rights Reserved,",
+         "commonB16": "+251970130755",
+         "commonB17": "ebroshoponline@gmail.com",
+         "commonB18": " Powered by Realme",
 
           
 /*about page*/
@@ -127,9 +130,12 @@ const ebroTranslations = {
          "commonB10": "የግላዊነት መመርያ",
          "commonB11": "የመመለሻ ህጎች",
          "commonB12": "መገኛ መስመሮች",
-         "commonB13": "ስልክ",
-         "commonB14": "ኢሜል",
-         "commonB15": "EbRoShop.Com©2025 መብቱ በህግ የተጠበቀ ነው! በRealme የተሰራ ",
+         "commonB13": "ስልክ ➡",
+         "commonB14": "ኢሜል ➡",
+         "commonB15": "EbRoShop.Com©2025 መብቱ በህግ የተጠበቀ ነው!",
+         "commonB16": "+251970130755",
+         "commonB17": "ebroshoponline@gmail.com",
+         "commonB18": "በRealme የተሰራ",
       
          
  /*about page*/
@@ -169,7 +175,7 @@ const ebroTranslations = {
          "about33": "በኢትዮጵያ ውስጥ የአካባቢ ንግዶችን እንደግፋለን እንዲሁም ዲጂታል ለውጦችን እናበረታታለን።",
          "about34": "የእውቂያ መረጃዎች",
          "about35": "ለጥያቄዎች ወይም ለድጋፍ ከፈልጉን፣ እባክዎን ",
-         "about36": " በመገኛ ገፃችን ያግኙን።",
+         "about36": " በመገኛ ገፃችን ያግኙን።", /*finished*/
 
 
 
