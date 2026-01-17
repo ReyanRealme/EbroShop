@@ -74,7 +74,7 @@ $orders = $conn->query($sql);
             font-weight: bold;
             display: inline-block;
         }
-        .bg-pending { background: #333; }      /* Black for Pending */
+        .bg-pending { background: #FF9800; }      /* Black for Pending */
         .bg-completed { background: #136835; }  /* Green for Completed */
         .bg-cancelled { background: #cc0000; }  /* Red for Cancelled */
 
@@ -874,7 +874,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <?php endif; ?>
 
       
-        <br>
 <div style="background: #ffffff; border-radius: 16px; padding: 25px; margin: 25px 0; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
     <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f9f9f9; padding-bottom: 12px;">
         <span style="font-size: 24px; margin-right: 12px;">📋</span>
@@ -914,8 +913,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
 </div>
 
-     
-     <br>
+    
     <div class="section-title">Account Details</div>
     <div class="address-card">
         <div class="user-name">
@@ -930,7 +928,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <a href="login.html" class="btn-outline">Return to Back</a>
         </div>
 
-    <br>
+    
     <br>
   
 
