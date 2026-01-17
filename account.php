@@ -861,7 +861,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                     
                    <?php if (strtolower($row['status']) == 'pending'): ?>
     <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" 
-          nclick="showDeleteNotice()">✕</span>
+          onclick="showDeleteNotice()">✕</span>
 <?php else: ?>
     <a href="account.php?delete_id=<?php echo $row['id']; ?>" 
        class="del-x" 
