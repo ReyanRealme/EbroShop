@@ -863,7 +863,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" 
           onclick="showDeleteNotice()">✕</span>
 <?php else: ?>
-   <a href="account.php?delete_id=<?php echo $row['id']; ?>" 
+<a href="account.php?delete_id=<?php echo $row['id']; ?>" 
    class="del-x" 
    onclick="return confirmDelete(event, this.href)">✕</a>
 <?php endif; ?> 
