@@ -91,6 +91,7 @@ const ebroTranslations = {
           "account1": "Order History",  
           "account2": "No orders yet.", 
           "delete_error": "Notice: You cannot delete an order while it is in \'Pending\' status because our team is currently processing it.",
+          "accountalart1": "Are you sure you want to remove this record from your history?",
 
         },
 
@@ -185,7 +186,7 @@ const ebroTranslations = {
           "account1": "የትዕዛዝዎ ታሪክ",  
           "account2": "እስካሁን ምንም አላዘዙም😥", 
           "delete_error": "ማሳሰብያ: አንድን ያዘዙት እቃ በ'Pending' ሁኔታ ላይ እያለ መሰረዝ አይችሉም ምክንያቱም አስተናጋጆቻችን በዚህ ሰዓት ትዕዛዝዎ በማዘጋጀት ላየ ናቸው።",
-
+          "accountalart1": "ይህንን የትዕዛዝ ታሪክ ከገፅዎ ማስወገድ ይፈልጋሉ? እርግጠኛ ነዎት?",
 
         }
 };
@@ -235,5 +236,19 @@ window.addEventListener('DOMContentLoaded', () => {
 function showDeleteNotice() {
     const lang = localStorage.getItem("userLanguage") || "en";
     const message = ebroTranslations[lang]["delete_error"];
-    alert(message);
+    if (message) {
+        alert(message);
+    } else {
+        alert("Notice: You cannot delete this order.");
+    }
+}
+
+function showDelete() {
+    const lang = localStorage.getItem("userLanguage") || "en";
+    const message = ebroTranslations[lang]["accountalart1"];
+    if (message) {
+        alert(message);
+    } else {
+        alert("Notice: Are You sure delete this order?");
+    }
 }

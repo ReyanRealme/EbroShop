@@ -864,8 +864,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
           onclick="showDeleteNotice()">✕</span>
 <?php else: ?>
     <a href="account.php?delete_id=<?php echo $row['id']; ?>" 
-       class="del-x" 
-       onclick="return confirm('Are you sure you want to remove this record from your history?')">✕</a>
+       class="del-x"  
+       onclick="showDelete()">✕</a>
 <?php endif; ?> 
 
                   </div>
