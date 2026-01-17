@@ -7,15 +7,27 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-
 // 1. DELETE LOGIC
 if (isset($_GET['delete_id'])) {
     $order_id = (int)$_GET['delete_id'];
     $u_id = $_SESSION['user_id'];
-    $conn->query("DELETE FROM orders WHERE id = $order_id AND user_id = $u_id");
-    header("Location: account.php");
-    exit();
+    
+    // First, check the status of the order
+    $status_check = $conn->query("SELECT status FROM orders WHERE id = $order_id AND user_id = $u_id");
+    $order_info = $status_check->fetch_assoc();
+
+    if ($order_info && $order_info['status'] === 'Pending') {
+        // Redirect with a message if trying to delete Pending orders
+        echo "<script>alert('Notice: You cannot delete an order while it is in \"Pending\" status because our team is currently processing it.'); window.location.href='account.php';</script>";
+        exit();
+    } else {
+        // Allow delete only if status is Completed, Cancelled, or others
+        $conn->query("DELETE FROM orders WHERE id = $order_id AND user_id = $u_id");
+        header("Location: account.php");
+        exit();
+    }
 }
+
 
 $user_id = $_SESSION['user_id'];
 
@@ -846,8 +858,17 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                             <?php echo htmlspecialchars($row['status']); ?>
                         </span>
                     </div>
-                    <a href="account.php?delete_id=<?php echo $row['id']; ?>" class="del-x" onclick="return confirm('Delete record?')">✕</a>
-                </div>
+                    
+                   <?php if (strtolower($row['status']) == 'pending'): ?>
+    <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" 
+          onclick="alert('Notice: You cannot delete an order while it is in \'Pending\' status because our team is currently processing it.')">✕</span>
+<?php else: ?>
+    <a href="account.php?delete_id=<?php echo $row['id']; ?>" 
+       class="del-x" 
+       onclick="return confirm('Are you sure you want to remove this record from your history?')">✕</a>
+<?php endif; ?> 
+
+                  </div>
             </div>
         <?php endwhile; ?>
     <?php endif; ?>
@@ -866,6 +887,47 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <a href="login.html" class="btn-outline">Return to Back</a>
         </div>
 
+
+        <br>
+        <br>
+<div style="background: #ffffff; border-radius: 16px; padding: 25px; margin: 25px 0; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f9f9f9; padding-bottom: 12px;">
+        <span style="font-size: 24px; margin-right: 12px;">📋</span>
+        <h4 style="margin: 0; color: #1a1a1a; font-size: 18px; letter-spacing: 0.5px;">Order Status Guide</h4>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <div style="background: #fff9f0; border-left: 4px solid #ff9800; padding: 15px; border-radius: 0 12px 12px 0;">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <i class="fa fa-clock" style="color: #ff9800; margin-right: 8px;"></i>
+                <strong style="color: #ff9800; font-size: 14px; text-transform: uppercase;">Pending</strong>
+            </div>
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+                We have received your order! Our team is currently preparing and verifying your items. Deletion is restricted during this phase.
+            </p>
+        </div>
+
+        <div style="background: #f0fdf4; border-left: 4px solid #4caf50; padding: 15px; border-radius: 0 12px 12px 0;">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <i class="fa fa-check-circle" style="color: #4caf50; margin-right: 8px;"></i>
+                <strong style="color: #4caf50; font-size: 14px; text-transform: uppercase;">Completed</strong>
+            </div>
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+                Great news! Your items have been successfully delivered. You can now clear this from your history if you wish.
+            </p>
+        </div>
+
+        <div style="background: #fef2f2; border-left: 4px solid #f44336; padding: 15px; border-radius: 0 12px 12px 0;">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <i class="fa fa-times-circle" style="color: #f44336; margin-right: 8px;"></i>
+                <strong style="color: #f44336; font-size: 14px; text-transform: uppercase;">Cancelled</strong>
+            </div>
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+                This order was not processed. You are free to remove it from your dashboard at any time.
+            </p>
+        </div>
+    </div>
+</div>
 
     <br>
     <br>
