@@ -828,12 +828,12 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
    <br>
    <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif; background: #fff; margin: 0; padding: 20px; color: #333; } ">
-     <div  class="header-title">My Account</div>
+     <div  class="header-title" style="text-align:center;">My Account</div>
 
-     <div class="section-title">Order History</div>
+     <div class="section-title" data-key="account1">Order History</div>
 
      <?php if (!$orders || $orders->num_rows == 0): ?>
-        <p style="color:#185282;">No orders yet.</p>
+        <p style="color:#185282;" data-key="account2">No orders yet.</p>
      <?php else: ?>
         <?php while($row = $orders->fetch_assoc()): ?>
             <?php 
@@ -861,7 +861,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                     
                    <?php if (strtolower($row['status']) == 'pending'): ?>
     <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" 
-          onclick="alert('Notice: You cannot delete an order while it is in \'Pending\' status because our team is currently processing it.')">✕</span>
+          nclick="showDeleteNotice()">✕</span>
 <?php else: ?>
     <a href="account.php?delete_id=<?php echo $row['id']; ?>" 
        class="del-x" 

@@ -87,6 +87,10 @@ const ebroTranslations = {
          "about35": "For inquiries or support, please contact us via our ",
          "about36": "Contact Us page",
 
+     /*account page*/
+          "account1": "Order History",  
+          "account2": "No orders yet.", 
+          "delete_error": "Notice: You cannot delete an order while it is in \'Pending\' status because our team is currently processing it.",
 
         },
 
@@ -177,6 +181,10 @@ const ebroTranslations = {
          "about35": "ለጥያቄዎች ወይም ለድጋፍ ከፈልጉን፣ እባክዎን ",
          "about36": " በመገኛ ገፃችን ያግኙን።", /*finished*/
 
+  /*account page*/
+          "account1": "የትዕዛዝዎ ታሪክ",  
+          "account2": "እስካሁን ምንም አላዘዙም😥", 
+          "delete_error": "ማሳሰብያ: አንድን ያዘዙት እቃ በ'Pending' ሁኔታ ላይ እያለ መሰረዝ አይችሉም ምክንያቱም አስተናጋጆቻችን በዚህ ሰዓት ትዕዛዝዎ በማዘጋጀት ላየ ናቸው።",
 
 
         }
@@ -222,3 +230,10 @@ window.addEventListener('DOMContentLoaded', () => {
         changeLanguage(savedLang);
     }
 });
+
+/*account page*/
+function showDeleteNotice() {
+    const lang = localStorage.getItem("userLanguage") || "en";
+    const message = ebroTranslations[lang]["delete_error"];
+    alert(message);
+}
