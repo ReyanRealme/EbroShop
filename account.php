@@ -42,6 +42,7 @@ $orders = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="style.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>My Account - EBRO Shop</title>
     <style>
@@ -478,8 +479,11 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
   </div>
-  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #0d4a7e;">Signup or Register</div>
+  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #0d4a7e;" data-key="common1">Signup</div>
 </a>
+
+
+
 
 <!-- Main Links -->
   <a href="home.html" class="menu-item">
@@ -491,7 +495,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M9 22V12h6v10"/>
 </svg>
 
-    <span>Home</span>
+    <span data-key="common2">Home</span>
   </a>
 
   <a href="about.html" class="menu-item">
@@ -502,7 +506,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <line x1="12" y1="11" x2="12" y2="16"/>
   <circle cx="12" cy="8" r="1"/>
 </svg>
-    <span>About-us</span>
+    <span data-key="common3">About-us</span>
   </a>
 
   <a href="contact.html" class="menu-item">
@@ -513,7 +517,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
            C10.6 22 2 13.4 2 3.5a1 1 0 011-1H6.5a1 1 0 011 1
            11.4 11.4 0 00.6 3.6 1 1 0 01-.25 1z"/>
 </svg>
-    <span>Contact-us</span>
+    <span data-key="common4">Contact-us</span>
   </a>
 
   <a href="faq.html" class="menu-item">
@@ -528,7 +532,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
            c2.4 0 4.2 1.4 4.2 3.6
            0 1.6-1 2.6-2.5 3.4z"/>
 </svg>
-    <span>FAQs</span>
+    <span data-key="common5">FAQs</span>
   </a>
 
   <a href="terms.html" class="menu-item">
@@ -538,7 +542,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M14 2v6h6"/>
   <path d="M8 13l2 2l4-4"/>
 </svg>
-    <span>Terms Of Service</span>
+    <span data-key="common6">Terms Of Service</span>
   </a>
 
   <a href="returns.html" class="menu-item">
@@ -552,7 +556,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M19.5 12a7.5 7.5 0 0 1-7.5 7.5"/>
   <polyline points="12 22 10 18 14 18"/>
 </svg> 
-    <span>Return Policy</span>
+    <span data-key="common7">Return Policy</span>
   </a>
 
   <a href="privacy.html" class="menu-item">
@@ -561,11 +565,11 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M4 3h16v18H4z"/>
   <path d="M7 7h10M7 11h10M7 15h6"/>
 </svg>
-    <span>Privacy Policy</span>
+    <span data-key="common8">Privacy Policy</span>
   </a>
 
   <!-- Products -->
-  <div class="menu-title">Products</div>
+  <div class="menu-title" data-key="common9">Products</div>
 
   <a href="basicfood.php" class="menu-item">
     <!-- Food Icon -->
@@ -574,7 +578,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M3 9h18l-1 10H4z"/>
   <path d="M16 4a2 2 0 1 1-4 0"/>
 </svg>
-    <span>Basic Food</span>
+    <span data-key="common10">Basic Food</span>
   </a>
 
   <a href="cooking.php" class="menu-item">
@@ -585,7 +589,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M11 9h2"/>
   <path d="M11 13h2"/>
 </svg>
-    <span>Cooking ingrident</span>
+    <span data-key="common11">Cooking ingrident</span>
   </a>
 
   <a href="babyproduct.php" class="menu-item">
@@ -594,7 +598,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <circle cx="12" cy="7" r="4"/>
       <path d="M6 21v-2a6 6 0 0112 0v2"/>
     </svg>
-    <span>Baby product</span>
+    <span data-key="common12">Baby product</span>
   </a>
 
   <a href="cosmotics.php" class="menu-item">
@@ -602,7 +606,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 10h-6l-3-6-3 6H3l5 7-2 6 6-4 6 4-2-6 5-7z"/>
     </svg>
-    <span>HealthCare</span>
+    <span data-key="common13">HealthCare</span>
   </a>
 
    <a href="packaged.php" class="menu-item">
@@ -622,7 +626,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M12 3v4" />
   <path d="M12 13v8" />
 </svg>
-    <span>Packaged Goods</span>
+    <span data-key="common14">Packaged Goods</span>
   </a>
 
    <a href="powdersoap.php" class="menu-item">
@@ -648,7 +652,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <circle cx="12" cy="17" r="0.8" />
   <circle cx="15" cy="16" r="0.8" />
 </svg>
-    <span>Laundery powders</span>
+    <span data-key="common15">Powder Soap</span>
   </a>
 
     <a href="dayper.php" class="menu-item">
@@ -671,7 +675,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M9 12c1 2 5 2 6 0" />
 </svg>
 
-    <span>Dayper$Wipes</span>
+    <span data-key="common16">Dayper$Wipes</span>
   </a>
   <a href="packedfood.php" class="menu-item">
     <!-- Health/Medical Icon -->
@@ -694,7 +698,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Label -->
   <path d="M9 10h6v4H9z" />
 </svg>
-    <span>Packed Foods</span>
+    <span data-key="common17">Packed Foods</span>
   </a>
 
     <a href="otheringrident.php" class="menu-item">
@@ -712,7 +716,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <circle cx="12" cy="9" r="0.6" />
   <circle cx="15" cy="10" r="0.6" />
 </svg>
-    <span>Spices powders</span>
+    <span data-key="common18">Spices powders</span>
   </a>
 
     <a href="oil.php" class="menu-item">
@@ -729,7 +733,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Oil drop -->
   <path d="M19 14c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
 </svg>
-    <span>Food Oils</span>
+    <span data-key="common19">Food Oils</span>
   </a>
 
    <a href="modes.php" class="menu-item">
@@ -745,7 +749,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M6 9l-3 3 3 3"/>
   <path d="M18 9l3 3-3 3"/>
 </svg>
-    <span>Modes$Soft</span>
+    <span data-key="common20">Modes$Soft</span>
   </a>
 
     <a href="liquidsoap.php" class="menu-item">
@@ -764,10 +768,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Soap drop -->
   <path d="M12 11c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
 </svg>
-    <span>Liquid soap</span>
+    <span data-key="common21">Liquid soap</span>
   </a>
 
-<div class="menu-title">Additional</div>
+<div class="menu-title" data-key="common22">Additional</div>
 
 
 <a href="host.html" class="menu-item">
@@ -776,7 +780,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/>
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
-    <span>Our Hosts</span>
+    <span data-key="common23">Our Hosts</span>
   </a>
 
 
@@ -786,7 +790,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/>
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
-    <span>Developer</span>
+    <span data-key="common24">Developer</span>
   </a>
   <br>
 <br>
@@ -866,6 +870,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <br>
     <br>
     <br>
+
+
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
 <!--FAQ's-->
  <div style="   margin: 0;
@@ -877,7 +883,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
     <h2 style="    font-size: 28px;
     font-weight: 700;
-    margin-bottom: 20px;">CONNECT WITH US</h2>
+    margin-bottom: 20px;" data-key="commonB1">CONNECT WITH US</h2>
 
     <div style="    display: flex;
     gap: 24px;
@@ -889,6 +895,27 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;" href="#"><i class="fab fa-instagram"></i></a>
     </div>
 
+
+    <p data-key="commonB2">Select Language</p>
+     <!--for select language-->
+    <div class="custom-lang-dropdown">
+    <div class="lang-trigger" onclick="toggleLangMenu()">
+        <span id="current-lang-label"  style="  margin: 0;
+    font-size: 24px;
+    font-weight: 700;" data-key="commonB3">Language</span>
+        <span style=" margin-left: 240px;font-size: 26px;" class="toggle">+</span>
+    </div>
+    <ul class="lang-options" id="langOptions">
+        <li onclick="changeLanguage('en')">
+            <img src="https://flagcdn.com/w20/gb.png" alt="English"> English
+        </li>
+        <li onclick="changeLanguage('am')">
+            <img src="https://flagcdn.com/w20/et.png" alt="Amharic"> አማርኛ
+        </li>
+    </ul>
+</div>
+    
+
     <!-- Ebroshop Section (CLOSED by default) -->
     <div style="   border-top: 1px solid #ddd;
     padding: 18px 0;" class="section">
@@ -898,7 +925,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     cursor: pointer;" class="section-header" onclick="toggleSection('adeeg', this)">
             <h3 style="  margin: 0;
     font-size: 24px;
-    font-weight: 700;">EbRoShop</h3>
+    font-weight: 700;">Ebroshop</h3>
             <span style="  font-size: 26px;" class="toggle">+</span>
         </div>
 
@@ -907,24 +934,24 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="home.html">Home</a>
+    margin: 14px 0;" href="home.html" data-key="commonB4">Home</a>
 
           <a style="  display: block;
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="about.html">About-us</a>
+    margin: 14px 0;" href="about.html" data-key="commonB5">About-us</a>
            
            <a style="  display: block;
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="faq.html">FAQs</a>
+    margin: 14px 0;" href="faq.html" data-key="commonB6">FAQs</a>
             <a style="  display: block;
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="contact.html">Contact Us</a>
+    margin: 14px 0;" href="contact.html" data-key="commonB7">Contact Us</a>
         </div>
     </div>
 
@@ -937,7 +964,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     cursor: pointer;" class="section-header" onclick="toggleSection('store', this)">
             <h3 style="  margin: 0;
     font-size: 24px;
-    font-weight: 700;">Store Policy</h3>
+    font-weight: 700;" data-key="commonB8">Store Policy</h3>
             <span style="  font-size: 26px;" class="toggle">+</span>
         </div>
 
@@ -946,19 +973,19 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="terms.html">Terms Of Service</a>
+    margin: 14px 0;" href="terms.html" data-key="commonB9">Terms Of Service</a>
            
            <a style="  display: block;
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="privacy.html">Privacy Policy</a>
+    margin: 14px 0;" href="privacy.html" data-key="commonB10">Privacy Policy</a>
          
             <a style="  display: block;
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="returns.html">Return Policy</a>
+    margin: 14px 0;" href="returns.html" data-key="commonB11">Return Policy</a>
         </div>
     </div>
 
@@ -971,7 +998,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     cursor: pointer;" class="section-header" onclick="toggleSection('contact', this)">
             <h3 style="  margin: 0;
     font-size: 24px;
-    font-weight: 700;">Contact Us</h3>
+    font-weight: 700;" data-key="commonB12">Contact Us</h3>
             <span style="  font-size: 26px;" class="toggle">+</span>
         </div>
 
@@ -980,12 +1007,16 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #000000;
     font-size: 20px;
-    margin: 14px 0;" >Phone: <b style="color: #676767;">+251970130755</b></a>
+    margin: 14px 0;">
+     <span data-key="commonB13">Phone:</span>
+      <b style="color: #676767;" data-key="commonB16">+251970130755</b></a>
            <a style="  display: block;
     text-decoration: none;
     color: #000000;
     font-size: 20px;
-    margin: 14px 0;" >Email: <b style="color: #676767;">ebrohayru77@gmail.com</b></a>
+    margin: 14px 0;" >
+    <span data-key="commonB14">Email: </span>
+    <b style="color: #676767;" data-key="commonB17">ebroshoponline@gmail.com</b></a>
         </div>
     </div>
 
@@ -1013,7 +1044,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     font-size: 28px;
     font-weight: 400;
     margin-bottom: 40px;" class="footer-text">
-        EbRoShop.Com©2025 All Rights Reserved
+        <span data-key="commonB15">EbRoShop.Com©2025 All Rights Reserved</span>
+        <a href="developer.html" data-key="commonB18" style="text-decoration: none; color: #828080;"></a>
     </div>
 
     <!-- Payment / Partner Logos (Clickable) -->
@@ -1034,9 +1066,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     transition: transform 0.2s ease;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983555/e6oydnwyeoxag8vhar1w.jpg" alt="Telebirr">
         </a>
     </div>
+</div>
+</div>
+</div>
 
-</div>
-</div>
+
+
+
 
 
 
@@ -1156,7 +1192,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M1 1h4l3.6 12.6a2 2 0 0 0 2 1.4h9.4"/>
       <path d="M7 6h15l-1.5 8H9"/>
     </svg>
-    Cart
+    Bag
   </a>
 
 </nav>
@@ -1391,5 +1427,6 @@ function toggleSection(id, header) {
     }
 }
   </script>
+  <script src="languages.js"></script>
 </body>
 </html>
