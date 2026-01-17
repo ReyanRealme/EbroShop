@@ -873,22 +873,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <?php endwhile; ?>
     <?php endif; ?>
 
-    <div class="section-title">Account Details</div>
-    <div class="address-card">
-        <div class="user-name">
-            <?php echo htmlspecialchars($user_data['first_name'] . " " . $user_data['last_name']); ?> 
-            <span class="default-tag"><?php echo strtoupper($user_data['role']); ?></span>
-        </div>
-        <div class="location">
-            Email ID: <?php echo htmlspecialchars($_SESSION['user_id']); ?>
-        </div>
-    </div>
-
-    <a href="login.html" class="btn-outline">Return to Back</a>
-        </div>
-
-
-        <br>
+      
         <br>
 <div style="background: #ffffff; border-radius: 16px; padding: 25px; margin: 25px 0; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
     <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f9f9f9; padding-bottom: 12px;">
@@ -929,9 +914,25 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
 </div>
 
+     
+     <br>
+    <div class="section-title">Account Details</div>
+    <div class="address-card">
+        <div class="user-name">
+            <?php echo htmlspecialchars($user_data['first_name'] . " " . $user_data['last_name']); ?> 
+            <span class="default-tag"><?php echo strtoupper($user_data['role']); ?></span>
+        </div>
+        <div class="location">
+            Email ID: <?php echo htmlspecialchars($_SESSION['user_id']); ?>
+        </div>
+    </div>
+
+    <a href="login.html" class="btn-outline">Return to Back</a>
+        </div>
+
     <br>
     <br>
-    <br>
+  
 
 
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
