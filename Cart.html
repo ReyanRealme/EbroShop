@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
 <title>Shopping Cart</title>
 
 <style>
@@ -780,6 +782,31 @@ body{margin:0;background:#fff}
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+
+    <p data-key="commonB2">Select Language</p>
+     <!--for select language-->
+    <div class="custom-lang-dropdown">
+    <div class="lang-trigger" onclick="toggleLangMenu()">
+        <span id="current-lang-label"  style="  margin: 0;
+    font-size: 24px;
+    font-weight: 700;" data-key="commonB3">Language</span>
+        <span style=" margin-left: 240px;font-size: 26px;" class="toggle">+</span>
+    </div>
+    <ul class="lang-options" id="langOptions">
+        <li onclick="changeLanguage('en')">
+            <img src="https://flagcdn.com/w20/gb.png" alt="English"> English
+        </li>
+        <li onclick="changeLanguage('am')">
+            <img src="https://flagcdn.com/w20/et.png" alt="Amharic"> አማርኛ
+        </li>
+    </ul>
+</div>
+    
+
 <!--For bottom nav-->
 
 <div style=" padding-bottom: calc(72px + env(safe-area-inset-bottom));">
@@ -1197,6 +1224,7 @@ function goToCheckout(){
 }
 
 renderCart();
+
 
 </script>
 <script src="languages.js"></script>
