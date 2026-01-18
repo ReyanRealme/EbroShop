@@ -119,6 +119,12 @@ const ebroTranslations = {
           "address16": "Phone Number",
           "address17": "Set as default address",
           "address18": "Cancel",
+          "address19": "Shipping Intelligence",
+          "address20": "To provide you with a seamless shopping experience, please ",
+          "address21": "register your delivery address",
+          "address22": "A precise location ensures your luxury items are handled with care and delivered directly to your doorstep without delay.  Your address is the final link in our premium service chain.",
+          "address23": "Faster Checkout",
+          "address24": "Secure Delivery",
           
         },
 
@@ -241,6 +247,12 @@ const ebroTranslations = {
           "address16": "ስልክ ቁጥር",
           "address17": "ዋና አድራሻዎት ያርጉ",
           "address18": "ይሰርዙ",
+          "address19": "Shipping Intelligence",
+          "address20": "እንከን የለሽ የግብይት ተሞክሮ ለእርስዎ ለማቅረብ፣ እባክዎን ",
+          "address21": "ትዕዛዝዎን መቀበያ አድራሻ ያስመዝግቡ ",
+          "address22": "ትክክለኛ አድራሻዎ የአዘዙዋቸው ዕቃዎችዎ በጥንቃቄ እንዲያዙ እና ያለምንም መዘግየት በቀጥታ ወደ ቤትዎ እንዲደርሱ ያረጋግጣል። አድራሻዎ በፕሪሚየም የአገልግሎት ሰንሰለታችን ውስጥ የመጨረሻው አገናኝ ነው።",
+          "address23": "Faster Checkout",
+          "address24": "Secure Delivery",
         }
 };
     

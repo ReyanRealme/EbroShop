@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $adr2  = $_POST['address2'];
     $city  = $_POST['city'];
     $cntry = $_POST['country'];
-    $zip   = $_POST['zip_code'];
     $phn   = $_POST['phone'];
     $is_def = isset($_POST['is_default']) ? 1 : 0;
 
@@ -913,7 +912,36 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <a href="address.php" class="btn-cancel" data-key="address18">Cancel</a>
         </form>
     <?php endif; ?>
-            </div>
+            
+
+   <div style="background: #ffffff; border-radius: 16px; padding: 25px; margin: 20px 0; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid #f0f4f8;">
+    
+    <div style="display: flex; align-items: center; margin-bottom: 18px; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px;">
+        <div style="background: #eef6ff; width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+            <span style="font-size: 22px;">📍</span>
+        </div>
+        <h4 style="margin: 0; color: #1a1a1a; font-size: 18px; font-weight: 700; letter-spacing: -0.2px;" data-key="address19">Shipping Intelligence</h4>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #fdfbf7 0%, #f5f7fa 100%); border-left: 5px solid #185282; padding: 20px; border-radius: 0 12px 12px 0;">
+        <p style="margin: 0; color: #2c3e50; font-size: 14.5px; line-height: 1.7; font-weight: 500;">
+            <span data-key="address20">To provide you with a seamless shopping experience, please </span>
+             <span style="color: #185282; font-weight: 700;" data-key="address21">register your delivery address</span>. 
+            <span data-key="address22">A precise location ensures your luxury items are handled with care and delivered directly to your doorstep without delay. 
+            Your address is the final link in our premium service chain.</span>
+        </p>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-top: 15px;">
+        <div style="flex: 1; display: flex; align-items: center; font-size: 12px; color: #7f8c8d; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid #f1f1f1;">
+            <i class="fa fa-bolt" style="color: #FF9800; margin-right: 6px;"></i> <span data-key="address23">Faster Checkout</span>
+        </div>
+        <div style="flex: 1; display: flex; align-items: center; font-size: 12px; color: #7f8c8d; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid #f1f1f1;">
+            <i class="fa fa-shield-alt" style="color: #4CAF50; margin-right: 6px;"></i> <span data-key="address24">Secure Delivery</span>
+        </div>
+    </div>
+</div>  
+  </div>
 
    <br>
     <br>
