@@ -100,6 +100,26 @@ const ebroTranslations = {
           "account8": "Cancelled",
           "account9": "This order was not processed. You are free to remove it from your dashboard at any time.",
           "account10": "Return to Back",
+    
+    //address page
+          "address1": "Add a New Address",     
+          "address2": "← Return to Back",
+          "address3": "Saved Addresses",
+          "address4": "Your address book is empty.",
+          "address5": "Edit",
+          "address6": "Remove",
+          "address7": "First Name",
+          "address8": "Last Name",
+          "address9": "Company (Optional)",
+          "address10": "Address Line 1",
+          "address11": "Address Line 2 (Optional)",
+          "address12": "City",
+          "address13": "Country/Region",
+          "address14": "Ethiopia",
+          "address16": "Phone Number",
+          "address17": "Set as default address",
+          "address18": "Cancel",
+          
         },
 
 
@@ -203,7 +223,24 @@ const ebroTranslations = {
           "account9": "ይህ ትዕዛዝ በተለያዩ ምክንያቶች ተሰርዟል። በማንኛውም ጊዜ ከዳሽቦርድዎ ላይ ማስወገድ ይችላሉ።",
           "account10": "ወደቀድሞ ገፅ ይመለሱ",
        
-
+   //address page
+          "address1": "አዲስ አድራሻ ያክሉ",     
+          "address2": "← ወደቀድሞ ገፅ ይመለሱ",
+          "address3": "የተቀመጡ አድራሻዎች",
+          "address4": "የአድራሻ መዝገብዎ ባዶ ነው።",
+          "address5": "ኢዲት አርግ",
+          "address6": "አስወግድ",
+          "address7": "ስም",
+          "address8": "ያአባት ስም",
+          "address9": "ኩባንያ(አማራጭ)",
+          "address10": "አድራሻ 1",
+          "address11": "አድራሻ 2 (አማራጭ)",
+          "address12": "ያሉበት ከተማ",
+          "address13": "አገር/ክልል",
+          "address14": "ኢትዮጵያ",
+          "address16": "ስልክ ቁጥር",
+          "address17": "ዋና አድራሻዎት ያርጉ",
+          "address18": "ይሰርዙ",
         }
 };
     
