@@ -125,7 +125,37 @@ const ebroTranslations = {
           "address22": "A precise location ensures your luxury items are handled with care and delivered directly to your doorstep without delay.  Your address is the final link in our premium service chain.",
           "address23": "Faster Checkout",
           "address24": "Secure Delivery",
+       
+    // Product Page
+          "babyproduct1": "Home",      
+          "babyproduct2": "Baby Products",  
+          "babyproduct3": "NO MORE PRODUCT",  
+          "basicfood1": "Basic Foods",
+          "cookingingrident": "Cooking Ingredients",
+          "Cosmotics": "Cosmotics",
+          "Dayper": "Dayper and Wipes ",
+          "Liquid": "Liquid Soap",
+          "Modes": "Modes and Soft ",
+          "oil": "Food oil",
+          "other": "Flour Cooking Ingredients",
+          "Packaged": "Packaged Goods",
+          "Packed": "Packed Foods",
+          "Powder": "Powder Soap",
+
+    //cart page
+          "cart1": "SHOPPING BAG", 
+          "cart2": "Your Bag is empty! please add products to your bag.",  
+          "cart3": "CONTINUE SHOPPING", 
+          "cart4": "ORDER SUMMARY", 
+          "cart5": "Subtotal",
+          "cart6": "TOTAL:", 
+          "cart7": "for order now click `order now`",  
+          "cart8": "ORDER NOW", 
+          "cart9": "CONTINUE SHOPPING",  
           
+          
+
+
         },
 
 
@@ -245,7 +275,7 @@ const ebroTranslations = {
           "address13": "አገር/ክልል",
           "address14": "ኢትዮጵያ",
           "address16": "ስልክ ቁጥር",
-          "address17": "ዋና አድራሻዎት ያርጉ",
+          "address17": "ዋና አድራሻዎ ያርጉ",
           "address18": "ይሰርዙ",
           "address19": "Shipping Intelligence",
           "address20": "እንከን የለሽ የግብይት ተሞክሮ ለእርስዎ ለማቅረብ፣ እባክዎን ",
@@ -253,6 +283,35 @@ const ebroTranslations = {
           "address22": "ትክክለኛ አድራሻዎ የአዘዙዋቸው ዕቃዎችዎ በጥንቃቄ እንዲያዙ እና ያለምንም መዘግየት በቀጥታ ወደ ቤትዎ እንዲደርሱ ያረጋግጣል። አድራሻዎ በፕሪሚየም የአገልግሎት ሰንሰለታችን ውስጥ የመጨረሻው አገናኝ ነው።",
           "address23": "Faster Checkout",
           "address24": "Secure Delivery",
+
+   //Product Page
+          "babyproduct1": "ዋና ገፅ",      
+          "babyproduct2": "የህፃናት ወተት",  
+          "babyproduct3": "ተጨማሪ ምርት የለም።",
+          "basicfood1": "የመሬት እቃዎች",
+          "cookingingrident": "ምግብ መስረያ ግባቶች",
+          "Cosmotics": "ኮስሞቲክሶች",
+          "Dayper": "ዳይፐር እና ዋይፕስ ",
+          "Liquid": "ፈሳሽ ሳሙና",
+          "Modes": "ሞዲየስ እና ሶፍት ",
+          "oil": "የምግብ ዘይት",
+          "other": "ቅመማቅመም ዱቄቶች",
+          "Packaged": "የታሸጉ እቃዎች",
+          "Packed": "የታሸጉ ምግቦች",
+          "Powder": "የዱቄት ሳሙና",
+
+    //cart page
+          "cart1": "መገበያያ ቦርሳ", 
+          "cart2": "ቦርሳዎ ባዶ ነው! እባኮዎ ወደቦርሳዎ ምርቶችን ይጨምሩ።",  
+          "cart3": "ግዢዎን ይቀጥሉ", 
+          "cart4": "እስካሁን የመርጡት", 
+          "cart5": "ድምር",
+          "cart6": "አጠቃላይ ድምር:", 
+          "cart7": "አሁን ማዘዝ ከፈለጉ `አሁን ይዘዙ` የሚለውን ጠቅ ያርጉ",  
+          "cart8": "አሁን ይዘዙ", 
+          "cart9": "ግዢዎን ይቀጥሉ",    
+
+
         }
 };
     
