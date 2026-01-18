@@ -943,9 +943,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>  
   </div>
 
-   <br>
-    <br>
-    <br>
 
 
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
