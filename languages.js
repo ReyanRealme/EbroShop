@@ -91,8 +91,15 @@ const ebroTranslations = {
           "account1": "Order History",  
           "account2": "No orders yet.", 
           "delete_error": "Notice: You cannot delete an order while it is in \'Pending\' status because our team is currently processing it.",
-          "confirm_delete": "Are you sure you want to remove this record from your history?"
-
+          "confirm_delete": "Are you sure you want to remove this record from your history?",
+          "account3": "Order Status Guide",
+          "account4": "Pending",
+          "account5": "We have received your order! Our team is currently preparing and verifying your items. Deletion is restricted during this phase.",
+          "account6": "Completed", 
+          "account7": "Great news! Your items have been successfully delivered. You can now clear this from your history if you wish.",
+          "account8": "Cancelled",
+          "account9": "This order was not processed. You are free to remove it from your dashboard at any time.",
+          "account10": "Return to Back",
         },
 
 
@@ -186,7 +193,16 @@ const ebroTranslations = {
           "account1": "የትዕዛዝዎ ታሪክ",  
           "account2": "እስካሁን ምንም አላዘዙም😥", 
           "delete_error": "ማሳሰብያ: አንድን ያዘዙት እቃ በ'Pending' ሁኔታ ላይ እያለ መሰረዝ አይችሉም ምክንያቱም አስተናጋጆቻችን በዚህ ሰዓት ትዕዛዝዎ በማዘጋጀት ላየ ናቸው።",
-          "confirm_delete": "እርግጠኛ ነዎት ይህንን መዝገብ ከታሪክዎ ውስጥ መሰረዝ ይፈልጋሉ?"
+          "confirm_delete": "እርግጠኛ ነዎት ይህንን መዝገብ ከታሪክዎ ውስጥ መሰረዝ ይፈልጋሉ?",
+          "account3": "የትዕዛዝ ሁኔታ መመርያ",
+          "account4": "Pending/በሂደት ላይ",
+          "account5": "ትዕዛዝዎን ተቀብለናል! አስተናጋጆቻችን በአሁኑ ጊዜ እቃዎችዎን እያዘጋጁ እና እያረጋገጡ ነው። በዚህ ደረጃ መሰረዝ የተገደበ ነው።",
+          "account6": "Completed/ተጠናቋል",
+          "account7": "መልካም ዜና! እቃዎችዎ በተሳካ ሁኔታ ኦርደር ተደርጓል። ከፈለጉ ይህንን ከታሪክዎ ማጽዳት ይችላሉ።",
+          "account8": "Cancelled/ተሰርዟል",
+          "account9": "ይህ ትዕዛዝ በተለያዩ ምክንያቶች ተሰርዟል። በማንኛውም ጊዜ ከዳሽቦርድዎ ላይ ማስወገድ ይችላሉ።",
+          "account10": "ወደቀድሞ ገፅ ይመለሱ",
+       
 
         }
 };

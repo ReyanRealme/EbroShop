@@ -877,16 +877,16 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <div style="background: #ffffff; border-radius: 16px; padding: 25px; margin: 25px 0; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
     <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f9f9f9; padding-bottom: 12px;">
         <span style="font-size: 24px; margin-right: 12px;">📋</span>
-        <h4 style="margin: 0; color: #1a1a1a; font-size: 18px; letter-spacing: 0.5px;">Order Status Guide</h4>
+        <h4 style="margin: 0; color: #1a1a1a; font-size: 18px; letter-spacing: 0.5px;" data-key="account3">Order Status Guide</h4>
     </div>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
         <div style="background: #fff9f0; border-left: 4px solid #ff9800; padding: 15px; border-radius: 0 12px 12px 0;">
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                 <i class="fa fa-clock" style="color: #ff9800; margin-right: 8px;"></i>
-                <strong style="color: #ff9800; font-size: 14px; text-transform: uppercase;">Pending</strong>
+                <strong style="color: #ff9800; font-size: 14px; text-transform: uppercase;" data-key="account4">Pending</strong>
             </div>
-            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;"  data-key="account5">
                 We have received your order! Our team is currently preparing and verifying your items. Deletion is restricted during this phase.
             </p>
         </div>
@@ -894,9 +894,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <div style="background: #f0fdf4; border-left: 4px solid #4caf50; padding: 15px; border-radius: 0 12px 12px 0;">
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                 <i class="fa fa-check-circle" style="color: #4caf50; margin-right: 8px;"></i>
-                <strong style="color: #4caf50; font-size: 14px; text-transform: uppercase;">Completed</strong>
+                <strong style="color: #4caf50; font-size: 14px; text-transform: uppercase;" data-key="account6">Completed</strong>
             </div>
-            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;" data-key="account7">
                 Great news! Your items have been successfully delivered. You can now clear this from your history if you wish.
             </p>
         </div>
@@ -904,9 +904,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <div style="background: #fef2f2; border-left: 4px solid #f44336; padding: 15px; border-radius: 0 12px 12px 0;">
             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                 <i class="fa fa-times-circle" style="color: #f44336; margin-right: 8px;"></i>
-                <strong style="color: #f44336; font-size: 14px; text-transform: uppercase;">Cancelled</strong>
+                <strong style="color: #f44336; font-size: 14px; text-transform: uppercase;" data-key="account8">Cancelled</strong>
             </div>
-            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;">
+            <p style="margin: 0; color: #5d5d5d; font-size: 13.5px; line-height: 1.6;" data-key="account9">
                 This order was not processed. You are free to remove it from your dashboard at any time.
             </p>
         </div>
@@ -921,11 +921,11 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <span class="default-tag"><?php echo strtoupper($user_data['role']); ?></span>
         </div>
         <div class="location">
-            Email ID: <?php echo htmlspecialchars($_SESSION['user_id']); ?>
+            User ID: <?php echo htmlspecialchars($_SESSION['user_id']); ?>
         </div>
     </div>
 
-    <a href="login.html" class="btn-outline">Return to Back</a>
+    <a href="login.html" class="btn-outline" data-key="account10">Return to Back</a>
         </div>
 
     
