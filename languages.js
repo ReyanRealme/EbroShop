@@ -153,7 +153,14 @@ const ebroTranslations = {
           "cart8": "ORDER NOW", 
           "cart9": "CONTINUE SHOPPING",  
           
-          
+    //change password page
+          "change1": "Change Password",
+          "change2": "Current Password",
+          "change3": "New Password",
+          "change4": "Confirm New Password",
+          "change5": "Passwords do not match!",
+          "change6": "Update Password",
+          "change7": "←Return to Back",     
 
 
         },
@@ -304,14 +311,22 @@ const ebroTranslations = {
           "cart1": "መገበያያ ቦርሳ", 
           "cart2": "ቦርሳዎ ባዶ ነው! እባኮዎ ወደቦርሳዎ ምርቶችን ይጨምሩ።",  
           "cart3": "ግዢዎን ይቀጥሉ", 
-          "cart4": "እስካሁን የመርጡት", 
+          "cart4": "የተጠቀሙት ሂሳብ", 
           "cart5": "ድምር",
           "cart6": "አጠቃላይ ድምር:", 
           "cart7": "አሁን ማዘዝ ከፈለጉ `አሁን ይዘዙ` የሚለውን ጠቅ ያርጉ",  
           "cart8": "አሁን ይዘዙ", 
           "cart9": "ግዢዎን ይቀጥሉ",    
+    
+   //change password page
+          "change1": "የይለፍ ቃል/ፓስወርድ መቀየርያ",
+          "change2": "የበፊቱ ፓስወርድ ያስገቡ",
+          "change3": "አዲስ ፓስወርድ ያስገቡ",
+          "change4": "አዲስ ፓስወርድ ያረጋግጡ",
+          "change5": "የይለፍ ቃሉ የተሳሳተ ነው!",
+          "change6": "ሴቭ ያድርጉ",
+          "change7": "←ወደቀድሞ ገፅ ይመለሱ",
           
-
 
         }
 };
