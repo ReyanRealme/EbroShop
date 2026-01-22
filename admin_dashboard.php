@@ -26,8 +26,17 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// --- 3. FETCH ALL PRODUCTS ---
-$result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
+// --- 3. FETCH PRODUCTS WITH SEARCH ---
+$search = isset($_GET['search_prod']) ? mysqli_real_escape_string($conn, $_GET['search_prod']) : '';
+
+$query = "SELECT * FROM products";
+if (!empty($search)) {
+    // Searches by product name or category
+    $query .= " WHERE name LIKE '%$search%' OR category LIKE '%$search%'";
+}
+$query .= " ORDER BY created_at DESC";
+
+$result = $conn->query($query);
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +87,12 @@ $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
             h1 { font-size: 20px; }
             input, select, button { font-size: 16px !important; } /* Prevents tiny text zoom */
         }
+
+        /*for search*/
+        .search-wrapper { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .prod-search-box { display: flex; background: #fff; border: 2px solid #0076ad; border-radius: 8px; overflow: hidden; width: 100%; max-width: 400px; }
+        .prod-search-box input { border: none; padding: 10px 15px; flex: 1; outline: none; font-size: 14px; }
+        .btn-search { background: #0076ad; color: white; border: none; padding: 0 20px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -130,8 +145,14 @@ $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
         <button type="submit" class="btn-add">SAVE PRODUCT</button>
     </form>
 
-    <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
-    <h2>Manage Existing Products</h2>
+         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 40px;">
+              <h2>Manage Existing Products</h2>
+    
+              <form method="GET" action="admin_dashboard.php" class="prod-search-box">
+                 <input type="text" name="search_prod" placeholder="Search product name or category..." value="<?php echo htmlspecialchars($search); ?>">
+                 <button type="submit" class="btn-search">SEARCH</button>
+              </form>
+         </div>
     
     <div class="table-container"> <table>
             <thead>
