@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="style.css">
     <title>Login Overlay</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -229,25 +230,33 @@
             if (e.target === mask) { window.history.back(); }
         });
 
-        // --- SESSION CHECK (NO FLICKER) ---
-        fetch('check_session.php')
-            .then(response => response.json())
-            .then(data => {
-                const loggedInView = document.getElementById('view-logged-in');
-                const loggedOutView = document.getElementById('view-logged-out');
-                
-                if (data.loggedIn) {
-                    currentUserRole = data.role; // Set the role from PHP
-                    document.getElementById('display-title').innerText = "Hi, " + data.name;
-                    loggedInView.style.display = 'block'; // Show Menu
-                } else {
-                    loggedOutView.style.display = 'block'; // Show Login Form
-                }
-            })
-            .catch(() => {
-                // If anything breaks, show the login form as fallback
-                document.getElementById('view-logged-out').style.display = 'block';
-            });
+      // --- SESSION CHECK (NO FLICKER) ---
+fetch('check_session.php')
+    .then(response => response.json())
+    .then(data => {
+        const loggedInView = document.getElementById('view-logged-in');
+        const loggedOutView = document.getElementById('view-logged-out');
+        
+        if (data.loggedIn) {
+            currentUserRole = data.role; // Set the role from PHP
+            document.getElementById('display-title').innerText = "Hi, " + data.name;
+            
+            // --- NEW: ONLY SHOW ADMIN PANEL TO ADMINS ---
+            const adminPanelLink = document.querySelector('a[onclick="handleAdminRedirect()"]').parentElement;
+            if (currentUserRole !== 'admin') {
+                adminPanelLink.style.display = 'none';
+            }
+            
+            loggedInView.style.display = 'block'; // Show Menu
+        } else {
+            loggedOutView.style.display = 'block'; // Show Login Form
+        }
+    })
+    .catch(() => {
+        document.getElementById('view-logged-out').style.display = 'block';
+    });
+    
     </script>
+    <script src="languages.js"></script>
 </body>
 </html>
