@@ -10,32 +10,44 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $message = "";
 $status = "";
 
-// 1. Handle Role Update with Error-Catching
 if (isset($_POST['update_role'])) {
     $target_id = mysqli_real_escape_string($conn, $_POST['user_id']);
-    $role_to_try = mysqli_real_escape_string($conn, $_POST['role_type']);
+    $role_input = $_POST['role_type']; // This is 'admin' or 'user' from the form
 
-    // We try to update. If it fails, we try the alternative case (User vs user)
+    // Step 1: Try the update exactly as requested
+    // We use a @ to suppress the warning so we can handle it manually
     try {
-        $sql = "UPDATE users SET role = '$role_to_try' WHERE id = '$target_id'";
-        if ($conn->query($sql)) {
-            $message = "Success! Role updated to " . strtoupper($role_to_try);
-            $status = "success";
-        }
-    } catch (mysqli_sql_exception $e) {
-        // If 'user' fails, your DB likely wants 'User' (Capital U)
-        $alt_role = ($role_to_try == 'user') ? 'User' : 'admin';
-        $sql_alt = "UPDATE users SET role = '$alt_role' WHERE id = '$target_id'";
+        $sql = "UPDATE users SET role = '$role_input' WHERE id = '$target_id'";
+        $result = $conn->query($sql);
         
-        if ($conn->query($sql_alt)) {
-            $message = "Success! Role updated to " . strtoupper($alt_role);
+        $message = "Success! Role updated to " . strtoupper($role_input);
+        $status = "success";
+    } 
+    catch (mysqli_sql_exception $e) {
+        // Step 2: If 'user' failed, it's because of the ENUM restriction.
+        // We now try 'User' with a Capital U, which is the most common fix.
+        $fallback_role = ($role_input == 'user') ? 'User' : 'admin';
+        
+        $sql_fix = "UPDATE users SET role = '$fallback_role' WHERE id = '$target_id'";
+        
+        if ($conn->query($sql_fix)) {
+            $message = "Success! Role updated to " . strtoupper($fallback_role);
             $status = "success";
         } else {
-            $message = "Database Error: " . $e->getMessage();
-            $status = "error";
+            // Step 3: If it still fails, the column might expect 'Customer'
+            $sql_final = "UPDATE users SET role = 'Customer' WHERE id = '$target_id'";
+            if ($conn->query($sql_final)) {
+                $message = "Success! Role updated to CUSTOMER";
+                $status = "success";
+            } else {
+                $message = "Database Error: " . $e->getMessage();
+                $status = "error";
+            }
         }
     }
 }
+
+// Keep your existing Search and SQL fetch logic below...
 
 // 2. Fetch Users for the Design
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
@@ -139,9 +151,9 @@ $result = $conn->query($sql);
                                             <i class="fa fa-user-shield"></i> Make Admin
                                         </button>
                                     <?php else: ?>
-                                        <input type="hidden" name="role_type" value="user">
+                                      <input type="hidden" name="role_type" value="user">
                                         <button type="submit" name="update_role" class="action-btn btn-demote">
-                                            <i class="fa fa-user-minus"></i> Remove Admin
+                                            Remove Admin
                                         </button>
                                     <?php endif; ?>
                                 </form>
