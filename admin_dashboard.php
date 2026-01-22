@@ -89,6 +89,9 @@ $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
         </div>
         <div class="nav-links">
             <a href="admin_orders.php" class="btn-view-orders">VIEW CUSTOMER ORDERS</a>
+            <a href="admin_users.php" class="btn-view-orders">VIEW CUSTOMER Identity</a>
+            <a href="admin_addresses.php" class="btn-view-orders">VIEW CUSTOMER ADDRESS</a>
+            <a href="admin_roles.php" class="btn-view-orders">MAKE AND REMOVE ADMIN</a>
             <a href="logout.php" class="btn-logout" onclick="return confirm('Log out of admin panel?')">Logout</a>
         </div>
     </div>
