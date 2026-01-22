@@ -1018,7 +1018,7 @@ body {
       <h2 style="font-size: 20px;"  class="section" data-key="about34">Contact Information</h2>
       <div class="muted-block">
         <span data-key="about35">For inquiries or support, please contact us via our</span> 
-        <a href="./contact.html" style="color:var(--accent);font-weight:700;text-decoration:underline" data-key="about36">Contact Us page</a>.
+        <a href="./contact.html" style=" color:var(--accent);font-weight:700;text-decoration:underline" data-key="about36">Contact Us page</a>.
       </div>
     </div>
   </main>
@@ -1370,11 +1370,16 @@ body {
                         window.location.href = 'logout.php';
                     }
                 };
-                authText.innerText = "Logout (" + data.name + ")";
+                if (authText) { 
+                  authText.innerText = "Logout"; 
+                  authText.style.color = "#cc0000"; // Red color
+                  authText.style.fontWeight = "bold"; // Bold text }
+                
             }
+          }
         })
         .catch(err => console.error("Session check failed", err));
-
+      
 
 
     /*header part*/
