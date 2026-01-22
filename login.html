@@ -173,7 +173,12 @@
                 
                 <a href="forget.html" class="forgot-link">Forgot your password?</a>
                 
-                <button class="btn-blue" onclick="location.href='register.html'">Create new Account</button>
+                <div style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif;">
+                   <span style="color: #333; font-size: 13px;">Do not have an account? </span>
+                   <a href="register.html" style="color: #136835; text-decoration: none; font-weight: bold; font-size: 16px;">Register</a>
+                </div>
+
+               
             </div>
 
             <div id="view-logged-in" class="view-container">
@@ -255,7 +260,7 @@ fetch('check_session.php')
     .catch(() => {
         document.getElementById('view-logged-out').style.display = 'block';
     });
-    
+
     </script>
     <script src="languages.js"></script>
 </body>
