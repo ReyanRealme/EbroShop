@@ -1,41 +1,37 @@
 <?php
 include 'db.php';
 
-// Security: Only allow users with 'admin' role to access this page
+// Security: Only allow Admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: index.html");
+    header("Location: login.html");
     exit();
 }
 
 $message = "";
 $status = "";
 
-// Handle the Form Submission
+// 1. Handle Role Update
 if (isset($_POST['update_role'])) {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    
-    // We force the input to lowercase 'admin' or 'user' to match your database defaults
-    $role_to_set = strtolower(mysqli_real_escape_string($conn, $_POST['role_type'])); 
+    $target_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+    $new_role = mysqli_real_escape_string($conn, $_POST['role_type']);
 
-    // Check if the user exists first
-    $user_check = $conn->query("SELECT id FROM users WHERE email = '$email'");
-
-    if ($user_check && $user_check->num_rows > 0) {
-        // Update the role (This will work now because we changed the column to VARCHAR)
-        $sql = "UPDATE users SET role = '$role_to_set' WHERE email = '$email'";
-        
-        if ($conn->query($sql)) {
-            $message = "Success: <b>$email</b> has been updated to <b>$role_to_set</b>.";
-            $status = "success";
-        } else {
-            $message = "Database Error: Unable to update role.";
-            $status = "error";
-        }
+    $update = $conn->query("UPDATE users SET role = '$new_role' WHERE id = '$target_id'");
+    if ($update) {
+        $message = "Success! Role updated to " . strtoupper($new_role);
+        $status = "success";
     } else {
-        $message = "Error: No user found with the email '$email'.";
+        $message = "Error: " . $conn->error;
         $status = "error";
     }
 }
+
+// 2. Handle Search Logic (To find the user you want to change)
+$search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+
+$sql = "SELECT id, first_name, last_name, email, role FROM users 
+        WHERE (first_name LIKE '%$search%' OR email LIKE '%$search%')
+        ORDER BY role ASC";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -43,88 +39,110 @@ if (isset($_POST['update_role'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebroshop | Admin Permissions</title>
+    <title>Admin | Role Control</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8fafc; margin: 0; padding: 20px; color: #334155; }
+        .container { max-width: 900px; margin: 0 auto; background: #ffffff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         
-        .role-card { background: #ffffff; width: 100%; max-width: 420px; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-top: 8px solid #136835; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; flex-wrap: wrap; }
+        .title-area h2 { margin: 0; color: #136835; font-size: 24px; }
         
-        .header { text-align: center; margin-bottom: 30px; }
-        .header i { font-size: 50px; color: #136835; margin-bottom: 15px; }
-        .header h2 { margin: 0; color: #1e293b; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
-        .header p { color: #64748b; font-size: 14px; margin-top: 5px; }
+        /* Search Form */
+        .search-form { display: flex; align-items: center; background: #f1f5f9; padding: 5px 15px; border-radius: 30px; border: 1px solid #cbd5e1; width: 350px; }
+        .search-form input { border: none; background: transparent; padding: 10px; outline: none; width: 100%; font-size: 14px; }
+        .search-form button { background: none; border: none; cursor: pointer; color: #136835; }
 
-        /* Notification Styling */
-        .alert { padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 14px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-        .error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        /* Notification */
+        .alert { padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-weight: 600; }
+        .success { background: #dcfce7; color: #166534; }
+        .error { background: #fee2e2; color: #991b1b; }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 10px; font-weight: 700; color: #475569; font-size: 13px; text-transform: uppercase; }
+        /* Table */
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; color: #475569; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
         
-        input[type="email"] { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; box-sizing: border-box; transition: 0.3s; }
-        input[type="email"]:focus { border-color: #136835; box-shadow: 0 0 0 4px rgba(19, 104, 53, 0.1); }
+        /* Action Buttons */
+        .role-btn { border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 11px; transition: 0.2s; text-transform: uppercase; }
+        .btn-make-admin { background: #136835; color: white; margin-right: 5px; }
+        .btn-make-user { background: #64748b; color: white; }
+        .role-btn:hover { opacity: 0.8; transform: translateY(-1px); }
 
-        /* Modern Radio Group */
-        .role-toggle { display: flex; gap: 12px; margin-bottom: 30px; }
-        .role-toggle label { flex: 1; position: relative; cursor: pointer; }
-        .role-toggle input { display: none; }
-        .role-toggle span { display: block; padding: 12px; text-align: center; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; color: #64748b; font-weight: 600; transition: 0.3s; font-size: 14px; }
-        
-        .role-toggle input:checked + span { background: #136835; border-color: #136835; color: #ffffff; }
+        .role-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; }
+        .badge-admin { background: #136835; color: white; }
+        .badge-user { background: #e2e8f0; color: #475569; }
 
-        .btn-confirm { width: 100%; padding: 16px; border: none; border-radius: 12px; background: #136835; color: #ffffff; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(19, 104, 53, 0.2); }
-        .btn-confirm:hover { background: #0e522a; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(19, 104, 53, 0.3); }
-
-        .back-link { display: block; text-align: center; margin-top: 25px; text-decoration: none; color: #64748b; font-size: 13px; font-weight: 600; transition: 0.2s; }
-        .back-link:hover { color: #136835; }
+        .back-link { text-decoration: none; color: #136835; font-weight: 800; font-size: 13px; margin-bottom: 20px; display: inline-block; }
     </style>
 </head>
 <body>
 
-<div class="role-card">
-    <div class="header">
-        <i class="fa fa-user-gear"></i>
-        <h2>Role Management</h2>
-        <p>Assign administrative authority</p>
+<div class="container">
+    <a href="admin_dashboard.php" class="back-link"><i class="fa fa-arrow-left"></i> Back to Panel</a>
+    <div class="admin-header">
+        <div class="title-area">
+            <h2><i class="fa fa-user-shield"></i> Role Management</h2>
+            <p style="color:#64748b; margin:5px 0 0; font-size:14px;">Find a user to grant or revoke admin access</p>
+        </div>
+
+        <form method="GET" class="search-form">
+            <button type="submit"><i class="fa fa-search"></i></button>
+            <input type="text" name="search" placeholder="Search by name or email..." value="<?php echo htmlspecialchars($search); ?>">
+        </form>
     </div>
 
     <?php if($message): ?>
-        <div class="alert <?php echo $status; ?>">
-            <i class="fa <?php echo ($status == 'success') ? 'fa-check-circle' : 'fa-triangle-exclamation'; ?>"></i>
-            <span><?php echo $message; ?></span>
-        </div>
+        <div class="alert <?php echo $status; ?>"><?php echo $message; ?></div>
     <?php endif; ?>
 
-    <form method="POST">
-        <div class="form-group">
-            <label>User Identity (Email)</label>
-            <input type="email" name="email" placeholder="user@ebroshop.com" required>
-        </div>
-
-        <div class="form-group">
-            <label>New Permission Level</label>
-            <div class="role-toggle">
-                <label>
-                    <input type="radio" name="role_type" value="admin" checked>
-                    <span>ADMIN</span>
-                </label>
-                <label>
-                    <input type="radio" name="role_type" value="user">
-                    <span>USER</span>
-                </label>
-            </div>
-        </div>
-
-        <button type="submit" name="update_role" class="btn-confirm">
-            Apply Permissions
-        </button>
-    </form>
-
-    <a href="admin_dashboard.php" class="back-link">
-        <i class="fa fa-arrow-left"></i> Return to Dashboard
-    </a>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Detail</th>
+                    <th>Current Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($result->num_rows > 0): ?>
+                    <?php while($user = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td>
+                                <strong><?php echo $user['first_name'] . " " . $user['last_name']; ?></strong><br>
+                                <small style="color:#64748b;"><?php echo $user['email']; ?></small>
+                            </td>
+                            <td>
+                                <span class="role-badge <?php echo ($user['role'] == 'admin') ? 'badge-admin' : 'badge-user'; ?>">
+                                    <?php echo strtoupper($user['role']); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                    <?php if($user['role'] != 'admin'): ?>
+                                        <button type="submit" name="update_role" value="1" class="role-btn btn-make-admin">
+                                            <input type="hidden" name="role_type" value="admin">
+                                            Make Admin
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="submit" name="update_role" value="1" class="role-btn btn-make-user">
+                                            <input type="hidden" name="role_type" value="user">
+                                            Remove Admin
+                                        </button>
+                                    <?php endif; ?>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr><td colspan="3" style="text-align:center; padding:40px; color:#94a3b8;">No users found for "<?php echo htmlspecialchars($search); ?>"</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>
