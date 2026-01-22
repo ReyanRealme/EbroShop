@@ -1,6 +1,7 @@
 <?php
 include 'db.php';
 
+// Security check
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.html");
     exit();
@@ -11,26 +12,23 @@ $status = "";
 
 if (isset($_POST['update_role'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    
-    // Check if you are trying to make them a 'user'. 
-    // We capitalize it to 'User' to prevent the "Data Truncated" error
-    $new_role = ($_POST['role_type'] == 'user') ? 'User' : 'admin';
+    // We make sure it is lowercase 'admin' or 'user'
+    $role_to_set = ($_POST['role_type'] == 'admin') ? 'admin' : 'user';
 
-    $check_user = $conn->query("SELECT id FROM users WHERE email = '$email'");
-    
-    if ($check_user && $check_user->num_rows > 0) {
-        // We use the $new_role variable here
-        $update = $conn->query("UPDATE users SET role = '$new_role' WHERE email = '$email'");
+    $user_check = $conn->query("SELECT id FROM users WHERE email = '$email'");
+
+    if ($user_check && $user_check->num_rows > 0) {
+        $sql = "UPDATE users SET role = '$role_to_set' WHERE email = '$email'";
         
-        if ($update) {
-            $message = "Success! $email is now a " . $new_role;
+        if ($conn->query($sql)) {
+            $message = "Account <b>$email</b> updated to <b>$role_to_set</b>.";
             $status = "success";
         } else {
-            $message = "Error: Database rejected the update.";
+            $message = "Database Error: " . $conn->error;
             $status = "error";
         }
     } else {
-        $message = "Error: Email not found.";
+        $message = "User not found with email: $email";
         $status = "error";
     }
 }
