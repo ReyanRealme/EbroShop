@@ -1,7 +1,6 @@
 <?php
 include 'db.php';
 
-// Security: Only allow current Admin to access
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.html");
     exit();
@@ -10,27 +9,28 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $message = "";
 $status = "";
 
-// Handle Role Change Request
 if (isset($_POST['update_role'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $new_role = $_POST['role_type']; // 'admin' or 'user'
+    
+    // Check if you are trying to make them a 'user'. 
+    // We capitalize it to 'User' to prevent the "Data Truncated" error
+    $new_role = ($_POST['role_type'] == 'user') ? 'User' : 'admin';
 
-    // 1. Check if user exists in the 'users' table
-    // We only select 'id' to verify existence; no address columns are touched here.
     $check_user = $conn->query("SELECT id FROM users WHERE email = '$email'");
     
     if ($check_user && $check_user->num_rows > 0) {
-        // 2. Update only the 'role' column
+        // We use the $new_role variable here
         $update = $conn->query("UPDATE users SET role = '$new_role' WHERE email = '$email'");
+        
         if ($update) {
-            $message = "Success! Account <b>$email</b> has been updated to <b>" . strtoupper($new_role) . "</b>.";
+            $message = "Success! $email is now a " . $new_role;
             $status = "success";
         } else {
-            $message = "Database Error: Could not update role.";
+            $message = "Error: Database rejected the update.";
             $status = "error";
         }
     } else {
-        $message = "Error: No user found with the email '$email'.";
+        $message = "Error: Email not found.";
         $status = "error";
     }
 }
@@ -96,14 +96,14 @@ if (isset($_POST['update_role'])) {
         <div class="form-group">
             <label>Permission Level</label>
             <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" name="role_type" id="role_admin" value="admin" checked>
-                    <label for="role_admin">Promote to Admin</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" name="role_type" id="role_user" value="user">
-                    <label for="role_user">Demote to User</label>
-                </div>
+               <div class="radio-option">
+                  <input type="radio" name="role_type" id="role_admin" value="admin" checked>
+                  <label for="role_admin">Promote to Admin</label>
+               </div>
+               <div class="radio-option">
+                  <input type="radio" name="role_type" id="role_user" value="user">
+                  <label for="role_user">Remove Admin</label>
+               </div>
             </div>
         </div>
 
