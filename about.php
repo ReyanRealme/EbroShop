@@ -1392,6 +1392,8 @@ body {
                          const hi = ebroTranslations[lang]["common1"] === "ይመዝገቡ" ? "ሰላም" : "Hi";
                          
                          authText.innerText = hi + ", " + data.name; 
+                         authText.style.color = "#cc0000"; // Red color
+                         authText.style.fontWeight = "bold"; // Bold text }
                          authText.className = "logged-in-style"; // Use a CSS class for cleaner code
                      }
                  }
