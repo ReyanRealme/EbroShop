@@ -4,7 +4,7 @@ const ebroTranslations = {
     "en": {
   /*Common for all pages*/   
  /* Overlay Menu*/
-         "common1": "✍️Sign Up",
+         "common1": "Sign Up/Register",
          "common2": "Home",
          "common3": "About-us",
          "common4": "Contact-us",
