@@ -501,7 +501,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
   </div>
-  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #0d4a7e;" data-key="common1">Signup</div>
+  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #cc0000; font-family: 'Times New Roman', Times, serif;" data-key="common1">Signup</div>
 </a>
 
 
@@ -517,7 +517,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M9 22V12h6v10"/>
 </svg>
 
-    <span data-key="common2">Home</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;" data-key="common2">Home</span>
   </a>
 
   <a href="about.php" class="menu-item">
@@ -528,7 +528,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <line x1="12" y1="11" x2="12" y2="16"/>
   <circle cx="12" cy="8" r="1"/>
 </svg>
-    <span data-key="common3">About-us</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;"  data-key="common3">About-us</span>
   </a>
 
   <a href="contact.html" class="menu-item">
@@ -539,7 +539,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
            C10.6 22 2 13.4 2 3.5a1 1 0 011-1H6.5a1 1 0 011 1
            11.4 11.4 0 00.6 3.6 1 1 0 01-.25 1z"/>
 </svg>
-    <span data-key="common4">Contact-us</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;"  data-key="common4">Contact-us</span>
   </a>
 
   <a href="faq.html" class="menu-item">
@@ -554,7 +554,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
            c2.4 0 4.2 1.4 4.2 3.6
            0 1.6-1 2.6-2.5 3.4z"/>
 </svg>
-    <span data-key="common5">FAQs</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;"  data-key="common5">FAQs</span>
   </a>
 
   <a href="terms.html" class="menu-item">
@@ -564,7 +564,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M14 2v6h6"/>
   <path d="M8 13l2 2l4-4"/>
 </svg>
-    <span data-key="common6">Terms Of Service</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common6">Terms Of Service</span>
   </a>
 
   <a href="returns.html" class="menu-item">
@@ -578,7 +578,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M19.5 12a7.5 7.5 0 0 1-7.5 7.5"/>
   <polyline points="12 22 10 18 14 18"/>
 </svg> 
-    <span data-key="common7">Return Policy</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common7">Return Policy</span>
   </a>
 
   <a href="privacy.html" class="menu-item">
@@ -587,11 +587,11 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M4 3h16v18H4z"/>
   <path d="M7 7h10M7 11h10M7 15h6"/>
 </svg>
-    <span data-key="common8">Privacy Policy</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common8">Privacy Policy</span>
   </a>
 
   <!-- Products -->
-  <div class="menu-title" data-key="common9">Products</div>
+  <div class="menu-title"   style="font-family: 'Times New Roman', Times, serif;" data-key="common9">Products</div>
 
   <a href="basicfood.php" class="menu-item">
     <!-- Food Icon -->
@@ -600,7 +600,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M3 9h18l-1 10H4z"/>
   <path d="M16 4a2 2 0 1 1-4 0"/>
 </svg>
-    <span data-key="common10">Basic Food</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common10">Basic Food</span>
   </a>
 
   <a href="cooking.php" class="menu-item">
@@ -611,7 +611,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M11 9h2"/>
   <path d="M11 13h2"/>
 </svg>
-    <span data-key="common11">Cooking ingrident</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common11">Cooking ingrident</span>
   </a>
 
   <a href="babyproduct.php" class="menu-item">
@@ -620,7 +620,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <circle cx="12" cy="7" r="4"/>
       <path d="M6 21v-2a6 6 0 0112 0v2"/>
     </svg>
-    <span data-key="common12">Baby product</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common12">Baby product</span>
   </a>
 
   <a href="cosmotics.php" class="menu-item">
@@ -628,7 +628,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 10h-6l-3-6-3 6H3l5 7-2 6 6-4 6 4-2-6 5-7z"/>
     </svg>
-    <span data-key="common13">HealthCare</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common13">HealthCare</span>
   </a>
 
    <a href="packaged.php" class="menu-item">
@@ -648,7 +648,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M12 3v4" />
   <path d="M12 13v8" />
 </svg>
-    <span data-key="common14">Packaged Goods</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common14">Packaged Goods</span>
   </a>
 
    <a href="powdersoap.php" class="menu-item">
@@ -674,7 +674,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <circle cx="12" cy="17" r="0.8" />
   <circle cx="15" cy="16" r="0.8" />
 </svg>
-    <span data-key="common15">Powder Soap</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common15">Powder Soap</span>
   </a>
 
     <a href="dayper.php" class="menu-item">
@@ -697,7 +697,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M9 12c1 2 5 2 6 0" />
 </svg>
 
-    <span data-key="common16">Dayper$Wipes</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common16">Dayper$Wipes</span>
   </a>
   <a href="packedfood.php" class="menu-item">
     <!-- Health/Medical Icon -->
@@ -720,7 +720,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Label -->
   <path d="M9 10h6v4H9z" />
 </svg>
-    <span data-key="common17">Packed Foods</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common17">Packed Foods</span>
   </a>
 
     <a href="otheringrident.php" class="menu-item">
@@ -738,7 +738,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <circle cx="12" cy="9" r="0.6" />
   <circle cx="15" cy="10" r="0.6" />
 </svg>
-    <span data-key="common18">Spices powders</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common18">Spices powders</span>
   </a>
 
     <a href="oil.php" class="menu-item">
@@ -755,7 +755,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Oil drop -->
   <path d="M19 14c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
 </svg>
-    <span data-key="common19">Food Oils</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common19">Food Oils</span>
   </a>
 
    <a href="modes.php" class="menu-item">
@@ -771,7 +771,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <path d="M6 9l-3 3 3 3"/>
   <path d="M18 9l3 3-3 3"/>
 </svg>
-    <span data-key="common20">Modes$Soft</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common20">Modes$Soft</span>
   </a>
 
     <a href="liquidsoap.php" class="menu-item">
@@ -790,10 +790,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Soap drop -->
   <path d="M12 11c1.2 1.6 1.2 2.8 0 3.8a2 2 0 0 1-3 0c-1.2-1-.8-2.4 0-3.8l1.5-2z"/>
 </svg>
-    <span data-key="common21">Liquid soap</span>
+    <span  style="font-family: 'Times New Roman', Times, serif;"  data-key="common21">Liquid soap</span>
   </a>
 
-<div class="menu-title" data-key="common22">Additional</div>
+<div class="menu-title"  style="font-family: 'Times New Roman', Times, serif;"  data-key="common22">Additional</div>
 
 
 <a href="host.html" class="menu-item">
@@ -802,7 +802,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/>
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
-    <span data-key="common23">Our Hosts</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common23">Our Hosts</span>
   </a>
 
 
@@ -812,7 +812,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/>
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
-    <span data-key="common24">Developer</span>
+    <span   style="font-family: 'Times New Roman', Times, serif;" data-key="common24">Developer</span>
   </a>
   <br>
 <br>
@@ -1272,7 +1272,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
  <script>
-    /*For signup or logout*/
+      /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
         .then(response => response.json())
@@ -1280,16 +1280,26 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             const authLink = document.getElementById('auth-link');
             const authText = document.getElementById('auth-text');
 
-            if (data.loggedIn) {
-                // Change to Logout mode
-                authLink.href = "javascript:void(0)"; // Prevent immediate jump
-                authLink.onclick = function() {
-                    if(confirm("Are you sure you want to log out?")) {
-                        window.location.href = 'logout.php';
-                    }
-                };
-                authText.innerText = "Logout (" + data.name + ")";
-            }
+                          if (data.loggedIn) {
+                     // Change to Logout mode
+                     authLink.href = "javascript:void(0)"; 
+                     
+                     // Call the function we just created
+                     authLink.onclick = function() {
+                         processLogout();
+                     };
+                 
+                     if (authText) { 
+                         // Get "Hi" translation
+                         const lang = localStorage.getItem("userLanguage") || "en";
+                         const hi = ebroTranslations[lang]["common1"] === "ይመዝገቡ" ? "ሰላም" : "Hi";
+                         
+                         authText.innerText = hi + ", " + data.name; 
+                         authText.style.color = "#cc0000"; // Red color
+                         authText.style.fontWeight = "bold"; // Bold text }
+                         authText.className = "logged-in-style"; // Use a CSS class for cleaner code
+                     }
+                 }
         })
         .catch(err => console.error("Session check failed", err));
 

@@ -574,7 +574,7 @@ body {
       <path d="M4 20a8 8 0 0116 0"/>
     </svg>
   </div>
-  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #cc0000;" data-key="common1">✍️Sign Up</div>
+  <div id="auth-text" style="font-size:14px; font-weight: 800;color: #cc0000;" data-key="common1">Sign Up</div>
 </a>
 
 
