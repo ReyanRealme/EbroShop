@@ -528,7 +528,7 @@ body {
   </div>
 
  <div class="logo-area">
-  <a href="about.html" class="ebro-logo-link">
+  <a href="about.php" class="ebro-logo-link">
     
     <div class="ebro-logo-circle" title="EbRoShop">
       <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983404/j5tztu0kuzdspwmk3zfg.jpg" alt="EbRoShop Logo" class="ebro-logo-img">
@@ -1369,7 +1369,7 @@ body {
 
 
   <script>
-    /*For signup or logout*/
+   /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
         .then(response => response.json())
@@ -1377,21 +1377,24 @@ body {
             const authLink = document.getElementById('auth-link');
             const authText = document.getElementById('auth-text');
 
-            if (data.loggedIn) {
-                // Change to Logout mode
-                authLink.href = "javascript:void(0)"; // Prevent immediate jump
-                authLink.onclick = function() {
-                    if(confirm("Are you sure you want to log out?")) {
-                        window.location.href = 'logout.php';
-                    }
-                };
-                if (authText) { 
-                  authText.innerText = "Hi, " + data.name + ""; 
-                  authText.style.color = "#cc0000"; // Red color
-                  authText.style.fontWeight = "bold"; // Bold text }
-                
-            }
-          }
+                          if (data.loggedIn) {
+                     // Change to Logout mode
+                     authLink.href = "javascript:void(0)"; 
+                     
+                     // Call the function we just created
+                     authLink.onclick = function() {
+                         processLogout();
+                     };
+                 
+                     if (authText) { 
+                         // Get "Hi" translation
+                         const lang = localStorage.getItem("userLanguage") || "en";
+                         const hi = ebroTranslations[lang]["common1"] === "ይመዝገቡ" ? "ሰላም" : "Hi";
+                         
+                         authText.innerText = hi + ", " + data.name; 
+                         authText.className = "logged-in-style"; // Use a CSS class for cleaner code
+                     }
+                 }
         })
         .catch(err => console.error("Session check failed", err));
       

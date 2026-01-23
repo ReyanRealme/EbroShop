@@ -46,6 +46,7 @@ const ebroTranslations = {
          "commonB16": "+251970130755",
          "commonB17": "ebroshoponline@gmail.com",
          "commonB18": " Powered by Realme",
+         "logout_confirm": "Are you sure you want to log out?",
 
           
 /*about page*/
@@ -211,6 +212,8 @@ const ebroTranslations = {
          "commonB16": "+251970130755",
          "commonB17": "ebroshoponline@gmail.com",
          "commonB18": "በRealme የተሰራ",
+         "logout_confirm": "እርግጠኛ ነዎት ከመለያዎ መውጣት ይፈልጋሉ?",
+
       
          
  /*about page*/
@@ -391,4 +394,17 @@ function confirmDelete(event, url) {
         window.location.href = url;
     }
     return false;
+}
+
+function processLogout() {
+    // 1. Check current language
+    const lang = localStorage.getItem("userLanguage") || "en";
+    
+    // 2. Get message from dictionary
+    const msg = ebroTranslations[lang]["logout_confirm"] || "Are you sure you want to log out?";
+
+    // 3. Show confirmation
+    if (confirm(msg)) {
+        window.location.href = 'logout.php';
+    }
 }
