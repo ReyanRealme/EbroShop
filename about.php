@@ -1,28 +1,39 @@
+<?php
+include 'db.php';
+
+// Count total products
+$prod_result = $conn->query("SELECT COUNT(*) as total FROM products");
+$prod_count = ($prod_result) ? $prod_result->fetch_assoc()['total'] : 0;
+
+// Count total users
+$user_result = $conn->query("SELECT COUNT(*) as total FROM users");
+$user_count = ($user_result) ? $user_result->fetch_assoc()['total'] : 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <title>Baby Products</title>
+  <link rel="stylesheet" href="style.css">
+  <title>About EbRo-Shop</title>
 
   <style>
-/*header*/
-/* RESET */
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;background:#fff}
+    /* RESET */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {background: #fff;}
 
 /* HEADER */
-.header{
-  background:#136835;
-  height:62px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  color:#fff;
-}
+ .header {
+    background: #136835;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    color: #fff;
+  }
 .left,.right{display:flex;align-items:center;gap:18px}
 .icon-btn{cursor:pointer;display:flex;align-items:center}
 .icon-btn svg{
@@ -95,7 +106,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 }
 
 
-
 /* LOGO */
 .logo-area{display:flex;align-items:center;gap:10px}
 .logo-circle{
@@ -103,7 +113,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   display:flex;align-items:center;justify-content:center;padding:5px;
 }
 .logo-text .main{font-size:20px;font-weight:bold}
-.logo-text .sub{font-size:10px;margin-top:2px;text-transform:uppercase}
+.logo-text .sub{font-size:10px;margin-top:2px;text-transform:capitalize;}
 
 /* OVERLAY */
 #menuOverlay{
@@ -246,7 +256,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 .product-card img {
     width:100%;
     height:150px;
-    object-fit:contain;
+    object-fit:cover;
     display:block;
 }
 .product-name {
@@ -279,124 +289,93 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 }
 
 
+    
+    
 
- /*product page*/
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
 
-    body {
-      margin: 0;
-      background: #f5f5f5;
-    }
+  
+  
+  /*about page*/
+    /* MAIN CARD */
 
-    /* Breadcrumb */
-    .breadcrumb {
-      padding: 16px;
-      background: #fff;
-      font-size: 14px;
-    }
 
-    .breadcrumb a {
-      text-decoration: none;
-      color: #000;
-    }
-
-    /* Title */
-    .page-title {
-      padding: 20px 16px;
-      font-size: 28px;
-      font-weight: bold;
-      background: #fff;
-    }
-
-    /* Controls */
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background: #fff;
-      border-top: 1px solid #eee;
-    }
-
-    .view-icons {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
-
-    .view-icons button {
-      width: 42px;
-      height: 34px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .view-icons button.active {
-      border-color: #000;
-    }
-
-    select {
-      padding: 6px 8px;
-      font-size: 14px;
-    }
-
-    /* Products */
-    .products {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* default: two products */
-      gap: 16px;
-      padding: 16px;
+      grid-template-columns: 1fr 320px;
+      gap: 28px;
+      align-items: start;
     }
 
-    .products.single {
-      grid-template-columns: 1fr;
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
     }
 
-    .product {
-      background: #fff;
-      border-radius: 6px;
-      padding: 16px;
+    /* Animate text sections */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: scale(0.85);
+      transition: all 2s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: scale(1);
     }
 
-    .product img {
-      width: 100%;
-      height: 180px;
-      object-fit: contain;
-    }
-
-    .product h4 {
-      margin: 12px 0 6px;
-      font-size: 16px;
-    }
-
-    .price {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      display: block;
+    /* Headings and text */
+    h1.hero {
+      font-size: 30px;
       text-align: center;
-      background: #0d6efd;
-      color: #fff;
-      padding: 12px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: bold;
+    }
+
+    h2.section {
+      margin: 28px 0 12px 0;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    p.lead {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    ul.checklist {
+      padding-left: 20px;
+      margin: 8px 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .stat {
+      background: #f5f8fa;
+      padding: 22px 18px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: inset 0 1px rgba(0,0,0,0.02);
+    }
+
+    .stat .num {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .muted-block {
+      background: #f7fbfa;
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--muted);
+      font-size: 15px;
     }
 
 
-
+    
         /*for FAQ's*/
         .links a:hover {
     color: #000;
@@ -440,61 +419,74 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-    /*For No more product*/
-    .no-more-product {
-  /* Layout */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 10px 0; /* Adjust vertical spacing to match your screen height */
-  
-  /* Borders */
-  border-top: 1px solid #d3d3d3;
-  border-bottom: 1px solid #d3d3d3;
-  
-  
-  /* Typography */
-  color: #808080;
-  font-family: 'Arial', sans-serif; /* A clean sans-serif matches the image */
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0px;
-  text-transform: uppercase;
-  
-  /* Background */
-  background-color: #ffffff;
+  /* 1. Use a specific class to avoid conflicts with other lists or links */
+.ebro-bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    /* Height calculation including modern phone safe areas */
+    height: calc(72px + env(safe-area-inset-bottom)) !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e0e0e0 !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    z-index: 99999 !important; /* Extremely high to stay on top */
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    box-shadow: 0 -3px 12px rgba(0,0,0,0.08) !important;
 }
 
-
-
-/*its come from php*/
-.product h3 {
-    color: black !important; /* Forces the text to be black */
-    margin: 10px 0;          /* Adds a little space around the name */
-    font-size: 1.2rem;       /* Adjusts the size of the name */
+/* 2. Target only the items inside THIS nav */
+.ebro-bottom-nav .ebro-nav-item {
+    flex: 1 !important; /* Forces 5 equal parts */
+    text-align: center !important;
+    text-decoration: none !important;
+    color: #666 !important;
+    font-size: 11px !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
-.product {
-    position: relative; /* This allows the badge to sit on top of the image */
+
+.ebro-bottom-nav .ebro-nav-item svg {
+    width: 24px !important;
+    height: 24px !important;
+    margin-bottom: 4px !important;
+    stroke: #666 !important;
+    fill: none !important;
+    stroke-width: 2 !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
-.sold-out-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: red;
-    color: white;
-    padding: 5px 10px;
-    font-weight: bold;
-    border-radius: 5px;
-    z-index: 10;
-    transform: rotate(-15deg); /* Makes it look like a stamp */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+/* 3. The Cart Badge specific to this nav */
+.ebro-bottom-nav .ebro-badge {
+    position: absolute !important;
+    top: 8px !important;
+    right: 22% !important;
+    background: #ff0000 !important; /* Red for attention */
+    color: #fff !important;
+    font-size: 10px !important;
+    min-width: 17px !important;
+    height: 17px !important;
+    border-radius: 50% !important;
+    display: none; /* Controlled by JS */
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: bold !important;
+}
+
+/* 4. Android Comfort Fix: Pushes the whole page content up */
+body {
+    padding-bottom: calc(85px + env(safe-area-inset-bottom)) !important;
 }
   </style>
 </head>
 <body>
-    <!--Header-->
 
 <!-- TOP TICKER -->
 <div style=" background:#136835; --white:#ffffff; --muted-white:rgba(255,255,255,0.95);">
@@ -568,7 +560,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   </div>
 </div>
 
-
 <!-- OVERLAY + SIDE MENU -->
 <div id="menuOverlay" aria-hidden="true"></div>
 
@@ -602,7 +593,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <span data-key="common2">Home</span>
   </a>
 
-  <a href="about.php" class="menu-item">
+  <a href="about.html" class="menu-item">
     <!-- Info Icon -->
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
      stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -902,6 +893,11 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
 
+
+
+
+
+
 <!-- SEARCH PANEL -->
 <div id="searchPanel" aria-hidden="true">
   <div class="search-top">
@@ -915,63 +911,134 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
   </div>
 </div>
-
-
-
-
-
-
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    
-    <a href="home.html"><b style="font-size: medium;" data-key="babyproduct1">Home</b></a> &gt; <b style="color: #8d8888;" data-key="babyproduct2">Baby Products</b>
-  </div>
-
-  <!-- Title -->
-  <div style="text-align: center; margin-top: 0px; color: #185282;" class="page-title" data-key="babyproduct2">Baby Products</div>
-
-  <!-- Controls -->
-  <div class="controls">
-    <div class="view-icons">
-      <!-- List view icon -->
-      <button id="oneCol" title="List View">
-        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-          <rect y="1" width="24" height="2" fill="#666" />
-          <rect y="7" width="24" height="2" fill="#666" />
-          <rect y="13" width="24" height="2" fill="#666" />
-        </svg>
-      </button>
-
-      <!-- Grid view icon -->
-      <button id="twoCol" class="active" title="Grid View">
-        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="1" width="8" height="14" fill="#666" />
-          <rect x="14" y="1" width="8" height="14" fill="#666" />
-        </svg>
-      </button>
-    </div>
-
-   
-<select id="sort"> <option value="default">Default</option>
-    <option value="az">A-Z</option>
-    <option value="za">Z-A</option>
-    <option value="priceLow">Price: Low to High</option>
-    <option value="priceHigh">Price: High to Low</option>
-</select>
-
-
-
-  </div>
-
-  <!-- Products -->
-  <div class="products" id="products">
   
-    </div>
-  <div class="no-more-product" data-key="babyproduct3">
-  NO MORE PRODUCT
-</div>
-    
 
+
+
+   <div style=" --cyan: #09af6f;
+      --lime: #d9f200;
+      --muted: #666f78;
+      --card-border: #efebef;
+      --dark-footer: #2f2f2f;
+      --accent: #0d4a7e;
+      --radius: 14px;
+      font-family: Helvetica Neue, Arial, sans-serif;">
+   <div style="    margin: 0;
+      color: #222;
+      background: #fff;">
+
+  <main  style=" width: 100%;
+      max-width: 500px; /*before it's 720*/
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(12, 24, 20, 0.03);
+      margin: 0px auto;" class="card">
+    <h1 style="text-align: center;color: var(--accent); font-family: 'Times New Roman', Times, serif;" class="hero animate-on-scroll" data-key="about1"><b>🎙</b>About us</h1>
+
+    <div class="animate-on-scroll">
+      <h2 style="font-size: 20px;" class="section" data-key="about2">Our Mission</h2>
+
+<p class="lead">
+    <span data-key="about3_part1">At </span>
+    <strong style="color:var(--accent);" data-key="about4">EbRoShop</strong>
+    <span data-key="about3_part2">, our mission is to make online shopping in Ethiopia simple, secure, and affordable. We provide a seamless digital marketplace that connects customers with high-quality products at unbeatable prices. Whether you’re looking for electronics, fashion, home essentials, or personal care products, we’re committed to ensuring a smooth and enjoyable shopping experience every time.</span>
+</p>
+ </div>
+
+    <div class="animate-on-scroll">
+        <h2 style="font-size: 20px;"  class="section" data-key="about5">What We Offer</h2>
+      <ul class="checklist">
+        <li>
+          <strong style="color:var(--accent) ;" data-key="about7">Wide Product Range:</strong> 
+          <span  data-key="about6">From daily essentials to exclusive deals. EbRoShop offers thousands of products across multiple categories.</span>
+        </li>
+        <li>
+          <strong style="color:var(--accent) ;" data-key="about8">Trusted Quality</strong>
+          <span data-key="about9">: Every product is carefully reviewed to meet our strict quality standards..</span>
+        </li>
+        <li>
+          <strong style="color:var(--accent) ;" data-key="about10">Fast Delivery:</strong>
+          <span data-key="about11"> Reliable delivery service that gets your order to your doorstep quickly and safely.</span>
+        </li>
+        <li>
+          <strong style="color:var(--accent) ;" data-key="about12">Secure Payments:</strong> 
+          <Span data-key="about13">Multiple secure payment options including Cash, bank transfers and Telebirr transfers.</Span>
+        </li>
+        <li>
+          <strong style="color:var(--accent) ;" data-key="about14">Customer Support:</strong> 
+          <span data-key="about15">Our dedicated support team is help you with your orders and inquiries.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="animate-on-scroll">
+      <h2 style="font-size: 20px;"  class="section" data-key="about16">Our Story</h2>
+      <p class="lead" data-key="about17">EbRoShop started with a simple idea — to bring convenience and trust to online shopping in Ethiopia. What began as a small local e‑commerce project quickly grew into one of the most loved digital marketplaces. We’ve helped thousands of customers find what they need with confidence, transparency, and affordability.</p>
+      <p class="lead" data-key="about18">Every product we add and every partnership we form is guided by our mission to make quality products accessible to everyone, everywhere in the country.</p>
+
+    </div>
+
+    <div class="animate-on-scroll">
+      <h2 style="font-size: 20px;"  class="section" data-key="about19">Our Vision</h2>
+      <p class="lead" data-key="about20">To be Ethiopia’s most trusted online marketplace — empowering people to shop smarter, live better, and connect with a modern digital economy.</p>
+       </div>
+
+   <aside class="animate-on-scroll">
+  <h2 style="font-size: 20px;" class="section" data-key="about21">Our Impact</h2>
+  
+  <div class="stat">
+    <div class="num"><?php echo number_format($prod_count); ?>+</div>
+    <div class="label" data-key="about22">Products Available</div>
+  </div>
+  
+  <div class="stat">
+    <div class="num"><?php echo number_format($user_count); ?>+</div>
+    <div class="label" data-key="about23">Happy Customers</div>
+  </div>
+  
+  <div class="stat">
+    <div class="num">5+</div>
+    <div class="label" data-key="about24">Partner Brands</div>
+  </div>
+</aside>
+
+    <div class="animate-on-scroll">
+ <h2 style="font-size: 20px;"  class="section" data-key="about25">Our Values</h2>
+        <div class="values">
+          <div class="value">
+            <h3 style="color:var(--accent) ;" data-key="about26">Customers First</h3>
+            <p data-key="about27">We always prioritize customer satisfaction above all else.</p>
+          </div>
+
+          <div class="value">
+            <h3 style="color:var(--accent) ;" data-key="about28">Integrity</h3>
+            <p data-key="about29">Honesty and transparency guide every transaction and partnership.</p>
+          </div>
+
+          <div class="value">
+            <h3 style="color:var(--accent) ;" data-key="about30">Innovation</h3>
+            <p data-key="about31">We continuously improve our platform and services to meet evolving customer needs.</p>
+          </div>
+
+          <div class="value">
+            <h3 style="color:var(--accent) ;" data-key="about32">Community</h3>
+            <p data-key="about33">We support local businesses and promote digital transformation within Ethiopia.</p>
+          </div>
+        </div>
+   </div>
+   <br>
+    <div class="animate-on-scroll">
+      <h2 style="font-size: 20px;"  class="section" data-key="about34">Contact Information</h2>
+      <div class="muted-block">
+        <span data-key="about35">For inquiries or support, please contact us via our</span> 
+        <a href="./contact.html" style=" color:var(--accent);font-weight:700;text-decoration:underline" data-key="about36">Contact Us page</a>.
+      </div>
+    </div>
+  </main>
+   </div>
+  </div>
 
 
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
@@ -1042,7 +1109,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="about.php" data-key="commonB5">About-us</a>
+    margin: 14px 0;" href="about.html" data-key="commonB5">About-us</a>
            
            <a style="  display: block;
     text-decoration: none;
@@ -1300,8 +1367,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </nav>
 </div>
 
+
   <script>
-        /*For signup or logout*/
+    /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
         .then(response => response.json())
@@ -1317,14 +1385,19 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                         window.location.href = 'logout.php';
                     }
                 };
-                authText.innerText = "Logout (" + data.name + ")";
+                if (authText) { 
+                  authText.innerText = "Hi, " + data.name + ""; 
+                  authText.style.color = "#cc0000"; // Red color
+                  authText.style.fontWeight = "bold"; // Bold text }
+                
             }
+          }
         })
         .catch(err => console.error("Session check failed", err));
+      
 
 
-        
-/*header*/
+    /*header part*/
 /* -------------------------
    Safe DOM ready wrapper
    ------------------------- */
@@ -1384,26 +1457,27 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   /* -------------------------
      Quick add function
      ------------------------- */
-function addToCart(e, name, price, image){
-  e.preventDefault();
-
-  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
-
-  const existing = cart.find(p => p.name === name);
-  if(existing){
-    existing.qty += 1;
-  } else {
-    cart.push({
-      name,
-      price,
-      qty: 1,
-      image // ✅ CLOUDINARY URL
-    });
-  }
-
-  localStorage.setItem("cartItems", JSON.stringify(cart));
-  alert(name + " added to cart");
-}
+  window.quickAdd = function(id){
+    const product = allProducts.find(p => p.id == id);
+    if(!product){ alert("Product not found"); return; }
+    const cart = loadCart();
+    const existing = cart.find(it => it.id == product.id);
+    if(existing){
+      existing.qty = (existing.qty || 0) + 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        img: product.image,
+        price: parseFloat(product.price),
+        qty: 1
+      });
+    }
+    saveCart(cart);
+    updateBadge();
+    const short = product.name.length > 30 ? product.name.slice(0,28) + "…" : product.name;
+    alert(short + " added to cart");
+  };
 
   /* -------------------------
      Side menu handlers
@@ -1486,7 +1560,7 @@ function addToCart(e, name, price, image){
   /* -------------------------
      Navigation buttons
      ------------------------- */
-  accountBtn.addEventListener("click", ()=> { window.location.href = "login.html"; });
+  accountBtn.addEventListener("click", ()=> { window.location.href = "login.html";});
   cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.html"; });
 
   /* Expose updateBadge so other pages can call window.updateBadge() after adding */
@@ -1496,92 +1570,20 @@ function addToCart(e, name, price, image){
 
 
 
-  /*for product page*/
-    const productsEl = document.getElementById('products');
-    const oneCol = document.getElementById('oneCol');
-    const twoCol = document.getElementById('twoCol');
-
-    // View toggle
-    oneCol.onclick = () => {
-      productsEl.classList.add('single');
-      oneCol.classList.add('active');
-      twoCol.classList.remove('active');
-    };
-
-    twoCol.onclick = () => {
-      productsEl.classList.remove('single');
-      twoCol.classList.add('active');
-      oneCol.classList.remove('active');
-    };
-
-   
 
 
-// Wait for the page to load the products from PHP
-document.addEventListener('DOMContentLoaded', function() {
-    const sortSelect = document.getElementById('sortSelect');
-    const productsContainer = document.getElementById('products');
+    //about part Animate only when visible on scroll
+    const items = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
 
-    if (sortSelect) {
-        sortSelect.onchange = function() {
-            // 1. Get all products currently in the grid
-            const items = Array.from(productsContainer.getElementsByClassName('product'));
-            const sortBy = this.value;
+    items.forEach(el => observer.observe(el));
 
-            if (sortBy === 'default') return;
-
-            // 2. Sort the array
-            items.sort((a, b) => {
-                const priceA = parseFloat(a.getAttribute('data-price')) || 0;
-                const priceB = parseFloat(b.getAttribute('data-price')) || 0;
-
-                if (sortBy === 'priceLow') return priceA - priceB;
-                if (sortBy === 'priceHigh') return priceB - priceA;
-                return 0;
-            });
-
-            // 3. Clear the container and re-add in order
-            productsContainer.innerHTML = "";
-            items.forEach(el => productsContainer.appendChild(el));
-        };
-    }
-});
-
-
-
-    // Quick add → add to cart + redirect
-function addToCart(e, btn) {
-  e.preventDefault(); // Prevents page jumping
-
-  const product = btn.closest(".product");
-  if (!product) return;
-
-  // This reads the data-attributes we added in the PHP above
-  const item = {
-    id: product.dataset.id,
-    name: product.dataset.name,
-    price: Number(product.dataset.price),
-    image: product.querySelector("img").src,
-    qty: 1
-  };
-
-  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const existing = cart.find(p => p.id === item.id);
-
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push(item);
-  }
-
-  localStorage.setItem("cartItems", JSON.stringify(cart));
-  
-  // Update badge immediately
-  if(typeof updateBadge === "function") updateBadge();
-
-  // Redirect to Cart
-  window.location.href = "Cart.html";
-}
 
 
             /*for FAQ's*/
@@ -1598,7 +1600,36 @@ function toggleSection(id, header) {
         icon.textContent = '+';
     }
 }
+
+
+
+(function() {
+    function updateBottomBadge() {
+        // This matches the key you use in your search script: EBRO_CART
+        const cartData = JSON.parse(localStorage.getItem('EBRO_CART')) || [];
+        const count = cartData.reduce((total, item) => total + item.qty, 0);
+        const badge = document.getElementById('bottomNavCartBadge');
+        
+        if (badge) {
+            if (count > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = count;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+
+    // Update on load and when storage changes
+    window.addEventListener('load', updateBottomBadge);
+    window.addEventListener('storage', updateBottomBadge);
+    
+    // Check every 2 seconds just in case of local changes
+    setInterval(updateBottomBadge, 2000);
+})();
   </script>
+
+
 <script src="languages.js"></script>
 </body>
 </html>

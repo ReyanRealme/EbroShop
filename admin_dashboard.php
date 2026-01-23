@@ -107,7 +107,7 @@ $result = $conn->query($query);
             <a href="admin_users.php" class="btn-view-orders">VIEW CUSTOMER IDENTITY</a>
             <a href="admin_addresses.php" class="btn-view-orders">VIEW CUSTOMER ADDRESS</a>
             <a href="admin_roles.php" class="btn-view-orders">MAKE AND REMOVE ADMIN</a>
-            <a href="logout.php" class="btn-logout" onclick="return confirm('Log out of admin panel?')">Logout</a>
+            <a href="logout.php" class="btn-logout" onclick="return confirm('Log out of admin panel?')">LOGOUT</a>
         </div>
     </div>
 

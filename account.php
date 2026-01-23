@@ -510,7 +510,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <span data-key="common2">Home</span>
   </a>
 
-  <a href="about.html" class="menu-item">
+  <a href="about.php" class="menu-item">
     <!-- Info Icon -->
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
      stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1001,7 +1001,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="about.html" data-key="commonB5">About-us</a>
+    margin: 14px 0;" href="about.php" data-key="commonB5">About-us</a>
            
            <a style="  display: block;
     text-decoration: none;
