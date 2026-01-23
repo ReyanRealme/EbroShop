@@ -1140,76 +1140,84 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <!--For bottom nav-->
 
 <div style="padding-bottom: calc(72px + env(safe-area-inset-bottom));">
-
     <nav style="position: fixed;
                 bottom: 0;
                 left: 0;
-                width: 100vw; /* Locked to viewport width */
+                width: 100%;
                 height: 72px;
-                padding-bottom: env(safe-area-inset-bottom);
                 background: #fff;
                 border-top: 1px solid #e0e0e0;
                 display: flex;
-                flex-direction: row;
                 justify-content: space-around;
                 align-items: center;
-                z-index: 9999;
-                box-sizing: border-box; /* Ensures padding doesn't push width */" 
-         class="bottom-nav">
+                z-index: 99999;
+                padding-bottom: env(safe-area-inset-bottom);
+                box-sizing: border-box;">
 
-        <a href="home.html" style="flex: 1; text-align: center; text-decoration: none; color: #333; font-size: 12px; font-family: system-ui, sans-serif;">
-            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #333;" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <a href="home.html" style="flex: 1; min-width: 0; text-align: center; text-decoration: none; color: #666; font-size: 11px;">
+            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #666;" viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <path d="M3 10.5L12 3l9 7.5"/><path d="M5 10v10h14V10"/>
             </svg>
             Home
         </a>
 
-        <a href="search.php" style="flex: 1; text-align: center; text-decoration: none; color: #333; font-size: 12px;">
-            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #333;" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <a href="search.php" style="flex: 1; min-width: 0; text-align: center; text-decoration: none; color: #666; font-size: 11px;">
+            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #666;" viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
             Search
         </a>
 
-        <a href="collection.html" style="flex: 1; text-align: center; text-decoration: none; color: #333; font-size: 12px;">
-            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #333;" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <a href="collection.html" style="flex: 1; min-width: 0; text-align: center; text-decoration: none; color: #666; font-size: 11px;">
+            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #666;" viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                 <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
             </svg>
             Collection
         </a>
 
-        <a href="login.html" style="flex: 1; text-align: center; text-decoration: none; color: #333; font-size: 12px;">
-            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #333;" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <a href="login.html" style="flex: 1; min-width: 0; text-align: center; text-decoration: none; color: #666; font-size: 11px;">
+            <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #666;" viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
             </svg>
             Account
         </a>
 
-        <a href="Cart.html" style="flex: 1; text-align: center; text-decoration: none; color: #136835; font-size: 12px; position: relative;">
-            <span style="position: absolute; 
-                         top: -2px; 
-                         left: 55%; /* Locked relative to icon */
-                         background: #000; 
-                         color: #fff; 
-                         font-size: 10px; 
-                         min-width: 16px; 
-                         height: 16px; 
-                         line-height: 16px; 
-                         border-radius: 50%; 
-                         font-weight: bold;" 
-                  id="bottomNavCartBadge">0</span>
+        <a href="Cart.html" style="flex: 1; min-width: 0; text-align: center; text-decoration: none; color: #136835; font-size: 11px; position: relative;">
+            <span id="bottomNavCartBadge" style="position: absolute; top: 0; right: 20%; background: #000; color: #fff; font-size: 10px; min-width: 16px; height: 16px; line-height: 16px; border-radius: 50%; font-weight: bold; display: none;">0</span>
             <svg style="width: 24px; height: 24px; display: block; margin: 0 auto 4px; stroke: #136835;" viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                 <path d="M1 1h4l3.6 12.6a2 2 0 0 0 2 1.4h9.4"/><path d="M7 6h15l-1.5 8H9"/>
             </svg>
             Bag
         </a>
-
     </nav>
 </div>
 
+
  <script>
+  (function() {
+    function updateBottomBadge() {
+        // This matches the key you use in your cart script: EBRO_CART
+        const cartData = JSON.parse(localStorage.getItem('EBRO_CART')) || [];
+        const count = cartData.reduce((total, item) => total + item.qty, 0);
+        const badge = document.getElementById('bottomNavCartBadge');
+        
+        if (badge) {
+            if (count > 0) {
+                badge.style.display = 'block';
+                badge.textContent = count;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+
+    // Update when page loads and when cart changes
+    window.addEventListener('load', updateBottomBadge);
+    window.addEventListener('storage', updateBottomBadge);
+})();
+
      /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
