@@ -1,14 +1,43 @@
+<?php
+include 'db.php';
+// Function to get count from your 'products' table
+function getCategoryCount($category, $conn) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM products WHERE category = ?");
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_row();
+    return $row[0];
+}
+
+// Get live data for your EbRo categories
+$total_all = $conn->query("SELECT COUNT(*) FROM products")->fetch_row()[0];
+$total_baby = getCategoryCount('BABY', $conn);
+$total_cooking = getCategoryCount('COOKINGITEMS', $conn);
+$total_basic = getCategoryCount('BASICFOOD', $conn);
+$total_packedfood = getCategoryCount('PACKEDFOOD', $conn);
+$total_oil = getCategoryCount('OIL', $conn);
+$total_spiecs = getCategoryCount('SPIECSPOWDER', $conn);
+$total_dayper = getCategoryCount('DAYPER&WIPES', $conn);
+$total_Cosmotics = getCategoryCount('COSMOTICS', $conn);
+$total_liquidsoap = getCategoryCount('LIQUIDSOAP', $conn);
+$total_powdersoap = getCategoryCount('POWDERSOAP', $conn);
+$total_modes = getCategoryCount('MODES&SOFT', $conn);
+$total_packaged = getCategoryCount('PACKAGEDGOODS', $conn);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="stylesheet" href="style.css">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-   
-<title>Shopping Cart</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Collection</title>
 
-<style>
+  <style>
+/*header*/
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;background:#fff}
@@ -47,6 +76,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   font-weight:bold;
   display:none;
 }
+
 
 /* EbRo logo – fully isolated */
 .ebro-logo-link {
@@ -245,7 +275,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 .product-card img {
     width:100%;
     height:150px;
-    object-fit:cover;
+    object-fit:contain;
     display:block;
 }
 .product-name {
@@ -279,51 +309,124 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
+ /*product page*/
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .breadcrumb a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    /* Title */
+    .page-title {
+      padding: 20px 16px;
+      font-size: 28px;
+      font-weight: bold;
+      background: #fff;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+
+    .view-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .view-icons button {
+      width: 42px;
+      height: 34px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .view-icons button.active {
+      border-color: #000;
+    }
+
+    select {
+      padding: 6px 8px;
+      font-size: 14px;
+    }
+
+    /* Products */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* default: two products */
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .products.single {
+      grid-template-columns: 1fr;
+    }
+
+    .product {
+      background: #fff;
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+    }
+
+    .product h4 {
+      margin: 12px 0 6px;
+      font-size: 16px;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      background: #08377e;
+      color: #fff;
+      padding: 12px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
 
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:#fff}
-.cart-wrapper{max-width:420px;margin:auto}
-.cart-header{display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid #eee}
-.cart-header h2{margin:0;font-size:20px;font-weight:700}
 
-.cart-empty{text-align:center;padding:60px 20px;display:none}
-.cart-empty p{color:#aaa;font-size:18px}
-.cart-empty a{display:inline-block;margin-top:25px;padding:14px 20px;border:2px solid #000;text-decoration:none;color:#000;font-weight:700}
-
-.cart-body{padding:15px;display:none}
-
-.product{display:flex;gap:12px;border:1px solid #eee;padding:12px;margin-bottom:12px}
-.product img{width:80px;height:80px;object-fit:contain}
-.info{flex:1}
-.info h4{margin:0 0 5px;font-size:15px}
-.info small{color:#999}
-
-.controls{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
-.qty{display:flex;align-items:center;border:1px solid #ddd}
-.qty button{width:32px;height:32px;border:none;background:#fff;font-size:18px;cursor:pointer}
-.qty span{padding:0 12px;font-weight:700}
-.price{font-weight:700;font-size:18px}
-.remove{font-size:20px;cursor:pointer;color:#999}
-
-.summary{border-top:1px solid #eee;padding:18px}
-.summary-row{display:flex;justify-content:space-between;margin:10px 0}
-.total{font-size:22px;color:#2d9bf0;font-weight:700}
-
-.checkout{background:#2d9bf0;color:#fff;border:none;width:100%;padding:14px;font-size:16px;font-weight:700;cursor:pointer}
-.continue{display:block;width:100%;margin-top:10px;padding:12px;border:2px solid #000;background:#fff;font-weight:700;text-align:center;text-decoration:none;color:#000}
-.note{font-size:12px;color:#999;margin-top:8px}
-
-
-
-/* small responsiveness */
-@media (max-width:520px){
-  .product-card{width:100%}
-  .logo-text .main{font-size:16px}
-}
-
-
- /*for FAQ's*/
+        /*for FAQ's*/
         .links a:hover {
     color: #000;
 }
@@ -362,10 +465,42 @@ body{margin:0;background:#fff}
   .cart {
     position: relative;
   }
-</style>
-</head>
 
+
+
+
+    /*For No more product*/
+    .no-more-product {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0; /* Adjust vertical spacing to match your screen height */
+  
+  /* Borders */
+  border-top: 1px solid #d3d3d3;
+  border-bottom: 1px solid #d3d3d3;
+  
+  
+  /* Typography */
+  color: #808080;
+  font-family: 'Arial', sans-serif; /* A clean sans-serif matches the image */
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  
+  /* Background */
+  background-color: #ffffff;
+}
+
+
+
+  </style>
+</head>
 <body>
+    <!--Header-->
 
 <!-- TOP TICKER -->
 <div style=" background:#136835; --white:#ffffff; --muted-white:rgba(255,255,255,0.95);">
@@ -791,51 +926,261 @@ body{margin:0;background:#fff}
 
 
 
-
-
-<!--for cart page-->
-<div class="cart-wrapper">
-  <div class="cart-header">
-    <h2 data-key="cart1">SHOPPING BAG</h2>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    
+    <a href="home.html"><b style="font-size: medium;">Home</b></a> &gt; <b style="color: #8d8888;">Collection
   </div>
 
-  <!-- EMPTY -->
-  <div class="cart-empty" id="emptyCart">
-    <p data-key="cart2">Your Bag is empty</p>
-    <a href="collection.html" data-key="cart3">CONTINUE SHOPPING</a>
-  </div>
+  <!-- Title -->
+  <div style="text-align: center; margin-top: 0px; color: #185282;" class="page-title" data-key="Collection1">Catagories</div>
 
-  <!-- CART -->
-  <div class="cart-body" id="cartBody">
-    <div id="items"></div>
+  <!-- Controls -->
+  <div class="controls">
+    <div class="view-icons">
+      <!-- List view icon -->
+      <button id="oneCol" title="List View">
+        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+          <rect y="1" width="24" height="2" fill="#666" />
+          <rect y="7" width="24" height="2" fill="#666" />
+          <rect y="13" width="24" height="2" fill="#666" />
+        </svg>
+      </button>
 
-    <div class="summary">
-      <strong data-key="cart4">ORDER SUMMARY</strong>
-
-      <div class="summary-row">
-        <span data-key="cart5">Subtotal</span>
-        <span id="subtotal">ETB 0.00</span>
-      </div>
-
-      <div class="summary-row">
-        <strong data-key="cart6">TOTAL:</strong>
-        <span class="total" id="total">ETB 0.00</span>
-      </div>
-
-      <div style="text-align:center;" class="note" data-key="cart7">for order now click `order now`</div>
-
-      <button class="checkout" onclick="goToCheckout()" data-key="cart8">ORDER NOW</button>
-      <a class="continue" href="collection.html" data-key="cart9">CONTINUE SHOPPING</a>
+      <!-- Grid view icon -->
+      <button id="twoCol" class="active" title="Grid View">
+        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="1" width="8" height="14" fill="#666" />
+          <rect x="14" y="1" width="8" height="14" fill="#666" />
+        </svg>
+      </button>
     </div>
+
+   
+<select id="sort">
+  <option value="default" selected>Default</option>
+  <option value="az">Alphabet A–Z</option>
+  <option value="za">Alphabet Z–A</option>
+</select>
+
+
   </div>
+
+  <!-- Products -->
+  <div class="products" id="products">
+  <div class="product"
+     data-id="2000"
+     data-name="basic Foods"
+     data-price="2000">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg">
+
+  <h3 style="color:#111; text-align: center;" data-key="basicfood1">basic Foods</h3>
+  <p style="color: #185282;"><?php echo $total_basic; ?>
+    <span data-key="collection2">products found</span></p>
+<br>
+  <a href="basicfood.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
 </div>
 
+
+  <div class="product"
+     data-id="2001"
+     data-name="Packed Foods"
+     data-price="2001">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg">
+
+  <h3 style="color:#111; text-align: center;" data-key="Packed">Packed Foods</h3>
+  <p style="color: #185282;"><?php echo $total_packedfood; ?> <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="packedfood.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+ 
+ <div class="product"
+     data-id="2002"
+     data-name="Packed Foods"
+     data-price="2002">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png">
+
+  <h3 style="text-align: center; color:#111" data-key="oil">Food Oils</h3>
+  <p style="color: #185282;">15 <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="oil.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2003"
+     data-name="Cooking items"
+     data-price="2003">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="cookingingrident">Cooking items</h3>
+  <p style="color: #185282;">16 <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="cooking.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2004"
+     data-name="Spices powders"
+     data-price="2004">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="other1">Spices powders</h3>
+  <p style="color: #185282;">6 <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="otheringrident.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2005"
+     data-name="Baby Products"
+     data-price="2005">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="babyproduct2">Baby Products</h3>
+  <p style="color: #185282;">14 <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="babyproduct.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2006"
+     data-name="Dayper and Wipes"
+     data-price="2006">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="Dayper">Dayper&Wipes</h3>
+  <p style="color: #185282;">33 <span data-key="collection2">products found</span></p>
 <br>
+  <a  href="dayper.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2007"
+     data-name="Cosmotics"
+     data-price="2007">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="Cosmotics">Cosmotics</h3>
+  <p style="color: #185282;">12 <span data-key="collection2">products found</span></p>
+<br>
+  <a  href="cosmotics.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2008"
+     data-name="Liquid soap"
+     data-price="2008">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="Liquid">Liquid soap</h3>
+  <p style="color: #185282;">14 <span data-key="collection2">products found</span></p>
+<br>
+  <a  href="liquidsoap.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2009"
+     data-name="Laundery Powders"
+     data-price="2009">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg">
+
+  <h3 style="text-align: center;color:#111" data-key="Powder">Powder soap</h3>
+  <p style="color: #185282;">7 <span data-key="collection2">products found</span></p>
+<br>
+  <a  href="powdersoap.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2010"
+     data-name="Modes and Soft"
+     data-price="2010">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg">
+
+  <h3 style="text-align: center; color:#111" data-key="Modes">Modes&Softs </h3>
+  <p style="color: #185282;">13 <span data-key="collection2">products found</span></p>
+<br>
+  <a  href="modes.php"
+   class="btn" data-key="collection3"
+    >
+     Shop now
+  </a>
+</div>
+
+ <div class="product"
+     data-id="2011"
+     data-name="Packaged Goods"
+     data-price="2011">
+
+  <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg">
+
+  <h3 style="text-align: center;color:#111" data-key="Packaged">Bottle Goods</h3>
+  <p style="color: #185282;">18 <span data-key="collection2">products found</span></p>
+<br>
+  <a  href="packaged.php"
+   class="btn" data-key="collection3">
+     Shop now
+  </a>
+</div>
+
+</div>
+  <div class="no-more-product" data-key="babyproduct3">
+  NO MORE Catagories
+</div>
+    
+
+
+
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
 <!--FAQ's-->
  <div style="   margin: 0;
@@ -1094,7 +1439,7 @@ body{margin:0;background:#fff}
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M21 21l-4-4"/></svg>
     </div>
 
-  <a href="collection.php" style="  flex: 1;
+  <a href="collection.html" style="  flex: 1;
     text-align: center;
     text-decoration: none;
     color: #666;
@@ -1162,9 +1507,7 @@ body{margin:0;background:#fff}
 </nav>
 </div>
 
-
-
-<script>
+  <script>
    /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
@@ -1198,6 +1541,8 @@ body{margin:0;background:#fff}
 
 
         
+    
+/*header*/
 /* -------------------------
    Safe DOM ready wrapper
    ------------------------- */
@@ -1257,27 +1602,26 @@ body{margin:0;background:#fff}
   /* -------------------------
      Quick add function
      ------------------------- */
-  window.quickAdd = function(id){
-    const product = allProducts.find(p => p.id == id);
-    if(!product){ alert("Product not found"); return; }
-    const cart = loadCart();
-    const existing = cart.find(it => it.id == product.id);
-    if(existing){
-      existing.qty = (existing.qty || 0) + 1;
-    } else {
-      cart.push({
-        id: product.id,
-        name: product.name,
-        img: product.image,
-        price: parseFloat(product.price),
-        qty: 1
-      });
-    }
-    saveCart(cart);
-    updateBadge();
-    const short = product.name.length > 30 ? product.name.slice(0,28) + "…" : product.name;
-    alert(short + " added to cart");
-  };
+function addToCart(e, name, price, image){
+  e.preventDefault();
+
+  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+  const existing = cart.find(p => p.name === name);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({
+      name,
+      price,
+      qty: 1,
+      image // ✅ CLOUDINARY URL
+    });
+  }
+
+  localStorage.setItem("cartItems", JSON.stringify(cart));
+  alert(name + " added to cart");
+}
 
   /* -------------------------
      Side menu handlers
@@ -1370,117 +1714,88 @@ body{margin:0;background:#fff}
 
 
 
+  /*for product page*/
+    const productsEl = document.getElementById('products');
+    const oneCol = document.getElementById('oneCol');
+    const twoCol = document.getElementById('twoCol');
+
+    // View toggle
+    oneCol.onclick = () => {
+      productsEl.classList.add('single');
+      oneCol.classList.add('active');
+      twoCol.classList.remove('active');
+    };
+
+    twoCol.onclick = () => {
+      productsEl.classList.remove('single');
+      twoCol.classList.add('active');
+      oneCol.classList.remove('active');
+    };
+
+   
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const productsEl = document.getElementById('products');
+  const itemsOriginal = [...productsEl.children]; // Save original order
 
-/*Cart part*/
-const CART_KEY = "cartItems";
+  document.getElementById('sort').onchange = function () {
+    let sorted;
 
-/* SAFE LOAD */
-function loadCart(){
-  try{
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  }catch{
-    return [];
-  }
-}
-
-function saveCart(cart){
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-}
-
-function renderCart(){
-  const cart = loadCart();
-  const empty = document.getElementById("emptyCart");
-  const body = document.getElementById("cartBody");
-  const itemsDiv = document.getElementById("items");
-
-  itemsDiv.innerHTML = "";
-
-  if(cart.length === 0){
-    empty.style.display = "block";
-    body.style.display = "none";
-    return;
-  }
-
-  empty.style.display = "none";
-  body.style.display = "block";
-
-  let subtotal = 0;
-
-  cart.forEach((item,index)=>{
-    subtotal += item.price * item.qty;
-
-    const el = document.createElement("div");
-    el.className = "product";
-    el.innerHTML = `
-      <img src="${item.image || 'https://via.placeholder.com/80'}">
-      <div class="info">
-        <h4>${item.name}</h4>
-        <div class="controls">
-          <div class="qty">
-            <button data-index="${index}" data-action="dec">−</button>
-            <span>${item.qty}</span>
-            <button data-index="${index}" data-action="inc">+</button>
-          </div>
-          <span class="price">ETB ${(item.price * item.qty).toFixed(2)}</span>
-          <span class="remove" data-index="${index}">✕</span>
-        </div>
-      </div>
-    `;
-    itemsDiv.appendChild(el);
-  });
-
-  document.getElementById("subtotal").textContent = "ETB " + subtotal.toFixed(2);
-  document.getElementById("total").textContent = "ETB " + subtotal.toFixed(2);
-}
-
-/* EVENTS */
-document.getElementById("items").addEventListener("click", e=>{
-  const index = e.target.dataset.index;
-  if(index === undefined) return;
-
-  const cart = loadCart();
-
-  if(e.target.dataset.action === "inc"){
-    cart[index].qty += 1;
-  }
-
-  if(e.target.dataset.action === "dec"){
-    cart[index].qty -= 1;
-    if(cart[index].qty <= 0){
-      cart.splice(index,1);
+    switch (this.value) {
+      case 'az':
+        sorted = [...itemsOriginal].sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
+        break;
+      case 'za':
+        sorted = [...itemsOriginal].sort((a, b) => b.dataset.name.localeCompare(a.dataset.name));
+        break;
+      case 'priceLow':
+        sorted = [...itemsOriginal].sort((a, b) => a.dataset.price - b.dataset.price);
+        break;
+      case 'priceHigh':
+        sorted = [...itemsOriginal].sort((a, b) => b.dataset.price - a.dataset.price);
+        break;
+      default:
+        sorted = itemsOriginal; // Default order
+        break;
     }
-  }
 
-  if(e.target.classList.contains("remove")){
-    cart.splice(index,1);
-  }
-
-  saveCart(cart);
-  renderCart();
+    sorted.forEach(el => productsEl.appendChild(el));
+  };
 });
 
-function goToCheckout(){
-  // cart already saved, just go
-  window.location.href = "order.html";
+
+
+
+    // Quick add → add to cart + redirect
+function addToCart(e, btn) {
+  e.preventDefault();
+
+  const product = btn.closest(".product");
+  if (!product) return;
+
+  const item = {
+    id: product.dataset.id,
+    name: product.dataset.name,
+    price: Number(product.dataset.price),
+    image: product.querySelector("img").src,
+    qty: 1
+  };
+
+  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+  const existing = cart.find(p => p.id === item.id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push(item);
+  }
+
+  localStorage.setItem("cartItems", JSON.stringify(cart));
+
+  // ✅ redirect always works
+  window.location.href = "Cart.html";
 }
-
-renderCart();
-
-
-
-//about part Animate only when visible on scroll
-    const items = document.querySelectorAll('.animate-on-scroll');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    items.forEach(el => observer.observe(el));
 
 
 
@@ -1498,7 +1813,7 @@ function toggleSection(id, header) {
         icon.textContent = '+';
     }
 }
-</script>
+  </script>
 <script src="languages.js"></script>
 </body>
 </html>
