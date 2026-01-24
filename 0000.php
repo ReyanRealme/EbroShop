@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="style.css">
+    <title>Login Overlay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #0076ad;
+            --border-light: #ddd;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Dark background click area */
+        .overlay-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: flex-end;
+            z-index: 9999;
+        }
+
+        .sidebar {
+            background: #fff;
+            width: 85%;
+            max-width: 270px;
+            height: 100%;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        /* FIX: Content starts invisible so user doesn't see "LOGIN" for a split second */
+        .view-container {
+            display: none;
+        }
+
+        .side-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .side-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .close-x {
+            text-decoration: none;
+            color: #333;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .field-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .star { color: #cc0000; }
+
+        .password-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 2px;
+            box-sizing: border-box;
+        }
+
+        .input-box-pass { padding-right: 40px; }
+
+        .toggle-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+
+        .btn-blue {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .btn-login {
+            background: var(--primary-blue);
+            color: #fff;
+            border: none;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: center;
+            color: var(--primary-blue);
+            text-decoration: none;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .account-menu { list-style: none; padding: 0; margin: 0; }
+        .menu-row { border-bottom: 1px solid #eee; }
+        .menu-row a {
+            display: block;
+            padding: 15px 0;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .menu-row a i {
+            width: 25px;
+            color: var(--primary-blue);
+            margin-right: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay-mask" id="overlayMask">
+        <div class="sidebar">
+            <div class="side-header">
+                <h2 id="display-title">Login</h2>
+                <a href="javascript:history.back()" class="close-x">&times;</a>
+            </div>
+            <div id="view-logged-out" class="view-container">
+                <form action="login.php" method="POST">
+                    <label class="field-label">Email Address <span class="star">*</span></label>
+                    <input type="email" name="email" class="input-box" placeholder="Email Address" required>
+                    
+                    <label class="field-label">Password <span class="star">*</span></label>
+                    <div class="password-container">
+                        <input type="password" name="password" id="login-pass" class="input-box input-box-pass" placeholder="Password" required>
+                        <i class="fa-solid fa-eye toggle-icon" onclick="togglePassword()"></i>
+                    </div>
+
+                    <button type="submit" class="btn-blue btn-login">Login</button>
+                </form>
+                
+                <a href="forget.html" class="forgot-link">Forgot your password?</a>
+                
+                <button class="btn-blue" onclick="location.href='register.html'">Create new Account</button>
+            </div>
+
+            <div id="view-logged-in" class="view-container">
+                <ul class="account-menu">
+                    <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> Account Details</a></li>
+                    <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> Addresses</a></li>
+                    
+                    <li class="menu-row">
+                        <a href="javascript:void(0)" onclick="handleAdminRedirect()"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+                    </li>
+
+                    <li class="menu-row"><a href="change_password.html"><i class="fa-solid fa-lock"></i> Change Your Password</a></li>
+                    <li class="menu-row"><a href="javascript:void(0)" onclick="confirmLogout()" style="color: #cc0000;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserRole = "";
+
+        // --- PASSWORD TOGGLE ---
+        function togglePassword() {
+            const passInput = document.getElementById('login-pass');
+            const icon = event.target;
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passInput.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+
+        // --- LOGOUT ---
+        function confirmLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                window.location.href = 'logout.php';
+            }
+        }
+
+        // --- ADMIN REDIRECT LOGIC ---
+        function handleAdminRedirect() {
+            if (currentUserRole === 'admin') {
+                window.location.href = 'admin_dashboard.php';
+            } else {
+                alert("Sorry, This area is only for Administrators.");
+            }
+        }
+
+        // --- BACKGROUND CLICK TO GO BACK ---
+        const mask = document.getElementById('overlayMask');
+        mask.addEventListener('click', (e) => {
+            if (e.target === mask) { window.history.back(); }
+        });
+
+        // --- SESSION CHECK (NO FLICKER) ---
+        fetch('check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                const loggedInView = document.getElementById('view-logged-in');
+                const loggedOutView = document.getElementById('view-logged-out');
+                
+                if (data.loggedIn) {
+                    currentUserRole = data.role; // Set the role from PHP
+                    document.getElementById('display-title').innerText = "Hi, " + data.name;
+                    loggedInView.style.display = 'block'; // Show Menu
+                } else {
+                    loggedOutView.style.display = 'block'; // Show Login Form
+                }
+            })
+            .catch(() => {
+                // If anything breaks, show the login form as fallback
+                document.getElementById('view-logged-out').style.display = 'block';
+            });
+    </script>
+    <script src="languages.js"></script>
+</body>
+</html>
