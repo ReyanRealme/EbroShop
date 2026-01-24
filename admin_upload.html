@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>Admin | EbRo-Shop Upload</title>
+
+  <style>
+    /* EbRo-Shop Brand Theme */
+    :root {
+      --ebro-green: #136835;
+      --ebro-bg: #f8f9fa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--ebro-bg); color: #333; }
+
+    /* Header matching your host.html */
+    .header {
+      background: var(--ebro-green);
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      color: #fff;
+    }
+
+    /* Professional Card Layout */
+    .admin-content {
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .upload-card {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .upload-card h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--ebro-green);
+    }
+
+    .upload-card p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    /* Working Form Elements */
+    .file-select-zone {
+      border: 2px dashed #ddd;
+      border-radius: 12px;
+      padding: 40px 20px;
+      margin-bottom: 20px;
+      position: relative;
+      background: #fafafa;
+      transition: 0.3s;
+    }
+
+    .file-select-zone:active { border-color: var(--ebro-green); background: #f0f7f3; }
+
+    .file-select-zone i { font-size: 35px; color: var(--ebro-green); margin-bottom: 10px; }
+
+    #file-name-display { font-size: 13px; font-weight: 600; color: #444; }
+
+    input[type="file"] {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0; opacity: 0;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      background: var(--ebro-green);
+      color: #fff;
+      border: none;
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.2s;
+    }
+
+    .submit-btn:active { transform: scale(0.97); }
+
+    /* Bottom spacing for Android navigation bar */
+    .footer-spacer { height: 80px; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div style="display:flex; align-items:center; gap:15px;">
+      <i class="fa-solid fa-arrow-left" onclick="window.history.back()"></i>
+      <span style="font-weight: bold;">Admin Dashboard</span>
+    </div>
+    <i class="fa-solid fa-gear"></i>
+  </header>
+
+  <div class="admin-content">
+    <div class="upload-card">
+      <div style="background: #e8f3ec; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+        <i class="fa-solid fa-image" style="color: var(--ebro-green); font-size: 24px;"></i>
+      </div>
+      <h2>Cloudinary Upload</h2>
+      <p>Select a product photo to sync with your Cloudinary database.</p>
+
+      <form action="https://api.cloudinary.com/v1_1/die8hxris/image/upload" 
+            method="POST" 
+            enctype="multipart/form-data">
+
+        <div class="file-select-zone">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p id="file-name-display">Tap to choose image</p>
+          <input type="file" name="file" required onchange="updateName(this)" />
+        </div>
+
+        <input type="hidden" name="upload_preset" value="public_upload" />
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-spacer"></div>
+  <script>
+    function updateName(input) {
+      const display = document.getElementById('file-name-display');
+      if (input.files.length > 0) {
+        display.innerText = input.files[0].name;
+        display.style.color = "#136835";
+      }
+    }
+  </script>
+
+</body>
+</html>
