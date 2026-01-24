@@ -139,6 +139,7 @@ const ebroTranslations = {
           "Modes": "Modes and Soft ",
           "oil": "Food oil",
           "other": "Flour Cooking Ingredients",
+             "other1": "Flour Ingredients",
           "Packaged": "Packaged Goods",
           "Packed": "Packed Foods",
           "Powder": "Powder Soap",
@@ -161,7 +162,12 @@ const ebroTranslations = {
           "change4": "Confirm New Password",
           "change5": "Passwords do not match!",
           "change6": "Update Password",
-          "change7": "←Return to Back",     
+          "change7": "←Return to Back",    
+          
+    //Collection page
+          "Collection1": "Catagories",      
+          "collection2": "products found",
+          "collection3": "Shop Now",
 
 
         },
@@ -306,6 +312,7 @@ const ebroTranslations = {
           "Modes": "ሞዲየስ እና ሶፍት ",
           "oil": "የምግብ ዘይት",
           "other": "ቅመማቅመም ዱቄቶች",
+          "other1": "ቅመማቅመም ዱቄቶች",
           "Packaged": "የታሸጉ እቃዎች",
           "Packed": "የታሸጉ ምግቦች",
           "Powder": "የዱቄት ሳሙና",
@@ -330,6 +337,10 @@ const ebroTranslations = {
           "change6": "ሴቭ ያድርጉ",
           "change7": "←ወደቀድሞ ገፅ ይመለሱ",
           
+    //Collection page
+          "Collection1": "ምድቦች",   
+          "collection2": "አይነት ምርቶች ይገኛሉ",
+          "collection3": "አሁኑኑ ይዘዙ",
 
         }
 };

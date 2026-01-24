@@ -1012,7 +1012,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png">
 
   <h3 style="text-align: center; color:#111" data-key="oil">Food Oils</h3>
-  <p style="color: #185282;">15 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_oil; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="oil.php"
    class="btn" data-key="collection3"
@@ -1029,7 +1029,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="cookingingrident">Cooking items</h3>
-  <p style="color: #185282;">16 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_cooking; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="cooking.php"
    class="btn" data-key="collection3"
@@ -1046,7 +1046,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="other1">Spices powders</h3>
-  <p style="color: #185282;">6 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_spices; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="otheringrident.php"
    class="btn" data-key="collection3"
@@ -1063,7 +1063,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="babyproduct2">Baby Products</h3>
-  <p style="color: #185282;">14 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_baby; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="babyproduct.php"
    class="btn" data-key="collection3"
@@ -1080,7 +1080,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="Dayper">Dayper&Wipes</h3>
-  <p style="color: #185282;">33 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_dayper; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="dayper.php"
    class="btn" data-key="collection3"
@@ -1097,7 +1097,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="Cosmotics">Cosmotics</h3>
-  <p style="color: #185282;">12 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_Cosmotics; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="cosmotics.php"
    class="btn" data-key="collection3"
@@ -1114,7 +1114,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="Liquid">Liquid soap</h3>
-  <p style="color: #185282;">14 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_liquidsoap; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="liquidsoap.php"
    class="btn" data-key="collection3"
@@ -1131,7 +1131,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg">
 
   <h3 style="text-align: center;color:#111" data-key="Powder">Powder soap</h3>
-  <p style="color: #185282;">7 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_powdersoap; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="powdersoap.php"
    class="btn" data-key="collection3"
@@ -1148,7 +1148,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="Modes">Modes&Softs </h3>
-  <p style="color: #185282;">13 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_modes; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="modes.php"
    class="btn" data-key="collection3"
@@ -1165,7 +1165,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg">
 
   <h3 style="text-align: center;color:#111" data-key="Packaged">Bottle Goods</h3>
-  <p style="color: #185282;">18 <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_packaged; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="packaged.php"
    class="btn" data-key="collection3">
@@ -1439,7 +1439,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M21 21l-4-4"/></svg>
     </div>
 
-  <a href="collection.html" style="  flex: 1;
+  <a href="collection.php" style="  flex: 1;
     text-align: center;
     text-decoration: none;
     color: #666;
