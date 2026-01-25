@@ -1046,7 +1046,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg">
 
   <h3 style="text-align: center; color:#111" data-key="other1">Spices powders</h3>
-  <p style="color: #185282;"><?php echo $total_spices; ?>  <span data-key="collection2">products found</span></p>
+  <p style="color: #185282;"><?php echo $total_spiecs; ?>  <span data-key="collection2">products found</span></p>
 <br>
   <a  href="otheringrident.php"
    class="btn" data-key="collection3"
