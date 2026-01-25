@@ -169,6 +169,17 @@ const ebroTranslations = {
           "collection2": "products found",
           "collection3": "Shop Now",
 
+    // contact page
+          "contact1": "Our Location:",
+          "contact2": "Bole Ednamol, Infront of Magna Pastries, Addis Ababa",
+          "contact3": "Email Us:",
+          "contact4": "Call Us:",
+          "contact5": "Open Time",
+          "contact6": "Open 7:00am-11:30pm Of The Day",
+          "contact7": "7 Days Of The Week",
+          "contact8": "Get In Touch",
+          "contact9": "We're here to help! Send us your questions, feedback, or inquiries through the form below.",
+          "contact10": "SEND",
 
         },
 
@@ -342,6 +353,17 @@ const ebroTranslations = {
           "collection2": "አይነት ምርቶች ይገኛሉ",
           "collection3": "አሁኑኑ ይዘዙ",
 
+      // contact page
+          "contact1": "የምንገኝበት ቦታ:",
+          "contact2": "አዲስ አበባ ቦሌ ኤድናሞል ከማኛ ኬክ ፊትለፊት።",
+          "contact3": "ኢሜል አካውንት:",
+          "contact4": "ስልክ ቁጥር:",
+          "contact5": "ክፍት የምንሆንበት ሳዓት፡",
+          "contact6": "ዘወትር ከጠዋቱ 1:00 ሰዓት እስከ ምሽቱ 5:00 ስዓት።",
+          "contact7": "ሳምንቱ ሙሉ ዝግጁ ነን።",
+          "contact8": "መልዕክትዎን ያስቀምጡ👇",
+          "contact9": "እርስዎን ለመርዳት ዝግጁ ነን! ጥያቄዎችዎን፣ አስተያየቶችዎን ወይም ቅሬታዎን ከታች ባለው ቅጽ ይላኩልን።",
+          "contact10": "ይላኩ!",           
         }
 };
     
