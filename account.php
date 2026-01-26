@@ -39,6 +39,7 @@ $user_data = $user_query->get_result()->fetch_assoc();
 
 
 
+
 // 3. FETCH HISTORY WITH INDEPENDENT SUBQUERIES
 $sql = "SELECT o.*, 
         (SELECT product_id 
