@@ -38,17 +38,25 @@ $user_query->execute();
 $user_data = $user_query->get_result()->fetch_assoc();
 
 
-// 3. FETCH HISTORY WITH ALL PRODUCT NAMES
-// UPDATED FETCH HISTORY
+
+// 3. FETCH HISTORY WITH INDEPENDENT SUBQUERIES
 $sql = "SELECT o.*, 
-               (SELECT product_id FROM order_items WHERE order_id = o.id LIMIT 1) as product_id,
-               (SELECT GROUP_CONCAT(product_name SEPARATOR ', ') 
-                FROM order_items 
-                WHERE order_id = o.id) AS all_products
+        (SELECT product_id 
+         FROM order_items 
+         WHERE order_id = o.id 
+         LIMIT 1) AS product_id,
+        (SELECT GROUP_CONCAT(product_name SEPARATOR ', ') 
+         FROM order_items 
+         WHERE order_id = o.id) AS all_products
         FROM orders o 
         WHERE o.user_id = $user_id 
         ORDER BY o.created_at DESC";
+
 $orders = $conn->query($sql);
+
+if (!$orders) {
+    die("Query Error: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
