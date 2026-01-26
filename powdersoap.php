@@ -12,18 +12,26 @@ if ($result && $result->num_rows > 0) {
         $badge = $isSoldOut ? '<div style="position: absolute; top: 10px; left: 10px; background: #e74c3c; color: white; padding: 5px 12px; font-size: 12px; border-radius: 5px; font-weight: bold; z-index: 2;">SOLD OUT</div>' : '';
         
         if ($isSoldOut) {
-            $btnAction = "handleSoldOut()";
             $btnStyle = "background-color: #0e7dc7ff; cursor: not-allowed;";
             $btnText = "Sold Out";
+            // For sold out, just a simple disabled button
+            $buttonHtml = '<button type="button" style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">'.$btnText.'</button>';
         } else {
-            // Variables for Cart
-            $btnAction = "addToCart(".$row['id'].", '".addslashes($row['name'])."', ".$row['price'].", '".$row['image_url']."')";
-            $btnStyle = "background-color: #136835; cursor: pointer;"; // Green color
+            $btnStyle = "background-color: #136835; cursor: pointer;";
             $btnText = "Quick Add";
+            // This FORM is what sends data to the database
+            $buttonHtml = '
+            <form action="cart_handler.php" method="POST" style="width: 100%;">
+                <input type="hidden" name="product_id" value="'.$row['id'].'">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">
+                    '.$btnText.'
+                </button>
+            </form>';
         }
 
         // --- THE FIX FOR SORT: Added data-price and data-name here ---
-        $dynamic_html .= '
+         $dynamic_html .= '
         <div class="product" data-price="'.$row['price'].'" data-name="'.strtolower($row['name']).'" style="position: relative; padding: 15px; border: 1px solid #f0f0f0; border-radius: 15px; background: #fff; display: flex; flex-direction: column; align-items: center; text-align: center;">
             ' . $badge . '
             <div style="height: 180px; width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
@@ -31,10 +39,9 @@ if ($result && $result->num_rows > 0) {
             </div>
             <h3 style="color: #000; font-size: 14px; font-weight: 600; margin-bottom: 8px; height: 40px; overflow: hidden;">'.htmlspecialchars($row['name']).'</h3>
             <p style="font-weight:bold; margin-bottom: 12px;">'.number_format($row['price'], 0).' ETB/pcs</p>
-            <button type="button" onclick="'.$btnAction.'" 
-                style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">
-                '.$btnText.'
-            </button>
+            
+            '.$buttonHtml.'
+
         </div>';
     }
 }
@@ -58,7 +65,7 @@ function addToCart(id, name, price, image) {
         cart.push({ id: id, name: name, price: parseFloat(price), image: image, qty: 1 });
     }
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    window.location.href = 'Cart.html';
+    window.location.href = 'Cart.php';
 }
 
 // --- CRITICAL SORT FIX ---

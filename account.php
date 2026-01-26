@@ -899,14 +899,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             </span>
         </div>
 
-        <form action="cart_handler.php" method="POST" style="margin: 0;">
-            <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"> 
-            <input type="hidden" name="action" value="add">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="order-again-btn">
-                <i class="fa-solid fa-cart-plus"></i> Buy Again
-            </button>
-        </form>
+      <form action="cart_handler.php" method="POST" style="margin: 0;">
+         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+         <input type="hidden" name="action" value="add">
+         <button type="submit" class="order-again-btn">
+             <i class="fa-solid fa-cart-plus"></i> Buy Again
+         </button>
+      </form>
         
         <?php if (strtolower($row['status']) == 'pending'): ?>
             <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" onclick="showDeleteNotice()">✕</span>
@@ -1277,7 +1276,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #666;
     font-size: 12px;
-    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.html" class="nav-item cart">
+    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.php" class="nav-item cart">
     <span style=" position: absolute;
     top: 8px;
     right: 28%;
@@ -1505,7 +1504,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
      Navigation buttons
      ------------------------- */
   accountBtn.addEventListener("click", ()=> { window.location.href = "login.html"; });
-  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.html"; });
+  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.php"; });
 
   /* Expose updateBadge so other pages can call window.updateBadge() after adding */
   window.updateCartBadge = updateBadge;

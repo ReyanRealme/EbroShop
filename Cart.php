@@ -1,14 +1,24 @@
+<?php
+include 'db.php';
+$user_id = $_SESSION['user_id'];
+
+$cart_items = $conn->query("SELECT c.*, p.product_name, p.price, p.image 
+                            FROM cart c 
+                            JOIN products p ON c.product_id = p.id 
+                            WHERE c.user_id = '$user_id'");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <title>Liquid Soap_EbRoShop</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+<title>Shopping Cart</title>
 
-  <style>
-/*header*/
+<style>
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;background:#fff}
@@ -47,7 +57,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   font-weight:bold;
   display:none;
 }
-
 
 /* EbRo logo – fully isolated */
 .ebro-logo-link {
@@ -246,7 +255,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 .product-card img {
     width:100%;
     height:150px;
-    object-fit:contain;
+    object-fit:cover;
     display:block;
 }
 .product-name {
@@ -280,124 +289,51 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
- /*product page*/
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
 
-    body {
-      margin: 0;
-      background: #f5f5f5;
-    }
 
-    /* Breadcrumb */
-    .breadcrumb {
-      padding: 16px;
-      background: #fff;
-      font-size: 14px;
-    }
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#fff}
+.cart-wrapper{max-width:420px;margin:auto}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid #eee}
+.cart-header h2{margin:0;font-size:20px;font-weight:700}
 
-    .breadcrumb a {
-      text-decoration: none;
-      color: #000;
-    }
+.cart-empty{text-align:center;padding:60px 20px;display:none}
+.cart-empty p{color:#aaa;font-size:18px}
+.cart-empty a{display:inline-block;margin-top:25px;padding:14px 20px;border:2px solid #000;text-decoration:none;color:#000;font-weight:700}
 
-    /* Title */
-    .page-title {
-      padding: 20px 16px;
-      font-size: 28px;
-      font-weight: bold;
-      background: #fff;
-    }
+.cart-body{padding:15px;display:none}
 
-    /* Controls */
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background: #fff;
-      border-top: 1px solid #eee;
-    }
+.product{display:flex;gap:12px;border:1px solid #eee;padding:12px;margin-bottom:12px}
+.product img{width:80px;height:80px;object-fit:contain}
+.info{flex:1}
+.info h4{margin:0 0 5px;font-size:15px}
+.info small{color:#999}
 
-    .view-icons {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
+.controls{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.qty{display:flex;align-items:center;border:1px solid #ddd}
+.qty button{width:32px;height:32px;border:none;background:#fff;font-size:18px;cursor:pointer}
+.qty span{padding:0 12px;font-weight:700}
+.price{font-weight:700;font-size:18px}
+.remove{font-size:20px;cursor:pointer;color:#999}
 
-    .view-icons button {
-      width: 42px;
-      height: 34px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
+.summary{border-top:1px solid #eee;padding:18px}
+.summary-row{display:flex;justify-content:space-between;margin:10px 0}
+.total{font-size:22px;color:#2d9bf0;font-weight:700}
 
-    .view-icons button.active {
-      border-color: #000;
-    }
-
-    select {
-      padding: 6px 8px;
-      font-size: 14px;
-    }
-
-    /* Products */
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr); /* default: two products */
-      gap: 16px;
-      padding: 16px;
-    }
-
-    .products.single {
-      grid-template-columns: 1fr;
-    }
-
-    .product {
-      background: #fff;
-      border-radius: 6px;
-      padding: 16px;
-    }
-
-    .product img {
-      width: 100%;
-      height: 180px;
-      object-fit: contain;
-    }
-
-    .product h4 {
-      margin: 12px 0 6px;
-      font-size: 16px;
-    }
-
-    .price {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      display: block;
-      text-align: center;
-      background: #0d6efd;
-      color: #fff;
-      padding: 12px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.checkout{background:#2d9bf0;color:#fff;border:none;width:100%;padding:14px;font-size:16px;font-weight:700;cursor:pointer}
+.continue{display:block;width:100%;margin-top:10px;padding:12px;border:2px solid #000;background:#fff;font-weight:700;text-align:center;text-decoration:none;color:#000}
+.note{font-size:12px;color:#999;margin-top:8px}
 
 
 
-        /*for FAQ's*/
+/* small responsiveness */
+@media (max-width:520px){
+  .product-card{width:100%}
+  .logo-text .main{font-size:16px}
+}
+
+
+ /*for FAQ's*/
         .links a:hover {
     color: #000;
 }
@@ -436,65 +372,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   .cart {
     position: relative;
   }
-
-
-
-
-    /*For No more product*/
-    .no-more-product {
-  /* Layout */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 10px 0; /* Adjust vertical spacing to match your screen height */
-  
-  /* Borders */
-  border-top: 1px solid #d3d3d3;
-  border-bottom: 1px solid #d3d3d3;
-  
-  
-  /* Typography */
-  color: #808080;
-  font-family: 'Arial', sans-serif; /* A clean sans-serif matches the image */
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0px;
-  text-transform: uppercase;
-  
-  /* Background */
-  background-color: #ffffff;
-}
-
-
-
-/*its come from php*/
-.product h3 {
-    color: black !important; /* Forces the text to be black */
-    margin: 10px 0;          /* Adds a little space around the name */
-    font-size: 1.2rem;       /* Adjusts the size of the name */
-}
-.product {
-    position: relative; /* This allows the badge to sit on top of the image */
-}
-
-.sold-out-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: red;
-    color: white;
-    padding: 5px 10px;
-    font-weight: bold;
-    border-radius: 5px;
-    z-index: 10;
-    transform: rotate(-15deg); /* Makes it look like a stamp */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-}
-  </style>
+</style>
 </head>
+
 <body>
-    <!--Header-->
 
 <!-- TOP TICKER -->
 <div style=" background:#136835; --white:#ffffff; --muted-white:rgba(255,255,255,0.95);">
@@ -567,6 +448,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
   </div>
 </div>
+
 
 <!-- OVERLAY + SIDE MENU -->
 <div id="menuOverlay" aria-hidden="true"></div>
@@ -919,59 +801,51 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    
-    <a href="home.html"><b style="font-size: medium;" data-key="babyproduct1">Home</b></a> &gt; <b style="color: #8d8888;" data-key="Liquid">Liquid Soap</b>
+
+
+<!--for cart page-->
+<div class="cart-wrapper">
+  <div class="cart-header">
+    <h2 data-key="cart1">SHOPPING BAG</h2>
   </div>
 
-  <!-- Title -->
-  <div style="text-align: center; margin-top: 0px; color: #185282;" class="page-title" data-key="Liquid">Liquid Soap </div>
-
-  <!-- Controls -->
-  <div class="controls">
-    <div class="view-icons">
-      <!-- List view icon -->
-      <button id="oneCol" title="List View">
-        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-          <rect y="1" width="24" height="2" fill="#666" />
-          <rect y="7" width="24" height="2" fill="#666" />
-          <rect y="13" width="24" height="2" fill="#666" />
-        </svg>
-      </button>
-
-      <!-- Grid view icon -->
-      <button id="twoCol" class="active" title="Grid View">
-        <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="1" width="8" height="14" fill="#666" />
-          <rect x="14" y="1" width="8" height="14" fill="#666" />
-        </svg>
-      </button>
-    </div>
-
-   
-<select id="sort"> <option value="default">Default</option>
-    <option value="az">A-Z</option>
-    <option value="za">Z-A</option>
-    <option value="priceLow">Price: Low to High</option>
-    <option value="priceHigh">Price: High to Low</option>
-</select>
-
-
-
+  <!-- EMPTY -->
+  <div class="cart-empty" id="emptyCart">
+    <p data-key="cart2">Your Bag is empty</p>
+    <a href="collection.html" data-key="cart3">CONTINUE SHOPPING</a>
   </div>
 
-  <!-- Products -->
-  <div class="products" id="products">
-  
+  <!-- CART -->
+  <div class="cart-body" id="cartBody">
+    <div id="items"></div>
+
+    <div class="summary">
+      <strong data-key="cart4">ORDER SUMMARY</strong>
+
+      <div class="summary-row">
+        <span data-key="cart5">Subtotal</span>
+        <span id="subtotal">ETB 0.00</span>
+      </div>
+
+      <div class="summary-row">
+        <strong data-key="cart6">TOTAL:</strong>
+        <span class="total" id="total">ETB 0.00</span>
+      </div>
+
+      <div style="text-align:center;" class="note" data-key="cart7">for order now click `order now`</div>
+
+      <button class="checkout" onclick="goToCheckout()" data-key="cart8">ORDER NOW</button>
+      <a class="continue" href="collection.html" data-key="cart9">CONTINUE SHOPPING</a>
     </div>
-  <div class="no-more-product" data-key="babyproduct3">
-  NO MORE PRODUCT
+  </div>
 </div>
-    
 
-
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
 <!--FAQ's-->
  <div style="   margin: 0;
@@ -1298,8 +1172,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </nav>
 </div>
 
-  <script>
-    /*For signup or logout*/
+
+
+<script>
+   /*For signup or logout*/
      // Fetch login status from your existing session checker
     fetch('check_session.php')
         .then(response => response.json())
@@ -1332,7 +1208,6 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
         
-/*header*/
 /* -------------------------
    Safe DOM ready wrapper
    ------------------------- */
@@ -1392,26 +1267,27 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   /* -------------------------
      Quick add function
      ------------------------- */
-function addToCart(e, name, price, image){
-  e.preventDefault();
-
-  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
-
-  const existing = cart.find(p => p.name === name);
-  if(existing){
-    existing.qty += 1;
-  } else {
-    cart.push({
-      name,
-      price,
-      qty: 1,
-      image // ✅ CLOUDINARY URL
-    });
-  }
-
-  localStorage.setItem("cartItems", JSON.stringify(cart));
-  alert(name + " added to cart");
-}
+  window.quickAdd = function(id){
+    const product = allProducts.find(p => p.id == id);
+    if(!product){ alert("Product not found"); return; }
+    const cart = loadCart();
+    const existing = cart.find(it => it.id == product.id);
+    if(existing){
+      existing.qty = (existing.qty || 0) + 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        img: product.image,
+        price: parseFloat(product.price),
+        qty: 1
+      });
+    }
+    saveCart(cart);
+    updateBadge();
+    const short = product.name.length > 30 ? product.name.slice(0,28) + "…" : product.name;
+    alert(short + " added to cart");
+  };
 
   /* -------------------------
      Side menu handlers
@@ -1504,92 +1380,118 @@ function addToCart(e, name, price, image){
 
 
 
-  /*for product page*/
-    const productsEl = document.getElementById('products');
-    const oneCol = document.getElementById('oneCol');
-    const twoCol = document.getElementById('twoCol');
-
-    // View toggle
-    oneCol.onclick = () => {
-      productsEl.classList.add('single');
-      oneCol.classList.add('active');
-      twoCol.classList.remove('active');
-    };
-
-    twoCol.onclick = () => {
-      productsEl.classList.remove('single');
-      twoCol.classList.add('active');
-      oneCol.classList.remove('active');
-    };
-
-   
-
-
-// Wait for the page to load the products from PHP
-document.addEventListener('DOMContentLoaded', function() {
-    const sortSelect = document.getElementById('sortSelect');
-    const productsContainer = document.getElementById('products');
-
-    if (sortSelect) {
-        sortSelect.onchange = function() {
-            // 1. Get all products currently in the grid
-            const items = Array.from(productsContainer.getElementsByClassName('product'));
-            const sortBy = this.value;
-
-            if (sortBy === 'default') return;
-
-            // 2. Sort the array
-            items.sort((a, b) => {
-                const priceA = parseFloat(a.getAttribute('data-price')) || 0;
-                const priceB = parseFloat(b.getAttribute('data-price')) || 0;
-
-                if (sortBy === 'priceLow') return priceA - priceB;
-                if (sortBy === 'priceHigh') return priceB - priceA;
-                return 0;
-            });
-
-            // 3. Clear the container and re-add in order
-            productsContainer.innerHTML = "";
-            items.forEach(el => productsContainer.appendChild(el));
-        };
-    }
-});
 
 
 
-    // Quick add → add to cart + redirect
-function addToCart(e, btn) {
-  e.preventDefault(); // Prevents page jumping
+/*Cart part*/
+const CART_KEY = "cartItems";
 
-  const product = btn.closest(".product");
-  if (!product) return;
+/* SAFE LOAD */
+function loadCart(){
+  try{
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  }catch{
+    return [];
+  }
+}
 
-  // This reads the data-attributes we added in the PHP above
-  const item = {
-    id: product.dataset.id,
-    name: product.dataset.name,
-    price: Number(product.dataset.price),
-    image: product.querySelector("img").src,
-    qty: 1
-  };
+function saveCart(cart){
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
 
-  let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
-  const existing = cart.find(p => p.id === item.id);
+function renderCart(){
+  const cart = loadCart();
+  const empty = document.getElementById("emptyCart");
+  const body = document.getElementById("cartBody");
+  const itemsDiv = document.getElementById("items");
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push(item);
+  itemsDiv.innerHTML = "";
+
+  if(cart.length === 0){
+    empty.style.display = "block";
+    body.style.display = "none";
+    return;
   }
 
-  localStorage.setItem("cartItems", JSON.stringify(cart));
-  
-  // Update badge immediately
-  if(typeof updateBadge === "function") updateBadge();
+  empty.style.display = "none";
+  body.style.display = "block";
 
-  // Redirect to Cart
-  window.location.href = "Cart.php";
+  let subtotal = 0;
+
+  cart.forEach((item,index)=>{
+    subtotal += item.price * item.qty;
+
+    const el = document.createElement("div");
+    el.className = "product";
+    el.innerHTML = `
+      <img src="${item.image || 'https://via.placeholder.com/80'}">
+      <div class="info">
+        <h4>${item.name}</h4>
+        <div class="controls">
+          <div class="qty">
+            <button data-index="${index}" data-action="dec">−</button>
+            <span>${item.qty}</span>
+            <button data-index="${index}" data-action="inc">+</button>
+          </div>
+          <span class="price">ETB ${(item.price * item.qty).toFixed(2)}</span>
+          <span class="remove" data-index="${index}">✕</span>
+        </div>
+      </div>
+    `;
+    itemsDiv.appendChild(el);
+  });
+
+  document.getElementById("subtotal").textContent = "ETB " + subtotal.toFixed(2);
+  document.getElementById("total").textContent = "ETB " + subtotal.toFixed(2);
 }
+
+/* EVENTS */
+document.getElementById("items").addEventListener("click", e=>{
+  const index = e.target.dataset.index;
+  if(index === undefined) return;
+
+  const cart = loadCart();
+
+  if(e.target.dataset.action === "inc"){
+    cart[index].qty += 1;
+  }
+
+  if(e.target.dataset.action === "dec"){
+    cart[index].qty -= 1;
+    if(cart[index].qty <= 0){
+      cart.splice(index,1);
+    }
+  }
+
+  if(e.target.classList.contains("remove")){
+    cart.splice(index,1);
+  }
+
+  saveCart(cart);
+  renderCart();
+});
+
+function goToCheckout(){
+  // cart already saved, just go
+  window.location.href = "order.html";
+}
+
+renderCart();
+
+
+
+//about part Animate only when visible on scroll
+    const items = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    items.forEach(el => observer.observe(el));
+
 
 
             /*for FAQ's*/
@@ -1606,7 +1508,7 @@ function toggleSection(id, header) {
         icon.textContent = '+';
     }
 }
-  </script>
+</script>
 <script src="languages.js"></script>
 </body>
 </html>

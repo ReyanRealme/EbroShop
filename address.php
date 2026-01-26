@@ -1244,7 +1244,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #666;
     font-size: 12px;
-    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.html" class="nav-item cart">
+    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.php" class="nav-item cart">
     <span style=" position: absolute;
     top: 8px;
     right: 28%;
@@ -1469,7 +1469,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
      Navigation buttons
      ------------------------- */
   accountBtn.addEventListener("click", ()=> { window.location.href = "login.html"; });
-  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.html"; });
+  cartBtn.addEventListener("click", ()=> { window.location.href = "Cart.php"; });
 
   /* Expose updateBadge so other pages can call window.updateBadge() after adding */
   window.updateCartBadge = updateBadge;
