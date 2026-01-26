@@ -40,23 +40,20 @@ $user_data = $user_query->get_result()->fetch_assoc();
 
 
 
-// 3. FETCH HISTORY WITH INDEPENDENT SUBQUERIES
+// 3. FETCH HISTORY USING JOIN (This fixes the Forward Reference error)
 $sql = "SELECT o.*, 
-        (SELECT product_id 
-         FROM order_items 
-         WHERE order_id = o.id 
-         LIMIT 1) AS product_id,
-        (SELECT GROUP_CONCAT(product_name SEPARATOR ', ') 
-         FROM order_items 
-         WHERE order_id = o.id) AS all_products
-        FROM orders o 
-        WHERE o.user_id = $user_id 
+               GROUP_CONCAT(oi.product_name SEPARATOR ', ') AS all_products,
+               MIN(oi.product_id) AS product_id
+        FROM orders o
+        LEFT JOIN order_items oi ON o.id = oi.order_id
+        WHERE o.user_id = $user_id
+        GROUP BY o.id
         ORDER BY o.created_at DESC";
 
 $orders = $conn->query($sql);
 
 if (!$orders) {
-    die("Query Error: " . $conn->error);
+    die("Database Error: " . $conn->error);
 }
 ?>
 
@@ -910,11 +907,10 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             </span>
         </div>
 
-      <form action="cart_handler.php" method="POST" style="margin: 0;">
-    <input type="hidden" name="product_id" value="<?php echo isset($row['product_id']) ? $row['product_id'] : '0'; ?>">
-    <input type="hidden" name="action" value="add">
+     <form action="cart_handler.php" method="POST" style="margin: 0;">
+    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
     <input type="hidden" name="quantity" value="1">
-    <button type="submit" class="order-again-btn" <?php echo empty($row['product_id']) ? 'disabled style="opacity:0.5;"' : ''; ?>>
+    <button type="submit" class="order-again-btn">
         <i class="fa-solid fa-cart-plus"></i> Buy Again
     </button>
 </form>
