@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
 
     if ($conn->query($sql)) {
         // SUCCESS: Redirect to the Cart page as requested
-        header("Location: Cart.html");
+        header("Location: Cart.php");
         exit();
     } else {
         echo "Error: " . $conn->error;

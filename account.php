@@ -40,7 +40,7 @@ $user_data = $user_query->get_result()->fetch_assoc();
 
 
 
-// 3. FETCH HISTORY (Using JOIN to get product_id and product_names)
+// 3. FETCH HISTORY (Using JOIN to get the real product_id)
 $sql = "SELECT o.*, 
                GROUP_CONCAT(oi.product_name SEPARATOR ', ') AS all_products,
                MAX(oi.product_id) AS product_id
@@ -51,10 +51,6 @@ $sql = "SELECT o.*,
         ORDER BY o.created_at DESC";
 
 $orders = $conn->query($sql);
-
-if (!$orders) {
-    die("Query Error: " . $conn->error);
-}
 ?>
 
 <!DOCTYPE html>
@@ -907,7 +903,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             </span>
         </div>
 
-     <form action="cart_handler.php" method="POST" style="margin:0;">
+     <form action="cart_handler.php" method="POST" style="margin: 0;">
     <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
     <input type="hidden" name="quantity" value="1">
     <button type="submit" class="order-again-btn">
