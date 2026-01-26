@@ -903,7 +903,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             </span>
         </div>
 
-     <form action="cart_handler.php" method="POST" style="margin: 0;">
+   <form action="cart_handler.php" method="POST" style="margin: 0;">
     <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
     <input type="hidden" name="quantity" value="1">
     <button type="submit" class="order-again-btn">
