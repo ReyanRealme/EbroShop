@@ -400,6 +400,46 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     position: relative;
   }
 
+
+
+  /*order again in account page*/
+  .order-again-btn {
+    background-color: #136835; /* Your brand green */
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.order-again-btn:hover {
+    background-color: #0d4d27;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.order-again-btn i {
+    font-size: 14px;
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 480px) {
+    .order-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    .order-again-btn {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+}
    </style>
 </head>
 <body>
@@ -843,33 +883,38 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 if ($stat == 'completed' || $stat == 'delivered') $colorClass = 'bg-completed';
                 if ($stat == 'cancelled') $colorClass = 'bg-cancelled';
             ?>
-            <div class="order-row">
-                <div>
-                    <strong>
-                      <?php echo !empty($row['all_products']) ? htmlspecialchars($row['all_products']) : "Product Purchase"; ?>
-                    </strong><br>
-                    <small><?php echo date('M d, Y', strtotime($row['created_at'])); ?></small>
-                </div>
+           <div class="order-row">
+    <div>
+        <strong>
+            <?php echo !empty($row['all_products']) ? htmlspecialchars($row['all_products']) : "Product Purchase"; ?>
+        </strong><br>
+        <small><?php echo date('M d, Y', strtotime($row['created_at'])); ?></small>
+    </div>
 
-                <div style="text-align: right; display: flex; align-items: center;">
-                    <div style="margin-right: 5px;">
-                        <strong>ETB <?php echo number_format($row['total_amount'], 2); ?></strong><br>
-                        <span class="status-badge <?php echo $colorClass; ?>">
-                            <?php echo htmlspecialchars($row['status']); ?>
-                        </span>
-                    </div>
-                    
-                   <?php if (strtolower($row['status']) == 'pending'): ?>
-    <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" 
-          onclick="showDeleteNotice()">✕</span>
-<?php else: ?>
-<a href="account.php?delete_id=<?php echo $row['id']; ?>" 
-   class="del-x" 
-   onclick="return confirmDelete(event, this.href)">✕</a>
-<?php endif; ?> 
+    <div style="text-align: right; display: flex; align-items: center; gap: 15px;">
+        <div style="margin-right: 5px;">
+            <strong>ETB <?php echo number_format($row['total_amount'], 2); ?></strong><br>
+            <span class="status-badge <?php echo $colorClass; ?>">
+                <?php echo htmlspecialchars($row['status']); ?>
+            </span>
+        </div>
 
-                  </div>
-            </div>
+        <form action="cart_handler.php" method="POST" style="margin: 0;">
+            <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"> 
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="order-again-btn">
+                <i class="fa-solid fa-cart-plus"></i> Buy Again
+            </button>
+        </form>
+        
+        <?php if (strtolower($row['status']) == 'pending'): ?>
+            <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" onclick="showDeleteNotice()">✕</span>
+        <?php else: ?>
+            <a href="account.php?delete_id=<?php echo $row['id']; ?>" class="del-x" onclick="return confirmDelete(event, this.href)">✕</a>
+        <?php endif; ?> 
+    </div>
+</div>
         <?php endwhile; ?>
     <?php endif; ?>
 
