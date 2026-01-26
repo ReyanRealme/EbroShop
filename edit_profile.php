@@ -1132,7 +1132,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #666;
     font-size: 12px;
-    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.html" class="nav-item cart">
+    font-family: system-ui, -apple-system, sans-serif;"  href="Cart.php" class="nav-item cart">
     <span style=" position: absolute;
     top: 8px;
     right: 28%;

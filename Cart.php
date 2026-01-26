@@ -1,11 +1,23 @@
 <?php
 include 'db.php';
+
+// Fix Error 1: Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html");
+    exit();
+}
+
 $user_id = $_SESSION['user_id'];
 
-$cart_items = $conn->query("SELECT c.*, p.product_name, p.price, p.image 
+// Fix Error 2: Change 'p.product_name' to 'p.name' to match your table
+$cart_items = $conn->query("SELECT c.*, p.name, p.price, p.image_url 
                             FROM cart c 
                             JOIN products p ON c.product_id = p.id 
                             WHERE c.user_id = '$user_id'");
+
+if (!$cart_items) {
+    die("Query Failed: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
