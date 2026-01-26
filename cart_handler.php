@@ -5,6 +5,13 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
 }
+// Inside cart_handler.php
+$product_id = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
+
+if ($product_id <= 0) {
+    die("Error: Invalid Product ID. Please go back and try again.");
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     $user_id = $_SESSION['user_id'];

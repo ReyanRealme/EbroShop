@@ -39,7 +39,9 @@ $user_data = $user_query->get_result()->fetch_assoc();
 
 
 // 3. FETCH HISTORY WITH ALL PRODUCT NAMES
+// UPDATED FETCH HISTORY
 $sql = "SELECT o.*, 
+               (SELECT product_id FROM order_items WHERE order_id = o.id LIMIT 1) as product_id,
                (SELECT GROUP_CONCAT(product_name SEPARATOR ', ') 
                 FROM order_items 
                 WHERE order_id = o.id) AS all_products
@@ -900,12 +902,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         </div>
 
       <form action="cart_handler.php" method="POST" style="margin: 0;">
-         <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-         <input type="hidden" name="action" value="add">
-         <button type="submit" class="order-again-btn">
-             <i class="fa-solid fa-cart-plus"></i> Buy Again
-         </button>
-      </form>
+    <input type="hidden" name="product_id" value="<?php echo isset($row['product_id']) ? $row['product_id'] : '0'; ?>">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit" class="order-again-btn" <?php echo empty($row['product_id']) ? 'disabled style="opacity:0.5;"' : ''; ?>>
+        <i class="fa-solid fa-cart-plus"></i> Buy Again
+    </button>
+</form>
         
         <?php if (strtolower($row['status']) == 'pending'): ?>
             <span class="del-x" style="color: #ccc; cursor: not-allowed; opacity: 0.5;" onclick="showDeleteNotice()">✕</span>
