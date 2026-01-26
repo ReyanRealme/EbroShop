@@ -564,6 +564,12 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 padding: 0;
             }
         }
+
+
+          .star {
+            color: #cc0000;
+            margin-left: 3px;
+        }
     </style>
 </head>
 <body>
@@ -986,7 +992,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
     <form action="edit_profile.php" method="POST">
         <div class="ep-form-group">
-            <label class="ep-label">First Name</label>
+            <label class="ep-label">First Name<span class="star">*</span></label>
             <div class="ep-input-wrapper">
                 <i class="fa-solid fa-user"></i>
                 <input type="text" name="first_name" class="ep-input" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>" required>
@@ -994,7 +1000,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         </div>
 
         <div class="ep-form-group">
-            <label class="ep-label">Last Name</label>
+            <label class="ep-label">Last Name<span class="star">*</span></label>
             <div class="ep-input-wrapper">
                 <i class="fa-solid fa-user"></i>
                 <input type="text" name="last_name" class="ep-input" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>" required>
@@ -1002,7 +1008,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         </div>
 
         <div class="ep-form-group">
-            <label class="ep-label">Email Address</label>
+            <label class="ep-label">Email Address<span class="star">*</span></label>
             <div class="ep-input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
                 <input type="email" name="email" class="ep-input" value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" required>
@@ -1010,7 +1016,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         </div>
 
         <div class="ep-form-group">
-            <label class="ep-label">Phone Number</label>
+            <label class="ep-label">Phone Number<span class="star">*</span></label>
             <div class="ep-input-wrapper">
                 <i class="fa-solid fa-phone"></i>
                 <input type="tel" name="phone" class="ep-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="Enter phone number">
