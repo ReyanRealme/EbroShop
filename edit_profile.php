@@ -1,8 +1,8 @@
 <?php
-session_start();
-include 'db.php';
+// Remove session_start() from here because db.php already handles it
+include 'db.php'; 
 
-// 1. Check if user is logged in
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
@@ -18,14 +18,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
 
-    $update_sql = "UPDATE users SET first_name='$fname', last_name='$lname', email='$email', phone='$phone' WHERE id='$user_id'";
-
-    if ($conn->query($update_sql) === TRUE) {
-        $message = "<div style='color: green; text-align: center; margin-bottom: 15px;'>Profile updated successfully!</div>";
-        // Update session names in case they changed
-        $_SESSION['user_name'] = $fname;
+    // Check length before updating to prevent Fatal Error
+    if (strlen($phone) > 20) {
+         $message = "<div style='color: red; text-align: center;'>Error: Phone number is too long!</div>";
     } else {
-        $message = "<div style='color: red; text-align: center; margin-bottom: 15px;'>Error updating: " . $conn->error . "</div>";
+        $update_sql = "UPDATE users SET first_name='$fname', last_name='$lname', email='$email', phone='$phone' WHERE id='$user_id'";
+
+        if ($conn->query($update_sql) === TRUE) {
+            $message = "<div style='color: green; text-align: center;'>Profile updated successfully!</div>";
+            $_SESSION['user_name'] = $fname;
+        } else {
+            $message = "<div style='color: red; text-align: center;'>Error: " . $conn->error . "</div>";
+        }
     }
 }
 
