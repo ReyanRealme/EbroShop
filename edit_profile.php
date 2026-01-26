@@ -1,6 +1,7 @@
 <?php
 include 'db.php'; 
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
@@ -9,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $message = "";
 
+// Handle the Update Request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fname = mysqli_real_escape_string($conn, $_POST['first_name']);
     $lname = mysqli_real_escape_string($conn, $_POST['last_name']);
@@ -18,13 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $update_sql = "UPDATE users SET first_name='$fname', last_name='$lname', email='$email', phone='$phone' WHERE id='$user_id'";
 
     if ($conn->query($update_sql) === TRUE) {
-        $message = "<div class='alert success'><i class='fa-solid fa-circle-check'></i> Profile updated successfully!</div>";
+        $message = "<div class='ep-alert ep-success'><i class='fa-solid fa-circle-check'></i> Profile updated successfully!</div>";
         $_SESSION['user_name'] = $fname;
     } else {
-        $message = "<div class='alert error'><i class='fa-solid fa-circle-xmark'></i> Update failed: " . $conn->error . "</div>";
+        $message = "<div class='ep-alert ep-error'><i class='fa-solid fa-circle-xmark'></i> Error: " . $conn->error . "</div>";
     }
 }
 
+// Fetch current user data
 $sql = "SELECT * FROM users WHERE id = '$user_id'";
 $result = $conn->query($sql);
 $user = $result->fetch_assoc();
@@ -35,12 +38,10 @@ $user = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | EbRoShop</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <title> Edit Profile</title>
     <style>
-
-
   /* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;background:#fff}
@@ -401,147 +402,172 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-  /*for edit page*/
-        :root {
-            --primary-color: #136835;
-            --bg-color: #f0f2f5;
-            --text-dark: #333;
-            --text-light: #666;
-        }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
+
+        /* Scoped styles using 'ep-' prefix to prevent conflicts */
+        .ep-body-wrapper {
+            background-color: #f8fafc;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-        }
-
-        .edit-card {
-            background: white;
-            width: 100%;
-            max-width: 420px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            color: var(--primary-color);
-            font-size: 26px;
+            padding: 20px;
         }
 
-        .header p {
-            color: var(--text-light);
-            font-size: 14px;
-            margin-top: 5px;
+        .ep-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        /* Form Styling */
-        .form-group {
-            margin-bottom: 20px;
+        .ep-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        label {
+        .ep-header h2 {
+            color: #136835;
+            font-size: 28px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .ep-header p {
+            color: #64748b;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        .ep-form-group {
+            margin-bottom: 22px;
+        }
+
+        .ep-label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
+            color: #1e293b;
             font-size: 14px;
-            color: var(--text-dark);
         }
 
-        .input-group {
+        .ep-input-wrapper {
             position: relative;
         }
 
-        .input-group i {
+        .ep-input-wrapper i {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
-            transition: 0.3s;
+            color: #94a3b8;
+            transition: color 0.3s ease;
         }
 
-        .input-group input {
+        .ep-input {
             width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            font-size: 15px;
+            padding: 14px 16px 14px 48px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
             box-sizing: border-box;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            color: #1e293b;
         }
 
-        .input-group input:focus {
-            border-color: var(--primary-color);
+        .ep-input:focus {
+            border-color: #136835;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(19, 104, 53, 0.1);
         }
 
-        .input-group input:focus + i {
-            color: var(--primary-color);
+        .ep-input:focus + i {
+            color: #136835;
         }
 
-        /* Buttons */
-        .btn-save {
-            background-color: var(--primary-color);
+        .ep-btn-submit {
+            background: #136835;
             color: white;
             border: none;
             padding: 16px;
             width: 100%;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(19, 104, 53, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
-        .btn-save:hover {
-            background-color: #0d4d27;
-            transform: translateY(-1px);
+        .ep-btn-submit:hover {
+            background: #0d4d27;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(19, 104, 53, 0.2);
         }
 
-        .back-btn {
+        .ep-back-link {
             display: block;
             text-align: center;
-            margin-top: 20px;
-            color: var(--text-light);
+            margin-top: 25px;
+            color: #64748b;
             text-decoration: none;
             font-size: 14px;
-            transition: 0.3s;
+            font-weight: 600;
+            transition: color 0.3s;
         }
 
-        .back-btn:hover {
-            color: var(--text-dark);
+        .ep-back-link:hover {
+            color: #136835;
         }
 
-        /* Modern Alerts */
-        .alert {
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        /* Modern Alert Styles */
+        .ep-alert {
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 25px;
             font-size: 14px;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .success { background: #e8f5e9; color: #2e7d32; }
-        .error { background: #ffebee; color: #c62828; }
+
+        .ep-success {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .ep-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 480px) {
+            .ep-container {
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .ep-body-wrapper {
+                background: white;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
-
-
-
+    
 <!-- TOP TICKER -->
 <div style=" background:#136835; --white:#ffffff; --muted-white:rgba(255,255,255,0.95);">
   <div style="font-family: Helvetica Neue, Arial, sans-serif; background:#fff;">
@@ -946,53 +972,60 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <br>
 </div>
 
-<div class="edit-card">
-    <div class="header">
+
+
+<div class="ep-body-wrapper">
+
+<div class="ep-container">
+    <div class="ep-header">
         <h2>Edit Profile</h2>
-        <p>Keep your contact details up to date</p>
+        <p>Update your personal information</p>
     </div>
 
     <?php echo $message; ?>
 
     <form action="edit_profile.php" method="POST">
-        <div class="form-group">
-            <label>First Name</label>
-            <div class="input-group">
-                <i class="fa-solid fa-circle-user"></i>
-                <input type="text" name="first_name" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>" required>
+        <div class="ep-form-group">
+            <label class="ep-label">First Name</label>
+            <div class="ep-input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="first_name" class="ep-input" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>" required>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Last Name</label>
-            <div class="input-group">
-                <i class="fa-solid fa-circle-user"></i>
-                <input type="text" name="last_name" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>" required>
+        <div class="ep-form-group">
+            <label class="ep-label">Last Name</label>
+            <div class="ep-input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="last_name" class="ep-input" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>" required>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Email Address</label>
-            <div class="input-group">
+        <div class="ep-form-group">
+            <label class="ep-label">Email Address</label>
+            <div class="ep-input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" name="email" value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" required>
+                <input type="email" name="email" class="ep-input" value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" required>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Phone Number</label>
-            <div class="input-group">
+        <div class="ep-form-group">
+            <label class="ep-label">Phone Number</label>
+            <div class="ep-input-wrapper">
                 <i class="fa-solid fa-phone"></i>
-                <input type="tel" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="Not set (e.g. 09...)">
+                <input type="tel" name="phone" class="ep-input" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="Enter phone number">
             </div>
         </div>
 
-        <button type="submit" class="btn-save">Save Changes</button>
+        <button type="submit" class="ep-btn-submit">
+            Save Changes
+        </button>
         
-        <a href="login.html" class="back-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back to Account
+        <a href="account.php" class="ep-back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Account Details
         </a>
     </form>
+</div>
 </div>
 
 
@@ -1119,6 +1152,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 </nav>
 </div>
+
+
 
 
 <script>
@@ -1368,5 +1403,6 @@ function toggleSection(id, header) {
 }
 </script>
 <script src="languages.js"></script>
+
 </body>
 </html>
