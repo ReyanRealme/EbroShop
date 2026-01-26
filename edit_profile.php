@@ -407,7 +407,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         /* Scoped styles using 'ep-' prefix to prevent conflicts */
         .ep-body-wrapper {
             background-color: #f8fafc;
-            min-height: 100vh;
+            min-height: 70vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1021,8 +1021,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             Save Changes
         </button>
         
-        <a href="account.php" class="ep-back-link">
-            <i class="fa-solid fa-arrow-left"></i> Back to Account Details
+        <a href="login.html" class="ep-back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Account 
         </a>
     </form>
 </div>
