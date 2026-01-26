@@ -1,23 +1,21 @@
 <?php
 include 'db.php';
 
-// SQL to create the cart table
-$sql = "CREATE TABLE IF NOT EXISTS cart (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)";
+// 1. Add product_id column to order_items if it doesn't exist
+$sql1 = "ALTER TABLE order_items ADD COLUMN IF NOT EXISTS product_id INT AFTER order_id";
 
-if ($conn->query($sql) === TRUE) {
-    echo "<h2 style='color:green;'>Success! Cart table created successfully.</h2>";
-    echo "<p>You can now use the 'Buy Again' button.</p>";
+// 2. Try to fill product_id by matching names from the products table
+$sql2 = "UPDATE order_items oi 
+         JOIN products p ON oi.product_name = p.name 
+         SET oi.product_id = p.id 
+         WHERE oi.product_id IS NULL OR oi.product_id = 0";
+
+if ($conn->query($sql1)) {
+    echo "Step 1 Success: Column 'product_id' added.<br>";
+    if ($conn->query($sql2)) {
+        echo "Step 2 Success: Existing items linked to Product IDs.<br>";
+    }
 } else {
-    echo "<h2 style='color:red;'>Error creating table:</h2> " . $conn->error;
+    echo "Error: " . $conn->error;
 }
-
-// Close connection
-$conn->close();
 ?>

@@ -40,10 +40,10 @@ $user_data = $user_query->get_result()->fetch_assoc();
 
 
 
-// 3. FETCH HISTORY USING JOIN (This fixes the Forward Reference error)
+// 3. FETCH HISTORY (Using JOIN to get product_id and product_names)
 $sql = "SELECT o.*, 
                GROUP_CONCAT(oi.product_name SEPARATOR ', ') AS all_products,
-               MIN(oi.product_id) AS product_id
+               MAX(oi.product_id) AS product_id
         FROM orders o
         LEFT JOIN order_items oi ON o.id = oi.order_id
         WHERE o.user_id = $user_id
@@ -53,7 +53,7 @@ $sql = "SELECT o.*,
 $orders = $conn->query($sql);
 
 if (!$orders) {
-    die("Database Error: " . $conn->error);
+    die("Query Error: " . $conn->error);
 }
 ?>
 
@@ -907,8 +907,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             </span>
         </div>
 
-     <form action="cart_handler.php" method="POST" style="margin: 0;">
-    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
+     <form action="cart_handler.php" method="POST" style="margin:0;">
+    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
     <input type="hidden" name="quantity" value="1">
     <button type="submit" class="order-again-btn">
         <i class="fa-solid fa-cart-plus"></i> Buy Again
