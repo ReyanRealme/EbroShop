@@ -13,7 +13,7 @@
 .wrapper {max-width:420px;margin:auto;padding:16px;background:#fff;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
 .header {font-size:20px;font-weight:700;margin-bottom:20px;text-align:center;color:#333;}
 .product {display:flex;gap:10px;margin:14px 0;position:relative;background:#fafafa;padding:10px;border-radius:8px;align-items:center;}
-.product img {width:70px;height:70px;border-radius:6px;object-fit:contain;}
+.product img {width:70px;height:70px;border-radius:6px;object-fit:cover;}
 .qty-badge {position:absolute;left:-8px;top:-8px;width:22px;height:22px;border-radius:50%;background:#007bff;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;}
 .info {flex:1}
 .info strong {display:block;color:#333;}
@@ -787,33 +787,21 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div class="row"><span style="color:rgb(9, 81, 115)">Total</span><strong id="total">ETB 0</strong></div>
   </div>
 
-
-
- <div class="user-display-card" style="margin: 20px 0; padding: 15px; background: #fdfdfd; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-    <h4 style="color: #136835; margin-bottom: 12px; font-size: 16px;"><i class="fa-solid fa-id-card"></i> Delivery Information</h4>
+  <div class="user-info-section" style="margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
+    <h4 style="margin-bottom:10px; color:#136835;">Delivery Details</h4>
+    <p style="margin: 5px 0;"><strong>Full Name:</strong> <span id="display-name">Loading...</span></p>
+    <p style="margin: 5px 0;"><strong>Phone:</strong> <span id="display-phone">Loading...</span></p>
     
-    <div style="margin-bottom: 8px;">
-        <span style="color: #777; font-size: 14px;">Full Name:</span>
-        <div id="display-name" style="font-weight: 700; color: #333; font-size: 16px;">Loading...</div>
-    </div>
-    
-    <div>
-        <span style="color: #777; font-size: 14px;">Phone Number:</span>
-        <div id="display-phone" style="font-weight: 700; color: #333; font-size: 16px;">Loading...</div>
-    </div>
-
     <input type="hidden" id="name">
     <input type="hidden" id="phone">
 </div>
 
-
-
-<input type="hidden" id="userEmail" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>">
-
-  <div class="radio">
+<div class="radio" style="margin-bottom: 20px;">
     <label><input type="radio" name="pay" value="Cash" checked> Cash</label>
     <label><input type="radio" name="pay" value="Transfer"> Transfer</label>
-  </div>
+</div>
+
+
 
   <div class="upload-box" id="uploadBox">
     <h3>Please upload your transfer screenshot here</h3>
@@ -1240,100 +1228,107 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
+let subtotal = 0;
+let dbCart = [];
 
-       // Function to handle the "Send Order" button click
+// 1. Fetch data from Database on page load
+async function loadOrderData() {
+    try {
+        const response = await fetch('fetch_order_data.php');
+        const data = await response.json();
+
+        if (data.error) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Display user info as text
+        document.getElementById("display-name").innerText = data.full_name;
+        document.getElementById("display-phone").innerText = data.phone;
+        
+        // Save to hidden inputs
+        document.getElementById("name").value = data.full_name;
+        document.getElementById("phone").value = data.phone;
+
+        // Render products
+        const productsDiv = document.getElementById("products");
+        productsDiv.innerHTML = "";
+        dbCart = data.cart;
+        subtotal = 0;
+
+        dbCart.forEach(p => {
+            const itemTotal = p.price * p.qty;
+            subtotal += itemTotal;
+            productsDiv.innerHTML += `
+                <div class="product">
+                    <div class="qty-badge">${p.qty}</div>
+                    <img src="${p.image}">
+                    <div class="info">
+                        <strong>${p.name}</strong>
+                        ETB ${itemTotal.toLocaleString()}
+                    </div>
+                </div>`;
+        });
+
+        document.getElementById("subtotal").innerText = "ETB " + subtotal.toLocaleString();
+        document.getElementById("total").innerText = "ETB " + subtotal.toLocaleString();
+
+    } catch (error) {
+        console.error("Error loading order:", error);
+    }
+}
+
+// 2. The Send Order Function
 async function placeOrder() {
-    // 1. Get User Info from hidden fields (loaded by your load function)
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     
-    // 2. GET PAYMENT (Looking for your specific name="pay")
-    const selectedPay = document.querySelector('input[name="pay"]:checked');
-    const payment = selectedPay ? selectedPay.value : null;
+    // Check your specific 'pay' name attribute
+    const payOption = document.querySelector('input[name="pay"]:checked');
+    const payment = payOption ? payOption.value : null;
 
-    // 3. Validation
     if (!payment) {
         alert("Please select a payment method.");
         return;
     }
-    if (!window.dbCart || window.dbCart.length === 0) {
-        alert("Your cart is empty.");
-        return;
-    }
 
-    // 4. Prepare Data
     const orderData = {
         name: name,
         phone: phone,
         payment: payment,
-        total: window.currentTotal,
-        cart: window.dbCart
+        total: subtotal,
+        cart: dbCart
     };
 
-    // Show loading state on button if you want
-    console.log("Placing order...", orderData);
-
     try {
-        // 5. Send to save_order.php (to save in Database)
-        const response = await fetch('save_order.php', {
+        // Save to Database
+        const resSave = await fetch('save_order.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(orderData)
         });
-
-        const result = await response.json();
+        const result = await resSave.json();
 
         if (result.success) {
-            // 6. Send to order.php (for Telegram/Email notifications)
+            // Send Telegram/Email notification
             fetch('order.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(orderData)
             });
 
-            alert("Order Successful! Redirecting to history...");
-            window.location.href = "order_history.php"; 
+            alert("Order placed successfully!");
+            window.location.href = "order_history.php";
         } else {
-            alert("Database Error: " + result.message);
+            alert("Error: " + result.message);
         }
     } catch (err) {
-        console.error("Critical Error:", err);
-        alert("Could not connect to server. Please check your connection.");
+        alert("Network error. Order not sent.");
     }
 }
 
-/* -------------------------
-   DATABASE-SYNCED LOGIC
-   ------------------------- */
-let subtotal = 0;
-let dbCart = []; 
-
-async function loadOrderData() {
-    try {
-        const res = await fetch('fetch_order_data.php');
-        const data = await res.json();
-
-        // Display info for user
-        document.getElementById("display-name").innerText = data.full_name;
-        document.getElementById("display-phone").innerText = data.phone;
-        
-        // Store in hidden inputs for placeOrder()
-        document.getElementById("name").value = data.full_name;
-        document.getElementById("phone").value = data.phone;
-
-        // CRITICAL: Save these for the Send Order button
-        window.dbCart = data.cart;
-        
-        let subtotal = 0;
-        data.cart.forEach(p => subtotal += (p.price * p.qty));
-        window.currentTotal = subtotal;
-
-        // ... rest of your rendering code ...
-    } catch(e) { console.log(e); }
-}
-
-// Initialize on load
-loadOrderData();
+// Call load on startup
+document.addEventListener('DOMContentLoaded', loadOrderData);
 
 
 /* PAYMENT TOGGLE */
@@ -1721,3 +1716,5 @@ function toggleSection(id, header) {
 <script src="languages.js"></script>
 </body>
 </html>
+
+
