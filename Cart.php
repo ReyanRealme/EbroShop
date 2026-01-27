@@ -954,6 +954,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 </div>
                 
                 <a href="order.html" class="u-cart-checkout-btn">Checkout Now <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
+                <a href="collection.php" class="u-cart-shop-btn">Go Shopping</a>
             </div>
 
         <?php else: ?>
@@ -961,7 +962,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <div class="u-cart-empty-icon"><i class="fa-solid fa-basket-shopping"></i></div>
                 <h3 style="margin-bottom:10px;">Your bag is empty</h3>
                 <p style="color:#888; margin-bottom:25px;">Looks like you haven't added anything yet.</p>
-                <a href="babyproduct.php" class="u-cart-shop-btn">Go Shopping</a>
+                <a href="collection.php" class="u-cart-shop-btn">Go Shopping</a>
             </div>
         <?php endif; ?>
 
