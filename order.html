@@ -1224,45 +1224,70 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-
-const CART_KEY = "cartItems";
-const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-const productsDiv = document.getElementById("products");
+/* -------------------------
+   DATABASE-SYNCED LOGIC
+   ------------------------- */
 let subtotal = 0;
-let isLoggedIn = false;
+let dbCart = []; 
 
-/* 1. CHECK SESSION IN BACKGROUND */
-fetch('check_session.php')
-    .then(response => response.json())
-    .then(data => {
-        if (data.loggedIn) {
-            isLoggedIn = true;
-            // Pre-fill name if user is already logged in
-            if(!document.getElementById('name').value) {
-                document.getElementById('name').value = data.name;
-            }
+async function loadOrderData() {
+    const productsDiv = document.getElementById("products");
+    const subtotalEl = document.getElementById("subtotal");
+    const totalEl = document.getElementById("total");
+
+    try {
+        // Fetch items from the Database via PHP
+        const response = await fetch('fetch_order_data.php');
+        const data = await response.json();
+
+        if (data.error) {
+            window.location.href = 'login.html';
+            return;
         }
-    });
 
-/* RENDER PRODUCTS (Your original design) */
-if(cart.length === 0){
-  productsDiv.innerHTML = "<p>No products in your bag</p>";
+        dbCart = data.cart; 
+        
+        // Pre-fill name from session if available
+        if(data.user_name && !document.getElementById('name').value) {
+            document.getElementById('name').value = data.user_name;
+        }
+
+        // RENDER PRODUCTS (Using your original design)
+        productsDiv.innerHTML = ""; 
+        
+        if(dbCart.length === 0){
+            productsDiv.innerHTML = "<p style='text-align:center; padding:20px;'>No products in your bag</p>";
+            return;
+        }
+
+        dbCart.forEach(p => {
+            const itemTotal = p.price * p.qty;
+            subtotal += itemTotal;
+            
+            productsDiv.innerHTML += `
+                <div class="product">
+                  <div class="qty-badge">${p.qty}</div>
+                  <img src="${p.image || 'https://via.placeholder.com/150'}">
+                  <div class="info">
+                    <strong>${p.name}</strong>
+                    ETB ${itemTotal.toLocaleString()}
+                  </div>
+                </div>
+            `;
+        });
+
+        subtotalEl.innerText = "ETB " + subtotal.toLocaleString();
+        totalEl.innerText = "ETB " + subtotal.toLocaleString();
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        productsDiv.innerHTML = "<p>Error loading order. Please try again.</p>";
+    }
 }
-cart.forEach(p=>{
-  subtotal += p.price * p.qty;
-  productsDiv.innerHTML += `
-    <div class="product">
-      <div class="qty-badge">${p.qty}</div>
-      <img src="${p.image || 'https://via.placeholder.com/150'}">
-      <div class="info">
-        <strong>${p.name}</strong>
-        ETB ${(p.price * p.qty).toFixed(2)}
-      </div>
-    </div>
-  `;
-});
-document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
-document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
+
+// Initialize on load
+loadOrderData();
+
 
 /* PAYMENT TOGGLE */
 document.querySelectorAll("input[name='pay']").forEach(r=>{
