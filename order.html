@@ -13,7 +13,7 @@
 .wrapper {max-width:420px;margin:auto;padding:16px;background:#fff;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
 .header {font-size:20px;font-weight:700;margin-bottom:20px;text-align:center;color:#333;}
 .product {display:flex;gap:10px;margin:14px 0;position:relative;background:#fafafa;padding:10px;border-radius:8px;align-items:center;}
-.product img {width:70px;height:70px;border-radius:6px;object-fit:cover;}
+.product img {width:70px;height:70px;border-radius:6px;object-fit:contain;}
 .qty-badge {position:absolute;left:-8px;top:-8px;width:22px;height:22px;border-radius:50%;background:#007bff;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;}
 .info {flex:1}
 .info strong {display:block;color:#333;}
@@ -787,11 +787,30 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div class="row"><span style="color:rgb(9, 81, 115)">Total</span><strong id="total">ETB 0</strong></div>
   </div>
 
-  <label style="color: #0c2c4e;">Full Name<b style="color: rgb(51, 5, 5);">*</b></label>
-  <div class="input"><span>👤</span><input id="name" placeholder="Enter your full name"></div>
 
-  <label style="color: #0c2c4e;">Phone*</label>
-  <div class="input"><span>📞</span><input id="phone" placeholder="Enter your phone number"></div>
+
+  <div class="u-info-card" style="margin: 20px 0; padding: 20px; background: #ffffff; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+    <h3 style="font-size: 16px; color: #136835; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px;">
+        <i class="fa-solid fa-user-check"></i> Customer Details
+    </h3>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between;">
+            <span style="color: #888; font-size: 14px;">Full Name:</span>
+            <span id="display-name" style="font-weight: 700; color: #222;">Fetching...</span>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+            <span style="color: #888; font-size: 14px;">Phone Number:</span>
+            <span id="display-phone" style="font-weight: 700; color: #222;">Fetching...</span>
+        </div>
+    </div>
+
+    <input type="hidden" id="hidden-name">
+    <input type="hidden" id="hidden-phone">
+</div>
+
+
 
 <input type="hidden" id="userEmail" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>">
 
@@ -1232,11 +1251,9 @@ let dbCart = [];
 
 async function loadOrderData() {
     const productsDiv = document.getElementById("products");
-    const subtotalEl = document.getElementById("subtotal");
-    const totalEl = document.getElementById("total");
-
+    
     try {
-        // Fetch items from the Database via PHP
+        // Fetch User Info & Cart from the bridge file
         const response = await fetch('fetch_order_data.php');
         const data = await response.json();
 
@@ -1245,43 +1262,37 @@ async function loadOrderData() {
             return;
         }
 
-        dbCart = data.cart; 
+        // 1. UPDATE VISIBLE TEXT
+        document.getElementById("display-name").innerText = data.full_name;
+        document.getElementById("display-phone").innerText = data.phone;
         
-        // Pre-fill name from session if available
-        if(data.user_name && !document.getElementById('name').value) {
-            document.getElementById('name').value = data.user_name;
-        }
+        // 2. STORE FOR ORDER SUBMISSION
+        document.getElementById("hidden-name").value = data.full_name;
+        document.getElementById("hidden-phone").value = data.phone;
 
-        // RENDER PRODUCTS (Using your original design)
-        productsDiv.innerHTML = ""; 
+        // 3. RENDER CART ITEMS
+        let subtotal = 0;
+        productsDiv.innerHTML = "";
         
-        if(dbCart.length === 0){
-            productsDiv.innerHTML = "<p style='text-align:center; padding:20px;'>No products in your bag</p>";
-            return;
-        }
-
-        dbCart.forEach(p => {
-            const itemTotal = p.price * p.qty;
-            subtotal += itemTotal;
-            
+        data.cart.forEach(p => {
+            subtotal += p.price * p.qty;
             productsDiv.innerHTML += `
                 <div class="product">
                   <div class="qty-badge">${p.qty}</div>
-                  <img src="${p.image || 'https://via.placeholder.com/150'}">
+                  <img src="${p.image}">
                   <div class="info">
-                    <strong>${p.name}</strong>
-                    ETB ${itemTotal.toLocaleString()}
+                    <strong>${p.name}</strong> 
+                    ETB ${(p.price * p.qty).toLocaleString()}
                   </div>
-                </div>
-            `;
+                </div>`;
         });
 
-        subtotalEl.innerText = "ETB " + subtotal.toLocaleString();
-        totalEl.innerText = "ETB " + subtotal.toLocaleString();
+        document.getElementById("subtotal").innerText = "ETB " + subtotal.toLocaleString();
+        document.getElementById("total").innerText = "ETB " + subtotal.toLocaleString();
+        window.currentTotal = subtotal;
 
     } catch (error) {
-        console.error("Fetch error:", error);
-        productsDiv.innerHTML = "<p>Error loading order. Please try again.</p>";
+        console.error("Error fetching order info:", error);
     }
 }
 
