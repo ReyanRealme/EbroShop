@@ -864,7 +864,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
    
 
   <br>
-  <button onclick="placeOrder()">Send order</button>
+  <button class="btn" onclick="placeOrder()">Send order</button>
 </div>
 </div>
 
@@ -1241,32 +1241,40 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-        async function placeOrder() {
+       // Function to handle the "Send Order" button click
+async function placeOrder() {
+    // 1. Get User Info from hidden fields (loaded by your load function)
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
-    const payment = document.querySelector('input[name="payment"]:checked')?.value;
+    
+    // 2. GET PAYMENT (Looking for your specific name="pay")
+    const selectedPay = document.querySelector('input[name="pay"]:checked');
+    const payment = selectedPay ? selectedPay.value : null;
 
-    // 1. Validation
-    if (!name || !phone) {
-        alert("User information not loaded. Please refresh the page.");
-        return;
-    }
+    // 3. Validation
     if (!payment) {
         alert("Please select a payment method.");
         return;
     }
+    if (!window.dbCart || window.dbCart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
 
+    // 4. Prepare Data
     const orderData = {
         name: name,
         phone: phone,
         payment: payment,
-        total: window.currentTotal, // This comes from your loadOrderData function
-        cart: window.dbCart         // This comes from your loadOrderData function
+        total: window.currentTotal,
+        cart: window.dbCart
     };
 
+    // Show loading state on button if you want
+    console.log("Placing order...", orderData);
+
     try {
-        // 2. Save to Database and Send Telegram/Email
-        // We call save_order.php first to record it in your history
+        // 5. Send to save_order.php (to save in Database)
         const response = await fetch('save_order.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1276,21 +1284,21 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         const result = await response.json();
 
         if (result.success) {
-            // 3. Also trigger the Telegram/Email notification
+            // 6. Send to order.php (for Telegram/Email notifications)
             fetch('order.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             });
 
-            alert("Order placed successfully!");
-            window.location.href = "success.html"; // Redirect to a thank you page
+            alert("Order Successful! Redirecting to history...");
+            window.location.href = "order_history.php"; 
         } else {
-            alert("Error: " + result.message);
+            alert("Database Error: " + result.message);
         }
-    } catch (error) {
-        console.error("Order Error:", error);
-        alert("Failed to send order. Check your internet connection.");
+    } catch (err) {
+        console.error("Critical Error:", err);
+        alert("Could not connect to server. Please check your connection.");
     }
 }
 
@@ -1302,48 +1310,26 @@ let dbCart = [];
 
 async function loadOrderData() {
     try {
-        // Fetch User and Cart data from the bridge file
-        const response = await fetch('fetch_order_data.php');
-        const data = await response.json();
+        const res = await fetch('fetch_order_data.php');
+        const data = await res.json();
 
-        if (data.error) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // 1. Display data for the User to see
+        // Display info for user
         document.getElementById("display-name").innerText = data.full_name;
         document.getElementById("display-phone").innerText = data.phone;
         
-        // 2. Set hidden values for the order submission
+        // Store in hidden inputs for placeOrder()
         document.getElementById("name").value = data.full_name;
         document.getElementById("phone").value = data.phone;
-        
-        // Keep a global reference for the order function
-        window.userEmail = data.email; 
+
+        // CRITICAL: Save these for the Send Order button
         window.dbCart = data.cart;
-
-        // 3. Render Cart Items (Standard logic)
-        const productsDiv = document.getElementById("products");
-        productsDiv.innerHTML = "";
+        
         let subtotal = 0;
+        data.cart.forEach(p => subtotal += (p.price * p.qty));
+        window.currentTotal = subtotal;
 
-        data.cart.forEach(p => {
-            subtotal += p.price * p.qty;
-            productsDiv.innerHTML += `
-                <div class="product">
-                  <div class="qty-badge">${p.qty}</div>
-                  <img src="${p.image}">
-                  <div class="info"><strong>${p.name}</strong> ETB ${p.price * p.qty}</div>
-                </div>`;
-        });
-
-        document.getElementById("subtotal").innerText = "ETB " + subtotal;
-        document.getElementById("total").innerText = "ETB " + subtotal;
-
-    } catch (error) {
-        console.error("Order load failed:", error);
-    }
+        // ... rest of your rendering code ...
+    } catch(e) { console.log(e); }
 }
 
 // Initialize on load
