@@ -9,16 +9,16 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// 1. Fetch User Data (Full Name and Phone)
+// Get user profile details
 $user_sql = "SELECT first_name, last_name, phone, email FROM users WHERE id = '$user_id'";
 $u_res = $conn->query($user_sql);
-$u = $u_res->fetch_assoc();
-$full_name = $u['first_name'] . " " . $u['last_name'];
+$user = $u_res->fetch_assoc();
 
-// 2. Fetch Cart Items
+$full_name = $user['first_name'] . " " . $user['last_name'];
+
+// Get cart items
 $cart_sql = "SELECT p.name, p.price, c.quantity as qty, p.image_url as image 
-             FROM cart c 
-             JOIN products p ON c.product_id = p.id 
+             FROM cart c JOIN products p ON c.product_id = p.id 
              WHERE c.user_id = '$user_id'";
 $c_res = $conn->query($cart_sql);
 
@@ -29,7 +29,7 @@ while($row = $c_res->fetch_assoc()) {
 
 echo json_encode([
     'full_name' => $full_name,
-    'phone'     => $u['phone'],
-    'email'     => $u['email'],
+    'phone'     => $user['phone'],
+    'email'     => $user['email'],
     'cart'      => $cart
 ]);

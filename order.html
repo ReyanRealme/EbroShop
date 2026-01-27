@@ -789,25 +789,21 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-  <div class="u-info-card" style="margin: 20px 0; padding: 20px; background: #ffffff; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-    <h3 style="font-size: 16px; color: #136835; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px;">
-        <i class="fa-solid fa-user-check"></i> Customer Details
-    </h3>
+ <div class="user-display-card" style="margin: 20px 0; padding: 15px; background: #fdfdfd; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="color: #136835; margin-bottom: 12px; font-size: 16px;"><i class="fa-solid fa-id-card"></i> Delivery Information</h4>
     
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="display: flex; justify-content: space-between;">
-            <span style="color: #888; font-size: 14px;">Full Name:</span>
-            <span id="display-name" style="font-weight: 700; color: #222;">Fetching...</span>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between;">
-            <span style="color: #888; font-size: 14px;">Phone Number:</span>
-            <span id="display-phone" style="font-weight: 700; color: #222;">Fetching...</span>
-        </div>
+    <div style="margin-bottom: 8px;">
+        <span style="color: #777; font-size: 14px;">Full Name:</span>
+        <div id="display-name" style="font-weight: 700; color: #333; font-size: 16px;">Loading...</div>
+    </div>
+    
+    <div>
+        <span style="color: #777; font-size: 14px;">Phone Number:</span>
+        <div id="display-phone" style="font-weight: 700; color: #333; font-size: 16px;">Loading...</div>
     </div>
 
-    <input type="hidden" id="hidden-name">
-    <input type="hidden" id="hidden-phone">
+    <input type="hidden" id="name">
+    <input type="hidden" id="phone">
 </div>
 
 
@@ -1250,10 +1246,8 @@ let subtotal = 0;
 let dbCart = []; 
 
 async function loadOrderData() {
-    const productsDiv = document.getElementById("products");
-    
     try {
-        // Fetch User Info & Cart from the bridge file
+        // Fetch User and Cart data from the bridge file
         const response = await fetch('fetch_order_data.php');
         const data = await response.json();
 
@@ -1262,37 +1256,38 @@ async function loadOrderData() {
             return;
         }
 
-        // 1. UPDATE VISIBLE TEXT
+        // 1. Display data for the User to see
         document.getElementById("display-name").innerText = data.full_name;
         document.getElementById("display-phone").innerText = data.phone;
         
-        // 2. STORE FOR ORDER SUBMISSION
-        document.getElementById("hidden-name").value = data.full_name;
-        document.getElementById("hidden-phone").value = data.phone;
-
-        // 3. RENDER CART ITEMS
-        let subtotal = 0;
-        productsDiv.innerHTML = "";
+        // 2. Set hidden values for the order submission
+        document.getElementById("name").value = data.full_name;
+        document.getElementById("phone").value = data.phone;
         
+        // Keep a global reference for the order function
+        window.userEmail = data.email; 
+        window.dbCart = data.cart;
+
+        // 3. Render Cart Items (Standard logic)
+        const productsDiv = document.getElementById("products");
+        productsDiv.innerHTML = "";
+        let subtotal = 0;
+
         data.cart.forEach(p => {
             subtotal += p.price * p.qty;
             productsDiv.innerHTML += `
                 <div class="product">
                   <div class="qty-badge">${p.qty}</div>
                   <img src="${p.image}">
-                  <div class="info">
-                    <strong>${p.name}</strong> 
-                    ETB ${(p.price * p.qty).toLocaleString()}
-                  </div>
+                  <div class="info"><strong>${p.name}</strong> ETB ${p.price * p.qty}</div>
                 </div>`;
         });
 
-        document.getElementById("subtotal").innerText = "ETB " + subtotal.toLocaleString();
-        document.getElementById("total").innerText = "ETB " + subtotal.toLocaleString();
-        window.currentTotal = subtotal;
+        document.getElementById("subtotal").innerText = "ETB " + subtotal;
+        document.getElementById("total").innerText = "ETB " + subtotal;
 
     } catch (error) {
-        console.error("Error fetching order info:", error);
+        console.error("Order load failed:", error);
     }
 }
 
