@@ -864,7 +864,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
    
 
   <br>
-  <button onclick="handleOrderClick()">ORDER</button>
+  <button onclick="placeOrder()">Send order</button>
 </div>
 </div>
 
@@ -1238,6 +1238,61 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         .catch(err => console.error("Session check failed", err));
 
 
+
+
+
+        async function placeOrder() {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
+
+    // 1. Validation
+    if (!name || !phone) {
+        alert("User information not loaded. Please refresh the page.");
+        return;
+    }
+    if (!payment) {
+        alert("Please select a payment method.");
+        return;
+    }
+
+    const orderData = {
+        name: name,
+        phone: phone,
+        payment: payment,
+        total: window.currentTotal, // This comes from your loadOrderData function
+        cart: window.dbCart         // This comes from your loadOrderData function
+    };
+
+    try {
+        // 2. Save to Database and Send Telegram/Email
+        // We call save_order.php first to record it in your history
+        const response = await fetch('save_order.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // 3. Also trigger the Telegram/Email notification
+            fetch('order.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            alert("Order placed successfully!");
+            window.location.href = "success.html"; // Redirect to a thank you page
+        } else {
+            alert("Error: " + result.message);
+        }
+    } catch (error) {
+        console.error("Order Error:", error);
+        alert("Failed to send order. Check your internet connection.");
+    }
+}
 
 /* -------------------------
    DATABASE-SYNCED LOGIC
