@@ -11,7 +11,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 
 // Search across concatenated name, city, and phone
-$sql = "SELECT u.first_name, u.last_name, u.email, u.phone,
+
+$sql = "SELECT u.first_name, u.last_name, u.email, u.phone, 
                a.address1, a.address2, a.city, a.country
         FROM users u
         INNER JOIN addresses a ON u.id = a.user_id 
@@ -86,25 +87,24 @@ if (!$result) {
     <?php if ($result && $result->num_rows > 0): ?>
         <?php while($row = $result->fetch_assoc()): ?>
             <?php 
-                // 1. Determine address column (handle fallback)
-                $main_addr = isset($row['address1']) ? $row['address1'] : $row['adress1'];
+                // Handle different database column spellings
+                $main_addr = $row['address1'] ?? $row['adress1'] ?? '';
+                $extra_addr = $row['address2'] ?? '';
                 
-                // 2. Format names and combined text for the Copy Button
-                $display_name = htmlspecialchars($row['first_name'] . " " . $row['last_name']);
-                
-                // This is what will be copied to your clipboard
-                $full_addr_text = "Customer: " . $row['first_name'] . " " . $row['last_name'] . "\n" .
-                                 "Address: " . $main_addr . " " . ($row['address2'] ?? '') . ", " . $row['city'] . "\n" .
-                                 "Phone: " . $row['phone'];
+                // Format the text exactly how you want it to appear when pasted
+                $copy_text = "Customer: " . $row['first_name'] . " " . $row['last_name'] . "\\n" .
+                             "Address: " . $main_addr . " " . $extra_addr . "\\n" .
+                             "City: " . $row['city'] . "\\n" .
+                             "Phone: " . $row['phone'];
             ?>
             <tr>
                 <td>
-                    <span class="user-name"><?php echo $display_name; ?></span>
+                    <span class="user-name"><?php echo htmlspecialchars($row['first_name'] . " " . $row['last_name']); ?></span>
                     <small style="color:#94a3b8; font-size:11px;"><?php echo htmlspecialchars($row['email']); ?></small>
                 </td>
                 <td class="addr-info">
                     <?php echo htmlspecialchars($main_addr); ?><br>
-                    <button class="copy-btn" onclick="copyToClipboard('<?php echo addslashes($full_addr_text); ?>', this)">
+                    <button class="copy-btn" onclick="copyToClipboard('<?php echo $copy_text; ?>', this)">
                         <i class="fa fa-copy"></i> Copy Info
                     </button>
                 </td>
@@ -113,7 +113,7 @@ if (!$result) {
                 </td>
                 <td>
                     <a href="tel:<?php echo $row['phone']; ?>" class="phone-link">
-                        <i class="fa fa-phone"></i> Call (<?php echo htmlspecialchars($row['phone']); ?>)
+                        <i class="fa fa-phone"></i> Call
                     </a>
                 </td>
             </tr>
