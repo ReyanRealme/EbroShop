@@ -1,19 +1,13 @@
 <?php
-// 1. ONLY include db.php. 
-// It already handles the 30-day session start and database connection.
 include 'db.php';
 
 header('Content-Type: application/json');
 
-// 2. Security Check: Must be logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
     exit();
 }
 
-// No need to check $conn->connect_error here because db.php handles the die() if it fails.
-
-// 3. Get the data from the JavaScript Fetch request
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data) {
@@ -28,51 +22,35 @@ $payment = mysqli_real_escape_string($conn, $data['payment']);
 $total   = $data['total'];
 $cart    = $data['cart'];
 
-// 4. Start Transaction
 $conn->begin_transaction();
 
 try {
-    // Insert into 'orders' table
+    // 1. Insert main order
     $stmt1 = $conn->prepare("INSERT INTO orders (user_id, full_name, phone, total_amount, payment_method) VALUES (?, ?, ?, ?, ?)");
     $stmt1->bind_param("issds", $user_id, $name, $phone, $total, $payment);
     $stmt1->execute();
-    
     $order_id = $conn->insert_id; 
 
-    // Insert each item into 'order_items' table
+    // 2. Insert items into order_items
     $stmt2 = $conn->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
-   
-    // ... (Your existing code that inserts the order) ...
-
-
-
-
-  // ... inside the try block after $stmt2->execute() loop ...
-
-// DELETE the user's cart products after the order is saved
-$stmt3 = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
-$stmt3->bind_param("i", $user_id);
-$stmt3->execute();
-
-$conn->commit(); // Save everything to DB
-echo json_encode(['success' => true, 'order_id' => $order_id]);
-
-
-
     foreach ($cart as $item) {
         $stmt2->bind_param("isdi", $order_id, $item['name'], $item['price'], $item['qty']);
         $stmt2->execute();
     }
 
-    $conn->commit();
-    
-    // IMPORTANT: Only clear the CART session if you use one, 
-    // NEVER use session_destroy() here.
-    // unset($_SESSION['cart']); 
+    // 3. THE EDIT IS HERE: Delete products from database cart for this user
+    $stmt3 = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
+    $stmt3->bind_param("i", $user_id);
+    $stmt3->execute();
 
+    // 4. Commit everything to the database
+    $conn->commit();
+
+    // 5. Send ONE success message back to JavaScript
     echo json_encode(['success' => true, 'order_id' => $order_id]);
 
 } catch (Exception $e) {
+    // If anything fails, cancel everything
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

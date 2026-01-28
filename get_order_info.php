@@ -8,10 +8,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get User Name & Phone
+// Get User Info
 $u = $conn->query("SELECT first_name, last_name, phone FROM users WHERE id = $user_id")->fetch_assoc();
 
-// Get Cart items
+// Get Database Cart Items
 $c_res = $conn->query("SELECT p.name, p.price, p.image_url as image, c.quantity as qty 
                        FROM cart c JOIN products p ON c.product_id = p.id 
                        WHERE c.user_id = $user_id");
