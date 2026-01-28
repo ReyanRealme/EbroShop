@@ -86,28 +86,34 @@ if (!$result) {
             <tbody>
     <?php if ($result && $result->num_rows > 0): ?>
         <?php while($row = $result->fetch_assoc()): ?>
-            <?php 
-                // Handle different database column spellings
-                $main_addr = $row['address1'] ?? $row['adress1'] ?? '';
-                $extra_addr = $row['address2'] ?? '';
-                
-                // Format the text exactly how you want it to appear when pasted
-                $copy_text = "Customer: " . $row['first_name'] . " " . $row['last_name'] . "\\n" .
-                             "Address: " . $main_addr . " " . $extra_addr . "\\n" .
-                             "City: " . $row['city'] . "\\n" .
-                             "Phone: " . $row['phone'];
-            ?>
-            <tr>
+           <?php 
+    // 1. Get the address parts
+    $main_addr = $row['address1'] ?? $row['adress1'] ?? '';
+    $extra_addr = $row['address2'] ?? '';
+    $city = $row['city'] ?? '';
+
+    // 2. Format for MAPS: "Address 1, Address 2, City"
+    // We remove "Customer:" and "Phone:" so Maps can find the location immediately
+                  $map_address = $main_addr;
+                  if (!empty($extra_addr)) { $map_address .= " " . $extra_addr; }
+                  $map_address .= ", " . $city;
+              
+                  // Clean up any double spaces and escape for JavaScript
+                  $copy_for_maps = addslashes(trim($map_address));
+              ?>
+        
+           <tr>
                 <td>
                     <span class="user-name"><?php echo htmlspecialchars($row['first_name'] . " " . $row['last_name']); ?></span>
                     <small style="color:#94a3b8; font-size:11px;"><?php echo htmlspecialchars($row['email']); ?></small>
                 </td>
-                <td class="addr-info">
-                    <?php echo htmlspecialchars($main_addr); ?><br>
-                    <button class="copy-btn" onclick="copyToClipboard('<?php echo $copy_text; ?>', this)">
-                        <i class="fa fa-copy"></i> Copy Info
-                    </button>
-                </td>
+                  <td class="addr-info">
+        <?php echo htmlspecialchars($main_addr); ?><br>
+        
+        <button class="copy-btn" onclick="copyToClipboard('<?php echo $copy_for_maps; ?>', this)">
+            <i class="fa fa-location-dot"></i> Copy for Maps
+        </button>
+    </td>
                 <td>
                     <span class="city-badge"><?php echo htmlspecialchars($row['city']); ?></span>
                 </td>
