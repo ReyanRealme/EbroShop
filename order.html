@@ -13,7 +13,7 @@
 .wrapper {max-width:420px;margin:auto;padding:16px;background:#fff;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
 .header {font-size:20px;font-weight:700;margin-bottom:20px;text-align:center;color:#333;}
 .product {display:flex;gap:10px;margin:14px 0;position:relative;background:#fafafa;padding:10px;border-radius:8px;align-items:center;}
-.product img {width:70px;height:70px;border-radius:6px;object-fit:cover;}
+.product img {width:70px;height:70px;border-radius:6px;object-fit:contain;}
 .qty-badge {position:absolute;left:-8px;top:-8px;width:22px;height:22px;border-radius:50%;background:#007bff;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;}
 .info {flex:1}
 .info strong {display:block;color:#333;}
@@ -1327,13 +1327,28 @@ async function submitOrder() {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const email = document.getElementById("userEmail").value; 
-  const payment = document.querySelector("input[name='pay']:checked").value;
-  const proof = document.getElementById("proof");
+  const paymentElement = document.querySelector("input[name='pay']:checked");
+const payment = paymentElement ? paymentElement.value : null;
+const proof = document.getElementById("proof");
 
   if (!name || !phone) { 
     alert("Please fill in your name and phone number."); 
     return; 
   }
+
+  // 1. Check if a payment method is selected
+if (!payment) {
+    alert("Please select a payment method.");
+    return;
+}
+
+// 2. MUST REQUIRE FILE if Transfer is selected
+if (payment === "Transfer") {
+    if (proof.files.length === 0) {
+        alert("Please upload your payment receipt (Transfer Proof) before sending the order.");
+        return; // Stops the order from sending
+    }
+}
   
   alert("Processing your order... Please wait.");
 
@@ -1414,7 +1429,7 @@ async function submitOrder() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: `✅ *ORDER PROCESSING STARTED*\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
+        text: `✅✅✅ *ORDER PROCESSING FINISHED*✅✅✅\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
         parse_mode: "Markdown"
       })
     });
