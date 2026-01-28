@@ -17,6 +17,11 @@ if ($conn->connect_error) {
 
 $user_id = $_SESSION['user_id'];
 
+// ADD THIS LINE HERE:
+$view = isset($_GET['view']) ? $_GET['view'] : 'list';
+
+
+
 // --- 1. HANDLE DELETE ---
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
@@ -61,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // --- 3. FETCH ADDRESSES ---
-// Change u.full_name to u.first_name and u.last_name
 $stmt = $conn->prepare("
     SELECT a.*, u.first_name AS user_fname, u.last_name AS user_lname 
     FROM addresses a 
@@ -72,6 +76,9 @@ $stmt = $conn->prepare("
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $addresses = $stmt->get_result();
+
+// Ensure this line is still here or at the top
+$view = isset($_GET['view']) ? $_GET['view'] : 'list';
 ?>
 <!DOCTYPE html>
 <html lang="en">
