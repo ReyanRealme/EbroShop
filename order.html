@@ -1265,7 +1265,7 @@ async function loadDatabaseData() {
                 productsDiv.innerHTML += `
                     <div class="product">
                         <div class="qty-badge">${p.qty}</div>
-                        <img src="${p.image || 'https://via.placeholder.com/150'}">
+                 <img src="${p.image || p.img || 'https://via.placeholder.com/150'}">
                         <div class="info">
                             <strong>${p.name}</strong>
                             ETB ${itemTotal.toFixed(2)}
