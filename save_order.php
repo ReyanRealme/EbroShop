@@ -41,7 +41,24 @@ try {
 
     // Insert each item into 'order_items' table
     $stmt2 = $conn->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
-    
+   
+    // ... (Your existing code that inserts the order) ...
+
+
+
+
+  // ... inside the try block after $stmt2->execute() loop ...
+
+// DELETE the user's cart products after the order is saved
+$stmt3 = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
+$stmt3->bind_param("i", $user_id);
+$stmt3->execute();
+
+$conn->commit(); // Save everything to DB
+echo json_encode(['success' => true, 'order_id' => $order_id]);
+
+
+
     foreach ($cart as $item) {
         $stmt2->bind_param("isdi", $order_id, $item['name'], $item['price'], $item['qty']);
         $stmt2->execute();
