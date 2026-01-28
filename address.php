@@ -61,12 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // --- 3. FETCH ADDRESSES ---
-$stmt = $conn->prepare("SELECT * FROM addresses WHERE user_id=? ORDER BY is_default DESC");
+// We JOIN with the users table to get the actual full name registered to the account
+$stmt = $conn->prepare("
+    SELECT a.*, u.full_name AS user_real_name 
+    FROM addresses a 
+    JOIN users u ON a.user_id = u.id 
+    WHERE a.user_id=? 
+    ORDER BY a.is_default DESC
+");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $addresses = $stmt->get_result();
-
-$view = isset($_GET['view']) ? $_GET['view'] : 'list';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -854,9 +859,15 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <?php while($addr = $addresses->fetch_assoc()): ?>
             <div class="address-box">
                 <div class="user-name">
-                    <?php echo htmlspecialchars($addr['first_name'] . " " . $addr['last_name']); ?>
-                    <?php if($addr['is_default']): ?><span class="default-badge">Default</span><?php endif; ?>
-                </div>
+               <?php 
+             // Fetch the name from the main users table since we hid it in the form
+             $u_id = $_SESSION['user_id'];
+             $user_query = $conn->query("SELECT first_name, last_name FROM users WHERE id = $u_id");
+             $user_data = $user_query->fetch_assoc();
+             echo htmlspecialchars($user_data['first_name'] . ' ' . $user_data['last_name']); 
+                ?>
+                <?php if($addr['is_default']): ?><span class="default-badge">Default</span><?php endif; ?>
+            </div>
                 <div class="location">
                     <?php if($addr['company']) echo htmlspecialchars($addr['company']) . "<br>"; ?>
                     <?php echo htmlspecialchars($addr['address1']); ?><br>
@@ -886,12 +897,14 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <?php if($view == 'edit'): ?>
                 <input type="hidden" name="address_id" value="<?php echo $edit_addr['id']; ?>">
             <?php endif; ?>
-            <div class="form-group"><label data-key="address7">First Name</label><input type="text" name="first_name" value="<?php echo $edit_addr['first_name'] ?? ''; ?>" required></div>
-            <div class="form-group"><label data-key="address8">Last Name</label><input type="text" name="last_name" value="<?php echo $edit_addr['last_name'] ?? ''; ?>" required></div>
+            <input type="hidden" name="first_name" value="User">
+           <input type="hidden" name="last_name" value="Member">
             <div class="form-group"><label data-key="address9">Company (Optional)</label><input type="text" name="company" value="<?php echo $edit_addr['company'] ?? ''; ?>"></div>
             <div class="form-group"><label data-key="address10">Address Line 1</label><input type="text" name="address1" value="<?php echo $edit_addr['address1'] ?? ''; ?>" required></div>
             <div class="form-group"><label data-key="address11">Address Line 2 (Optional)</label><input type="text" name="address2" value="<?php echo $edit_addr['address2'] ?? ''; ?>"></div>
             <div class="form-group"><label data-key="address12">City</label><input type="text" name="city" value="<?php echo $edit_addr['city'] ?? ''; ?>" required></div>
+            
+
             
             <div class="form-group">
                 <label data-key="address13">Country/Region</label>
@@ -899,7 +912,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                     <option value="Ethiopia" <?php if(($edit_addr['country'] ?? '') == 'Ethiopia') echo 'selected'; ?> data-key="address14">Ethiopia</option>
                       </select>
             </div>
-            <div class="form-group"><label data-key="address16">Phone Number</label><input type="text" name="phone" value="<?php echo $edit_addr['phone'] ?? ''; ?>" required></div>
+            <input type="hidden" name="phone" value="0000">
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
                 <input type="checkbox" name="is_default" style="width: 20px; height: 20px;" <?php if($edit_addr['is_default'] ?? 0) echo 'checked'; ?>> 
