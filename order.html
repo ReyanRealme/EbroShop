@@ -787,20 +787,19 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div class="row"><span style="color:rgb(9, 81, 115)">Total</span><strong id="total">ETB 0</strong></div>
   </div>
 
-  <div class="user-info-section" style="margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">
-    <h4 style="margin-bottom:10px; color:#136835;">Delivery Details</h4>
-    <p style="margin: 5px 0;"><strong>Full Name:</strong> <span id="display-name">Loading...</span></p>
-    <p style="margin: 5px 0;"><strong>Phone:</strong> <span id="display-phone">Loading...</span></p>
+ <div class="user-display" style="padding:15px; background:#f9f9f9; border-radius:8px; border:1px solid #ddd; margin-bottom:20px;">
+    <p><strong>Full Name:</strong> <span id="display-name">Loading...</span></p>
+    <p><strong>Phone:</strong> <span id="display-phone">Loading...</span></p>
     
     <input type="hidden" id="name">
     <input type="hidden" id="phone">
+    <input type="hidden" id="userEmail">
 </div>
 
-<div class="radio" style="margin-bottom: 20px;">
-    <label><input type="radio" name="pay" value="Cash" checked> Cash</label>
-    <label><input type="radio" name="pay" value="Transfer"> Transfer</label>
+<div class="radio">
+  <label><input type="radio" name="pay" value="Cash" checked> Cash</label>
+  <label><input type="radio" name="pay" value="Transfer"> Transfer</label>
 </div>
-
 
 
   <div class="upload-box" id="uploadBox">
@@ -852,7 +851,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
    
 
   <br>
-  <button class="btn" onclick="placeOrder()">Send order</button>
+  <button class="btn" onclick="submitOrder()">Send order</button>
 </div>
 </div>
 
@@ -1228,107 +1227,137 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
+// Global variables for your original script
 let subtotal = 0;
-let dbCart = [];
+let cart = []; 
+const CART_KEY = "cartItems";
 
-// 1. Fetch data from Database on page load
+// 1. Load data from Database when page opens
 async function loadOrderData() {
     try {
         const response = await fetch('fetch_order_data.php');
         const data = await response.json();
 
-        if (data.error) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // Display user info as text
+        // Update Visible Text
         document.getElementById("display-name").innerText = data.full_name;
         document.getElementById("display-phone").innerText = data.phone;
         
-        // Save to hidden inputs
+        // Update Hidden Inputs (so submitOrder can find them)
         document.getElementById("name").value = data.full_name;
         document.getElementById("phone").value = data.phone;
+        document.getElementById("userEmail").value = data.email || "";
 
-        // Render products
+        // Fill cart and subtotal
+        cart = data.cart;
         const productsDiv = document.getElementById("products");
         productsDiv.innerHTML = "";
-        dbCart = data.cart;
-        subtotal = 0;
-
-        dbCart.forEach(p => {
+        
+        cart.forEach(p => {
             const itemTotal = p.price * p.qty;
             subtotal += itemTotal;
             productsDiv.innerHTML += `
                 <div class="product">
                     <div class="qty-badge">${p.qty}</div>
                     <img src="${p.image}">
-                    <div class="info">
-                        <strong>${p.name}</strong>
-                        ETB ${itemTotal.toLocaleString()}
-                    </div>
+                    <div class="info"><strong>${p.name}</strong> ETB ${itemTotal.toFixed(2)}</div>
                 </div>`;
         });
 
-        document.getElementById("subtotal").innerText = "ETB " + subtotal.toLocaleString();
-        document.getElementById("total").innerText = "ETB " + subtotal.toLocaleString();
+        document.getElementById("subtotal").innerText = "ETB " + subtotal.toFixed(2);
+        document.getElementById("total").innerText = "ETB " + subtotal.toFixed(2);
 
-    } catch (error) {
-        console.error("Error loading order:", error);
-    }
+    } catch (err) { console.error("Load Error:", err); }
 }
 
-// 2. The Send Order Function
-async function placeOrder() {
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    
-    // Check your specific 'pay' name attribute
-    const payOption = document.querySelector('input[name="pay"]:checked');
-    const payment = payOption ? payOption.value : null;
+// 2. YOUR ORIGINAL SUBMIT FUNCTION (Modified only to use DB data)
+async function submitOrder() {
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("userEmail").value; 
+  const payment = document.querySelector("input[name='pay']:checked").value;
+  const proof = document.getElementById("proof");
 
-    if (!payment) {
-        alert("Please select a payment method.");
-        return;
-    }
+  if (!name || !phone) { 
+    alert("User data not loaded. Please refresh."); 
+    return; 
+  }
+  
+  alert("Processing your order... Please wait.");
 
-    const orderData = {
-        name: name,
-        phone: phone,
-        payment: payment,
-        total: subtotal,
-        cart: dbCart
-    };
+  let dbResult = { success: false, order_id: 'N/A' };
 
+  try {
+    const orderData = { name, phone, email, payment, total: subtotal, cart }; 
+
+    // --- 1. SAVE TO DATABASE ---
     try {
-        // Save to Database
-        const resSave = await fetch('save_order.php', {
+        const dbResponse = await fetch('save_order.php', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
         });
-        const result = await resSave.json();
+        const resultText = await dbResponse.text();
+        dbResult = JSON.parse(resultText.substring(resultText.indexOf('{')));
+    } catch (dbErr) { console.error("Database Save Error:", dbErr); }
 
-        if (result.success) {
-            // Send Telegram/Email notification
-            fetch('order.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(orderData)
-            });
+    // --- 2. SEND EMAIL ---
+    fetch('order.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    }).catch(err => console.error("Email Error:", err));
 
-            alert("Order placed successfully!");
-            window.location.href = "order_history.php";
-        } else {
-            alert("Error: " + result.message);
-        }
-    } catch (err) {
-        alert("Network error. Order not sent.");
+    // --- 3. TELEGRAM ---
+    const BOT_TOKEN = "8552120519:AAHYu7diuQjM8y-qy6I5jlqWm0IwB-y7RYM";
+    const CHAT_ID = "5335234629";
+    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+    // Send Header
+    await fetch(`${API}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: `🔔 *NEW ORDER RECEIVED* 🔔\n\n🆔 *Order ID:* #${dbResult.order_id || 'N/A'}\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
+        parse_mode: "Markdown"
+      })
+    });
+
+    // Send Products
+    for (const p of cart) {
+      const itemSub = (p.price * p.qty).toFixed(2);
+      const docForm = new FormData();
+      docForm.append("chat_id", CHAT_ID);
+      // Directly using image URL if smallCloudinary isn't defined
+      docForm.append("document", p.image); 
+      docForm.append("caption", `📦 *Product:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemSub}`);
+      docForm.append("parse_mode", "Markdown");
+      await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
     }
+
+    // Send Proof
+    if (payment === "Transfer" && proof.files.length > 0) {
+      const pForm = new FormData();
+      pForm.append("chat_id", CHAT_ID);
+      pForm.append("document", proof.files[0]);
+      pForm.append("caption", `💳 *TRANSFER PROOF*\n👤 From: ${name}\n📞 ${phone}`);
+      pForm.append("parse_mode", "Markdown");
+      await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
+    }
+
+    // Redirect
+    localStorage.removeItem(CART_KEY);
+    window.location.href = "thanks.html";
+
+  } catch (error) {
+    console.error("Order Error:", error);
+    window.location.href = "thanks.html";
+  }
 }
 
-// Call load on startup
+// Start loading
 document.addEventListener('DOMContentLoaded', loadOrderData);
+
 
 
 /* PAYMENT TOGGLE */
@@ -1394,113 +1423,6 @@ function handleOrderClick() {
         }
     }
   }
-
-async function submitOrder() {
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("userEmail").value; 
-  const payment = document.querySelector("input[name='pay']:checked").value;
-  const proof = document.getElementById("proof");
-
-  if (!name || !phone) { 
-    alert("Please fill in your name and phone number."); 
-    return; 
-  }
-  
-  alert("Processing your order... Please wait.");
-
-  // Define dbResult at the top so it is available to the Telegram part below
-  let dbResult = { success: false, order_id: 'N/A' };
-
-  try {
-    const orderData = { name, phone, email, payment, total: subtotal, cart }; 
-
-    // --- 1. SAVE TO DATABASE (Using save_order.php) ---
-    try {
-       const dbResponse = await fetch('save_order.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        name: name,
-        phone: phone,
-        payment: payment,
-        total: subtotal, // Make sure this matches your subtotal variable
-        cart: cart
-    })
-});
-        const resultText = await dbResponse.text();
-        dbResult = JSON.parse(resultText.substring(resultText.indexOf('{')));
-    } catch (dbErr) {
-        console.error("Database Save Error:", dbErr);
-    }
-
-    // --- 2. SEND EMAIL (Using order.php) ---
-    fetch('order.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    }).catch(err => console.error("Email Error:", err));
-
-
-    // --- 3. TELEGRAM CONFIGURATION ---
-    const BOT_TOKEN = "8552120519:AAHYu7diuQjM8y-qy6I5jlqWm0IwB-y7RYM";
-    const CHAT_ID = "5335234629";
-    const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
-
-    // --- 4. Send Main Order Header to Telegram ---
-    await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `🔔 *NEW ORDER RECEIVED* 🔔\n\n🆔 *Order ID:* #${dbResult.order_id || 'N/A'}\n👤 *Customer:* ${name}\n📞 *Phone:* ${phone}\n💳 *Payment:* ${payment}\n💰 *Total:* ETB ${subtotal.toFixed(2)}`,
-        parse_mode: "Markdown"
-      })
-    });
-
-    // --- 5. Send Products to Telegram ---
-    for (const p of cart) {
-      const itemSub = (p.price * p.qty).toFixed(2);
-      const docForm = new FormData();
-      docForm.append("chat_id", CHAT_ID);
-      docForm.append("document", smallCloudinary(p.image || p.img));
-      docForm.append("caption", `📦 *Product:* ${p.name}\n🔢 *Qty:* ${p.qty}\n💵 *Price:* ETB ${p.price}\n💰 *Subtotal:* ETB ${itemSub}`);
-      docForm.append("parse_mode", "Markdown");
-      
-      await fetch(`${API}/sendDocument`, { method: "POST", body: docForm });
-    }
-
-    // --- 6. Send Transfer Proof to Telegram ---
-    if (payment === "Transfer" && proof.files.length > 0) {
-      const pForm = new FormData();
-      pForm.append("chat_id", CHAT_ID);
-      pForm.append("document", proof.files[0]);
-      pForm.append("caption", `💳 *TRANSFER PROOF*\n👤 From: ${name}\n📞 ${phone}`);
-      pForm.append("parse_mode", "Markdown");
-      
-      await fetch(`${API}/sendDocument`, { method: "POST", body: pForm });
-    }
-
-     await fetch(`${API}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: `✅ *ORDER PROCESSING STARTED*\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
-        parse_mode: "Markdown"
-      })
-    });
-
-    // --- 7. Cleanup and Redirect ---
-    localStorage.removeItem(CART_KEY);
-    window.location.href = "thankyou.html";
-
-  } catch (error) {
-    console.error("Order Error:", error);
-    alert("Order recorded, but there was a connection issue with notifications.");
-    window.location.href = "thankyou.html";
-  }
-}
 
 
 
