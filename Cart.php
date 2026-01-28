@@ -925,7 +925,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                         </a>
                         
                         <span class="u-cart-name"><?php echo htmlspecialchars($item['pname']); ?></span>
-                        <span class="u-cart-price-tag"><?php echo number_format($item['pprice'], 0); ?> ETB / unit</span>
+                        <span class="u-cart-price-tag"><?php echo number_format($item['pprice'], 0); ?> ETB / (unit/kg)</span>
 
                         <div class="u-cart-action-row">
                             <form action="Cart.php" method="POST" class="u-cart-qty-box">
@@ -946,15 +946,65 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
             <div class="u-cart-summary">
                 <div class="u-summary-line"><span>Subtotal</span><span><?php echo number_format($grand_total, 0); ?> ETB</span></div>
-                <div class="u-summary-line"><small>Shipping</small><small>Calculated at checkout</small></div>
+                <div class="u-summary-line"><small>Shipping</small><small>0.00 ETB</small></div>
                 
                 <div class="u-summary-line u-summary-total">
                     <span>Grand Total</span>
                     <span><?php echo number_format($grand_total, 0); ?> ETB</span>
                 </div>
-                
+                   
+
+               
+<div style="
+    max-width: 420px; 
+    margin: 15px auto; 
+    background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+    border: 1px solid #c6f6d5;
+    border-radius: 16px; 
+    padding: 20px; 
+    box-shadow: 0 8px 20px rgba(56, 161, 105, 0.08);
+    font-family: 'Inter', -apple-system, sans-serif;
+">
+    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+        <div style="
+            background: #38a169; 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 8px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-right: 10px;
+        ">
+            <i class="fas fa-scale-balanced" style="color: white; font-size: 14px;"></i>
+        </div>
+        <span style="font-weight: 700; color: #22543d; font-size: 15px;">Quantity & Measurements</span>
+    </div>
+
+    <p style="margin: 0; color: #2f855a; line-height: 1.6; font-size: 13.5px;">
+        Please note that the <strong style="color: #1a4731;">Quantity</strong> field adjusts based on the item type:
+    </p>
+
+    <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #4a5568; font-size: 13px; line-height: 1.5;">
+        <li style="margin-bottom: 5px;">
+            For items sold by weight, the quantity represents <strong>Kilograms (kg)</strong>.
+        </li>
+        <li>
+            For items sold individually, the quantity represents <strong>Units (Pieces)</strong>.
+        </li>
+    </ul>
+
+    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #c6f6d5;">
+        <p style="margin: 0; color: #718096; font-size: 12px; font-style: italic;">
+            አንድን እቃ በኪሎ ግራም የሚሸጥ ከሆነ Quantity ኪሎግራምን ያመለክታል፤ በፍሬ የሚሸጥ ከሆነ ደግሞ የፍሬ ብዛትን ያመለክታል።
+        </p>
+    </div>
+</div>
+
+
+
                 <a href="order.html" class="u-cart-checkout-btn">Checkout Now <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
-                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-left:6px"></i>  Go Shopping</a>
+                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-right:8px"></i>  Go Shopping</a>
                 
                 
             </div>
