@@ -1,5 +1,5 @@
 <?php
-// 1. Include DB connection (handles session_start)
+// 1. Include DB connection (handles session_start and $conn)
 include 'db.php';
 
 header('Content-Type: application/json');
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// 3. Get JavaScript Data
+// 3. Get the data from JavaScript
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!$data) {
@@ -25,35 +25,36 @@ $payment = mysqli_real_escape_string($conn, $data['payment']);
 $total   = $data['total'];
 $cart    = $data['cart'];
 
-// 4. Start Transaction
+// 4. Start Database Transaction
 $conn->begin_transaction();
 
 try {
-    // A. Insert into 'orders' table
+    // A. Insert main order into 'orders' table
     $stmt1 = $conn->prepare("INSERT INTO orders (user_id, full_name, phone, total_amount, payment_method) VALUES (?, ?, ?, ?, ?)");
     $stmt1->bind_param("issds", $user_id, $name, $phone, $total, $payment);
     $stmt1->execute();
     $order_id = $conn->insert_id; 
 
-    // B. Insert items into 'order_items' table
+    // B. Insert each item into 'order_items' table
     $stmt2 = $conn->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
     foreach ($cart as $item) {
         $stmt2->bind_param("isdi", $order_id, $item['name'], $item['price'], $item['qty']);
         $stmt2->execute();
     }
 
-    // C. DELETE the database cart products for this user
+    // C. DELETE the products from the DATABASE cart table for this user
     $stmt3 = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
     $stmt3->bind_param("i", $user_id);
     $stmt3->execute();
 
-    // D. Commit changes to Database
+    // D. Commit (save) everything to the database
     $conn->commit();
 
-    // E. Return success ONLY ONCE
+    // E. Send success message back to your JavaScript function
     echo json_encode(['success' => true, 'order_id' => $order_id]);
 
 } catch (Exception $e) {
+    // If anything fails, undo changes
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
