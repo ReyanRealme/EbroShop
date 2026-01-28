@@ -61,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // --- 3. FETCH ADDRESSES ---
-// We JOIN with the users table to get the actual full name registered to the account
+// Change u.full_name to u.first_name and u.last_name
 $stmt = $conn->prepare("
-    SELECT a.*, u.full_name AS user_real_name 
+    SELECT a.*, u.first_name AS user_fname, u.last_name AS user_lname 
     FROM addresses a 
     JOIN users u ON a.user_id = u.id 
     WHERE a.user_id=? 
@@ -859,15 +859,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <?php while($addr = $addresses->fetch_assoc()): ?>
             <div class="address-box">
                 <div class="user-name">
-               <?php 
-             // Fetch the name from the main users table since we hid it in the form
-             $u_id = $_SESSION['user_id'];
-             $user_query = $conn->query("SELECT first_name, last_name FROM users WHERE id = $u_id");
-             $user_data = $user_query->fetch_assoc();
-             echo htmlspecialchars($user_data['first_name'] . ' ' . $user_data['last_name']); 
-                ?>
-                <?php if($addr['is_default']): ?><span class="default-badge">Default</span><?php endif; ?>
-            </div>
+                    <?php 
+                       // Combine the first and last name fetched from the users table
+                       echo htmlspecialchars($addr['user_fname'] . " " . $addr['user_lname']); 
+                    ?>
+                    <?php if($addr['is_default']): ?><span class="default-badge">Default</span><?php endif; ?>
+                </div>
+
                 <div class="location">
                     <?php if($addr['company']) echo htmlspecialchars($addr['company']) . "<br>"; ?>
                     <?php echo htmlspecialchars($addr['address1']); ?><br>
