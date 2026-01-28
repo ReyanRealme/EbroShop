@@ -1311,47 +1311,17 @@ function handleOrderClick() {
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
 
-    // STEP 1: Check if Name and Phone are filled first
- 
-
-    // STEP 2: Only after name/phone are filled, check if logged in
-    if (isLoggedIn) {
-        submitOrder(); // Continue to Telegram
+    // CHANGE: We simply check if the name and phone fields are filled.
+    // If they are filled, it means loadDatabaseData() worked and user is logged in.
+    if (name !== "" && phone !== "") {
+        submitOrder(); 
     } else {
-        const userChoice = confirm("Wait! You are not logged in. Would you like to login now to complete your order?");
-        
-        if (userChoice) {
-            window.location.href = "login.html"; 
-        } else {
-            // Display "Not Allowed" message as requested
-            document.getElementById('main-content').innerHTML = `
-                <div class="denied-container">
-                    <h2 class="denied-text" style="color:red;">Order Not Allowed</h2>
-                    <p>Ordering is only allowed for registered members. Please create an account or login to continue.</p>
-                    <br>
-                    <button onclick="window.location.href='home.html'" style="padding:15px; background:#007bff; color:#fff; border:none; border-radius:25px; cursor:pointer; width:100%;">BACK TO HOME</button>
-                
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-
-                    </div>    
-            `;
-        }
+        // This only happens if the fields are empty (load failed)
+        alert("Your information is not loaded. Please login again.");
+        window.location.href = "login.html";
     }
-  }
+}
+
 
 async function submitOrder() {
   const name = document.getElementById("name").value.trim();
