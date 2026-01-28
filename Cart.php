@@ -1004,7 +1004,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
                 <a href="order.html" class="u-cart-checkout-btn">Checkout Now <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
-                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-right:8px"></i>  Go Shopping</a>
+                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-right:8px"></i>  Continue Shopping</a>
                 
                 
             </div>
