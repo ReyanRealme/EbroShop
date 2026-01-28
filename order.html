@@ -1423,9 +1423,10 @@ async function submitOrder() {
     localStorage.removeItem(CART_KEY);
     window.location.href = "thankyou.html";
 
-  } catch (error) {
+  }
+   catch (error) {
     console.error("Order Error:", error);
-    alert("Order recorded, but there was a connection issue with notifications.");
+    
     window.location.href = "thankyou.html";
   }
 }
