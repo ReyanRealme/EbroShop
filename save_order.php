@@ -42,15 +42,15 @@ try {
         $stmt2->execute();
     }
 
-    // C. DELETE the products from the DATABASE cart table for this user
+    // C. THE EDIT: DELETE the database cart for this user
     $stmt3 = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
     $stmt3->bind_param("i", $user_id);
     $stmt3->execute();
 
-    // D. Commit (save) everything to the database
+    // D. Commit everything to the database
     $conn->commit();
 
-    // E. Send success message back to your JavaScript function
+    // E. Return success ONLY ONCE to JavaScript
     echo json_encode(['success' => true, 'order_id' => $order_id]);
 
 } catch (Exception $e) {
