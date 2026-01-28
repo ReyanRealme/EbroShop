@@ -1306,18 +1306,18 @@ function smallCloudinary(url) {
   return url.replace("/upload/", "/upload/w_300,h_300,c_fit,q_60,f_jpg/");
 }
 
+
 /* 2. UPDATED ORDER BUTTON LOGIC */
 function handleOrderClick() {
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
 
-    // CHANGE: We simply check if the name and phone fields are filled.
-    // If they are filled, it means loadDatabaseData() worked and user is logged in.
-    if (name !== "" && phone !== "") {
+    // CHANGE: We remove "isLoggedIn". 
+    // We check if name is filled (this proves loadDatabaseData worked).
+    if (name !== "") {
         submitOrder(); 
     } else {
-        // This only happens if the fields are empty (load failed)
-        alert("Your information is not loaded. Please login again.");
+        alert("Please login to continue.");
         window.location.href = "login.html";
     }
 }
