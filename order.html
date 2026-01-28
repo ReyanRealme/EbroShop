@@ -1524,7 +1524,7 @@ if (payment === "Transfer") {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: `✅✅✅ *ORDER PROCESSING FINISHED*✅✅✅\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
+        text: `✅*ORDER PROCESSING FINISHED*✅\nTotal to collect: ETB ${subtotal.toFixed(2)}`,
         parse_mode: "Markdown"
       })
     });
