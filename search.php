@@ -103,45 +103,44 @@ include 'db.php';
     });
 
     // GLOBAL FUNCTION TO HANDLE ADDING
-  // GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
+// GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
 window.handleQuickAdd = function(product) {
-    // 1. Check if the item is sold out
+    // 1. Check for Sold Out Status
     const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
     
     if (isSoldOut) {
-        // We still show alert for sold out because user cannot add it
-        alert("Sorry! This item is sold out.");
+        // If sold out, we do nothing and stay on the page
         return;
     }
 
-    // 2. Use the NEW cart key to match your recent cart system
+    // 2. Use the NEW cart key (ebro_cart_items)
     const CART_KEY = "ebro_cart_items"; 
     
-    // 3. Load existing cart items
+    // 3. Load existing cart
     let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
     
-    // 4. Check if product already exists in the cart
+    // 4. Check if already in cart
     const existingIndex = cart.findIndex(item => item.id === product.id);
     
     if (existingIndex !== -1) {
-        // If it exists, increase the quantity
+        // Increase quantity if it exists
         cart[existingIndex].qty += 1;
     } else {
-        // 5. Add new item using the structure required by your new cart
+        // 5. Add new item using your NEW structure
         cart.push({
             id: product.id,
             name: product.name,
             price: parseFloat(product.price),
-            image: product.image_url, // Maps image_url from database to cart image
+            image: product.image_url, 
             qty: 1,
-            addedAt: new Date().getTime() // Needed for sorting in the new cart
+            addedAt: new Date().getTime() 
         });
     }
     
-    // 6. Save the updated cart to localStorage
+    // 6. Save back to localStorage
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     
-    // 7. REDIRECT ONLY (No Alert)
+    // 7. DIRECT REDIRECT (No alert message)
     window.location.href = "Cart.php";
 };
 })();
