@@ -62,7 +62,8 @@
             text-align: center;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow:hidden;
+            overflow:visible;
+            height: auto;
         }
 
         .glass-card:hover {
@@ -245,18 +246,43 @@
             <div class="readme-item"><i class="fas fa-handshake"></i><span data-key="Developer5"> Let us go to collaborate</span></div>
         </div>
 
-        <form id="tgForm" class="input-group">
+
+
+<form id="tgForm" class="input-group">
             <input type="text" id="name" placeholder="Full Name/ሙሉ ስም" required>
             <input type="tel" id="phone" placeholder="Phone or email/ስልክ ወይም ኢሜል" required>
-<textarea id="message" rows="3" placeholder="Describe your project/ሃሳብ..."></textarea>
-            <button type="submit" class="green-glow-btn" >Transmit Signal</button>
+            <textarea id="message" rows="3" placeholder="Describe your project/ሃሳብ..."></textarea>
+            <button type="submit" class="green-glow-btn">Transmit Signal</button>
         </form>
-<div class="location">
+
+        <div class="lang-container" style="margin: 20px 0; position: relative; width: 100%;">
+            <div class="custom-lang-dropdown" style="width: 100%;">
+                <button onclick="toggleLangMenu()" style="background: white; border: 1.5px solid #e2e8f0; padding: 10px 15px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-globe" style="color: var(--neon-green); font-size: 14px;"></i>
+                        <span id="current-lang-label" style="font-size: 13px; font-weight: 700; color: var(--dark-green);" data-key="commonB3">Language</span>
+                    </div>
+                    <i class="fas fa-chevron-up toggle-icon" style="color: #718096; font-size: 10px; transition: 0.3s;"></i>
+                </button>
+                
+                <ul id="langOptions" style="display: none; position: absolute; bottom: 110%; left: 0; width: 100%; background: white; border-radius: 15px; list-style: none; padding: 5px; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; z-index: 100;">
+                    <li onclick="changeLanguage('en')" style="padding: 10px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #2d3748;">
+                        <img src="https://flagcdn.com/w20/gb.png" style="width: 18px;"> English
+                    </li>
+                    <li onclick="changeLanguage('am')" style="padding: 10px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #2d3748;">
+                        <img src="https://flagcdn.com/w20/et.png" style="width: 18px;"> አማርኛ
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="location">
             <i class="fas fa-satellite"></i> STATION: MEKELLE, ETHIOPIA
         </div>
+
+
     </div>
 </div>
-
 
 
 <div class="lang-container" style="margin-top: 15px; margin-bottom: 10px; text-align: center;">
