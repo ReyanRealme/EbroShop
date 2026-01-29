@@ -103,46 +103,46 @@ include 'db.php';
     });
 
     // GLOBAL FUNCTION TO HANDLE ADDING
-   // GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
+  // GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
 window.handleQuickAdd = function(product) {
-    // 1. Check for Sold Out Status
+    // 1. Check if the item is sold out
     const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
+    
     if (isSoldOut) {
-        alert("Sorry! This item is sold out. We'll restock it soon.");
+        // We still show alert for sold out because user cannot add it
+        alert("Sorry! This item is sold out.");
         return;
     }
 
-    // 2. Use your new cart key
+    // 2. Use the NEW cart key to match your recent cart system
     const CART_KEY = "ebro_cart_items"; 
     
-    // 3. Load existing cart
+    // 3. Load existing cart items
     let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
     
-    // 4. Check if already in cart
+    // 4. Check if product already exists in the cart
     const existingIndex = cart.findIndex(item => item.id === product.id);
     
     if (existingIndex !== -1) {
-        // Increase quantity if it exists
+        // If it exists, increase the quantity
         cart[existingIndex].qty += 1;
     } else {
-        // 5. Add new item using your NEW structure
-        // Map 'image_url' from database to 'image' for your cart
+        // 5. Add new item using the structure required by your new cart
         cart.push({
             id: product.id,
             name: product.name,
             price: parseFloat(product.price),
-            image: product.image_url, 
+            image: product.image_url, // Maps image_url from database to cart image
             qty: 1,
-            addedAt: new Date().getTime() // Added timestamp for new cart sorting
+            addedAt: new Date().getTime() // Needed for sorting in the new cart
         });
     }
     
-    // 6. Save back to localStorage
+    // 6. Save the updated cart to localStorage
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     
-    // 7. Optional: Show a quick notification or redirect to Cart
-    window.location.href = "Cart.php"; 
-    alert(`${product.name} added to cart! 🛒`);
+    // 7. REDIRECT ONLY (No Alert)
+    window.location.href = "Cart.html";
 };
 })();
 </script>
