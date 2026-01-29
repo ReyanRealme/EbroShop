@@ -103,35 +103,47 @@ include 'db.php';
     });
 
     // GLOBAL FUNCTION TO HANDLE ADDING
-    window.handleQuickAdd = function(product) {
-        if (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock')) {
-            alert("Sorry! This item is sold out. You can't add it right now. We'll add it soon.");
-            return;
-        }
+   // GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
+window.handleQuickAdd = function(product) {
+    // 1. Check for Sold Out Status
+    const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
+    if (isSoldOut) {
+        alert("Sorry! This item is sold out. We'll restock it soon.");
+        return;
+    }
 
-        // 1. Load existing cart using your specific key "cartItems"
-        let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        
-        // 2. Check if already in cart
-        const existingIndex = cart.findIndex(item => item.id === product.id);
-        
-        if (existingIndex !== -1) {
-            cart[existingIndex].qty += 1;
-        } else {
-            // 3. Add new item (Map image_url to image to match your cart logic)
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: parseFloat(product.price),
-                image: product.image_url, 
-                qty: 1
-            });
-        }
-        
-        // 4. Save and Redirect
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        window.location.href = "Cart.html";
-    };
+    // 2. Use your new cart key
+    const CART_KEY = "ebro_cart_items"; 
+    
+    // 3. Load existing cart
+    let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    
+    // 4. Check if already in cart
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+    
+    if (existingIndex !== -1) {
+        // Increase quantity if it exists
+        cart[existingIndex].qty += 1;
+    } else {
+        // 5. Add new item using your NEW structure
+        // Map 'image_url' from database to 'image' for your cart
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: parseFloat(product.price),
+            image: product.image_url, 
+            qty: 1,
+            addedAt: new Date().getTime() // Added timestamp for new cart sorting
+        });
+    }
+    
+    // 6. Save back to localStorage
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    
+    // 7. Optional: Show a quick notification or redirect to Cart
+    window.location.href = "Cart.php"; 
+    alert(`${product.name} added to cart! 🛒`);
+};
 })();
 </script>
 </body>
