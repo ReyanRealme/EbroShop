@@ -142,7 +142,7 @@ window.handleQuickAdd = function(product) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     
     // 7. REDIRECT ONLY (No Alert)
-    window.location.href = "Cart.html";
+    window.location.href = "Cart.php";
 };
 })();
 </script>
