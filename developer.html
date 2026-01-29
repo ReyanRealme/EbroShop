@@ -255,26 +255,7 @@
             <button type="submit" class="green-glow-btn">Transmit Signal</button>
         </form>
 
-        <div class="lang-container" style="margin: 20px 0; position: relative; width: 100%;">
-            <div class="custom-lang-dropdown" style="width: 100%;">
-                <button onclick="toggleLangMenu()" style="background: white; border: 1.5px solid #e2e8f0; padding: 10px 15px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; width: 100%; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-globe" style="color: var(--neon-green); font-size: 14px;"></i>
-                        <span id="current-lang-label" style="font-size: 13px; font-weight: 700; color: var(--dark-green);" data-key="commonB3">Language</span>
-                    </div>
-                    <i class="fas fa-chevron-up toggle-icon" style="color: #718096; font-size: 10px; transition: 0.3s;"></i>
-                </button>
-                
-                <ul id="langOptions" style="display: none; position: absolute; bottom: 110%; left: 0; width: 100%; background: white; border-radius: 15px; list-style: none; padding: 5px; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; z-index: 100;">
-                    <li onclick="changeLanguage('en')" style="padding: 10px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #2d3748;">
-                        <img src="https://flagcdn.com/w20/gb.png" style="width: 18px;"> English
-                    </li>
-                    <li onclick="changeLanguage('am')" style="padding: 10px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #2d3748;">
-                        <img src="https://flagcdn.com/w20/et.png" style="width: 18px;"> አማርኛ
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
 
         <div class="location">
             <i class="fas fa-satellite"></i> STATION: MEKELLE, ETHIOPIA
@@ -284,26 +265,6 @@
     </div>
 </div>
 
-
-<div class="lang-container" style="margin-top: 15px; margin-bottom: 10px; text-align: center;">
-    <div class="custom-lang-dropdown" style="display: inline-block; position: relative;">
-        
-        <button onclick="toggleLangMenu()" style="background: rgba(255, 255, 255, 0.7); border: 1.5px solid #e2e8f0; padding: 6px 12px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s;">
-            <i class="fas fa-globe" style="color: var(--neon-green); font-size: 14px;"></i>
-            <span id="current-lang-label" style="font-size: 12px; font-weight: 700; color: var(--dark-green); font-family: 'Plus Jakarta Sans', sans-serif;" data-key="commonB3">Language</span>
-            <i class="fas fa-chevron-up toggle-icon" style="color: #718096; font-size: 10px; transition: 0.3s;"></i>
-        </button>
-        
-        <ul id="langOptions" style="display: none; position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); width: 120px; background: white; border-radius: 12px; list-style: none; padding: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; z-index: 999;">
-            <li onclick="changeLanguage('en')" style="padding: 8px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #2d3748; transition: 0.2s;">
-                <img src="https://flagcdn.com/w20/gb.png" style="width: 16px;"> EN
-            </li>
-            <li onclick="changeLanguage('am')" style="padding: 8px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #2d3748; transition: 0.2s;">
-                <img src="https://flagcdn.com/w20/et.png" style="width: 16px;"> አማ
-            </li>
-        </ul>
-    </div>
-</div>
 
 <script>
     // Variables for your Bot and Chat
@@ -348,32 +309,33 @@
 
 
 
-function toggleLangMenu() {
-    const menu = document.getElementById('langOptions');
-    const icon = document.querySelector('.toggle-icon');
+// This runs automatically as soon as the page opens
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Check if 'ebro_lang' was saved in localStorage from the home page
+    const savedLang = localStorage.getItem('ebro_lang') || 'en';
     
-    if (menu.style.display === "none" || menu.style.display === "") {
-        menu.style.display = "block";
-        icon.classList.add('rotate-icon');
+    // 2. Check if the translations object exists from languages.js
+    if (typeof translations !== 'undefined') {
+        applySavedTranslation(savedLang);
     } else {
-        menu.style.display = "none";
-        icon.classList.remove('rotate-icon');
+        console.error("translations object not found. Check if languages.js is loaded correctly.");
     }
-}
+});
 
-// Close menu when clicking outside
-window.onclick = function(event) {
-    if (!event.target.closest('.custom-lang-dropdown')) {
-        document.getElementById('langOptions').style.display = "none";
-        document.querySelector('.toggle-icon').classList.remove('rotate-icon');
+function applySavedTranslation(lang) {
+    const elements = document.querySelectorAll('[data-key]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+            el.innerText = translations[lang][key];
+        }
+    });
+    
+    // Update the label on your selector button if it exists
+    const label = document.getElementById('current-lang-label');
+    if(label) {
+        label.innerText = (lang === 'am') ? 'አማርኛ' : 'Language';
     }
-}
-
-// Update label on change
-function changeLanguage(lang) {
-    // Your existing language logic here...
-    console.log("Language changed to: " + lang);
-    toggleLangMenu(); // Close after selection
 }
 
 </script>
