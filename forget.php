@@ -32,8 +32,8 @@ if (isset($_POST['request_reset'])) {
         $resetLink = "$protocol://$host_url/forget.php?token=$token";
 
 
-        
-       // 1. መጀመሪያ የዲዛይኑን ይዘት በ ተለዋዋጭ (Variable) ይያዙት
+
+       
 $htmlBody = "
 <html>
 <head>
@@ -51,15 +51,15 @@ $htmlBody = "
         <div class='content'>
             <h3>ሚስጥራዊ ቁጥርዎን ይቀይሩ</h3>
             <p>ሰላም፣ የአካውንትዎን ሚስጥራዊ ቁጥር ለመቀየር ከታች ያለውን ሰማያዊ ቁልፍ ይጫኑ።</p>
-            <a href='$resetLink' class='btn'>ሚስጥራዊ ቁጥር ቀይር</a>
-            <p style='margin-top:20px; font-size:13px;'>ይህ ጥያቄ በእርስዎ ካልቀረበ እባክዎ ችላ ይበሉት።</p>
+            <a href='$resetLink' class='btn'>ሚስጥራዊ ቁጥር ይቀይሩ</a>
+            <p style='margin-top:20px; font-size:13px;'>ይህ ጥያቄ ከእርስዎ ካልቀረበ እባክዎ እንዳይቀይሩ።</p>
         </div>
         <div class='footer'>&copy; " . date("Y") . " EbRoShop Online Shopping</div>
     </div>
 </body>
 </html>";
 
-// 2. አሁን በ $data ውስጥ "htmlContent" የሚለው ላይ $htmlBody የሚለውን ይተኩ
+
 $data = array(
     "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
     "to" => array(array("email" => $email)),
@@ -184,18 +184,34 @@ if (isset($_GET['token'])):
 </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style='color:#136835;'>Enter New Password</h2>
-        <p style="color: #666; font-size: 14px;">Enter a strong password for your EbRoShop account.</p>
-        <form method="POST" action="forget.php">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-            <div class="password-container"> 
-              <input type="password" name="new_pass" id="new_pass" placeholder="Enter New Password" required minlength="6"> 
-              <i class="fa-solid fa-eye toggle-password" id="eyeIcon" onclick="togglePassword()"></i>
-            </div> 
-         <button type="submit" name="update_now">Update Password</button>
-        </form>
+    
+   <div class="box">
+    <h2 style='color:#136835;'>Enter New Password</h2>
+    <p style="color: #666; font-size: 14px;">Enter a strong password for your EbRoShop account.</p>
+    
+    <form method="POST" action="forget.php">
+        <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+        <div class="password-container"> 
+            <input type="password" name="new_pass" id="new_pass" placeholder="አዲስ ሚስጥራዊ ቁጥር ያስገቡ" required minlength="6"> 
+            <i class="fa-solid fa-eye toggle-password" id="eyeIcon" onclick="togglePassword()"></i>
+        </div> 
+        <button type="submit" name="update_now">Update Password</button>
+    </form>
+
+    <div style="margin-top: 20px; padding: 15px; border-top: 1px dashed #136835; background-color: #f9fffb; border-radius: 8px;">
+        <h4 style="margin: 0 0 8px 0; color: #136835; font-size: 14px;">መከተል ያለብዎት መመሪያዎች፦</h4>
+        <ul style="margin: 0; padding-left: 20px; color: #4a5568; font-size: 12.5px; line-height: 1.6;">
+            <li><strong>አዲስ ፓስወርድ ያስገቡ፦</strong> ቢያንስ 6 ሆሄያት ወይም ቁጥሮችን ይጠቀሙ።</li>
+            <li><strong>ደህንነት፦</strong> ለሌላ ሰው የማይገመት እና የእርስዎን ስም ወይም ስልክ ቁጥር ያላካተተ ቢሆን ይመረጣል።</li>
+            <li><strong>ምስጢራዊነት፦</strong> የፈጠሩትን አዲስ ሚስጥራዊ ቁጥር ለማንም ሰው አያጋሩ።</li>
+        </ul>
+        <p style="margin-top: 10px; color: #718096; font-size: 12px; font-style: italic;">
+            * ይህ መመሪያ የአካውንትዎን ደህንነት በከፍተኛ ሁኔታ ለመጠበቅ ይረዳል።
+        </p>
     </div>
+</div>
+
+
       <script>
         function togglePassword() {
             const passwordInput = document.getElementById("new_pass");
