@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Leadership - EbRoShop</title>
+     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -87,8 +88,44 @@
         .btn:hover { opacity: 0.85; filter: brightness(1.1); }
 
         @media (max-width: 768px) { .hero h1 { font-size: 28px; } }
+
+
+
+
+        .language-bar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 10000;
+    border: 2px solid var(--primary); /* Uses your #136835 green */
+}
+
+.lang-node {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 13px;
+    background: transparent;
+    color: var(--primary);
+    transition: 0.3s;
+}
+
+.lang-node.active {
+    background: var(--primary);
+    color: white !important;
+}
+
+.divider { width: 1px; height: 20px; background: #eee; align-self: center; }
     </style>
 </head>
+<body>
 <body>
 
     <section class="hero">
@@ -137,6 +174,49 @@
     <div style="text-align: center; padding: 40px; color: #777;">
         <p><i class="fas fa-shield-alt"></i> <span data-key="host11">100% Secure Shopping Guaranteed by the EbRoShop Team.</span></p>
     </div>
+
+ <div class="language-bar">
+        <button onclick="updatePageLanguage('en')" id="btn-en" class="lang-node active">English</button>
+        <div class="divider"></div>
+        <button onclick="updatePageLanguage('am')" id="btn-am" class="lang-node">አማርኛ</button>
+    </div>
+
+<script src="languages.js"></script>
+<script>
+    function updatePageLanguage(lang) {
+        // የእርስዎ languages.js የሚጠቀመው 'ebroTranslations' የሚለውን ስም ነው
+        if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
+            const selectedLanguage = ebroTranslations[lang];
+            
+            // ሁሉንም data-key ያላቸውን ጽሁፎች መቀየር
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) {
+                    el.innerText = selectedLanguage[key];
+                }
+            });
+            
+            // የቢጫ ቁልፎቹን ምልክት (Active/Inactive) መቀየር
+            const btnEn = document.getElementById('btn-en');
+            const btnAm = document.getElementById('btn-am');
+            if(btnEn && btnAm) {
+                btnEn.classList.toggle('active', lang === 'en');
+                btnAm.classList.toggle('active', lang === 'am');
+            }
+            
+            // ምርጫውን በኮምፒውተሩ ላይ ማስቀመጥ (ለሌሎች ገጾች እንዲሆን)
+            localStorage.setItem('userLanguage', lang);
+        } else {
+            console.error("ትርጉሞቹ አልተገኙም! እባክዎ languages.js በትክክል መጫኑን ያረጋግጡ።");
+        }
+    }
+
+    // ገጹ ሲከፈት የተቀመጠውን ቋንቋ መጫን
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('userLanguage') || 'en';
+        updatePageLanguage(savedLang);
+    });
+</script>
 
 </body>
 </html>
