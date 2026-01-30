@@ -103,45 +103,31 @@ include 'db.php';
     });
 
     // GLOBAL FUNCTION TO HANDLE ADDING
-// GLOBAL FUNCTION TO HANDLE ADDING TO NEW CART
 window.handleQuickAdd = function(product) {
-    // 1. Check for Sold Out Status
-    const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
-    
-    if (isSoldOut) {
-        // If sold out, we do nothing and stay on the page
-        return;
-    }
+    // 1. Check if sold out
+    const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out'));
+    if (isSoldOut) return;
 
-    // 2. Use the NEW cart key (ebro_cart_items)
-    const CART_KEY = "ebro_cart_items"; 
-    
-    // 3. Load existing cart
-    let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    
-    // 4. Check if already in cart
-    const existingIndex = cart.findIndex(item => item.id === product.id);
-    
-    if (existingIndex !== -1) {
-        // Increase quantity if it exists
-        cart[existingIndex].qty += 1;
-    } else {
-        // 5. Add new item using your NEW structure
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: parseFloat(product.price),
-            image: product.image_url, 
-            qty: 1,
-            addedAt: new Date().getTime() 
-        });
-    }
-    
-    // 6. Save back to localStorage
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    
-    // 7. DIRECT REDIRECT (No alert message)
-    window.location.href = "Cart.php";
+    // 2. Prepare the data for cart_handler.php
+    const formData = new FormData();
+    formData.append('product_id', product.id);
+    formData.append('quantity', 1);
+    formData.append('action', 'add'); // Tells cart_handler to add the item
+
+    // 3. Send to your PHP backend
+    fetch('cart_handler.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        // 4. Redirect immediately after the database is updated
+        window.location.href = "Cart.php"; 
+    })
+    .catch(error => {
+        console.error('Error adding to database cart:', error);
+        // Fallback: Redirect anyway to see if it worked
+        window.location.href = "Cart.php";
+    });
 };
 })();
 </script>
