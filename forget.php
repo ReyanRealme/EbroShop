@@ -31,12 +31,43 @@ if (isset($_POST['request_reset'])) {
         $host_url = $_SERVER['HTTP_HOST'];
         $resetLink = "$protocol://$host_url/forget.php?token=$token";
 
-        $data = array(
-            "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
-            "to" => array(array("email" => $email)),
-            "subject" => "Reset Your Password",
-            "htmlContent" => "<html><body><h3>Reset Password</h3><p>Link: <a href='$resetLink'>$resetLink</a></p></body></html>"
-        );
+
+        
+       // 1. መጀመሪያ የዲዛይኑን ይዘት በ ተለዋዋጭ (Variable) ይያዙት
+$htmlBody = "
+<html>
+<head>
+    <style>
+        .container { font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .header { background: #136835; color: white; padding: 20px; text-align: center; }
+        .content { padding: 30px; text-align: center; color: #333; line-height: 1.6; }
+        .btn { background: #008cff; color: white !important; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 20px; }
+        .footer { background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'><h2>EbRoShop Online</h2></div>
+        <div class='content'>
+            <h3>ሚስጥራዊ ቁጥርዎን ይቀይሩ</h3>
+            <p>ሰላም፣ የአካውንትዎን ሚስጥራዊ ቁጥር ለመቀየር ከታች ያለውን ሰማያዊ ቁልፍ ይጫኑ።</p>
+            <a href='$resetLink' class='btn'>ሚስጥራዊ ቁጥር ቀይር</a>
+            <p style='margin-top:20px; font-size:13px;'>ይህ ጥያቄ በእርስዎ ካልቀረበ እባክዎ ችላ ይበሉት።</p>
+        </div>
+        <div class='footer'>&copy; " . date("Y") . " EbRoShop Online Shopping</div>
+    </div>
+</body>
+</html>";
+
+// 2. አሁን በ $data ውስጥ "htmlContent" የሚለው ላይ $htmlBody የሚለውን ይተኩ
+$data = array(
+    "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
+    "to" => array(array("email" => $email)),
+    "subject" => "Reset Your Password",
+    "htmlContent" => $htmlBody
+);
+
+
 
         $ch = curl_init('https://api.brevo.com/v3/smtp/email');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
