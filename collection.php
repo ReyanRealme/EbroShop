@@ -596,7 +596,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 <!-- Main Links -->
-  <a href="home.html" class="menu-item">
+  <a href="home.php" class="menu-item">
     <!-- Home Icon -->
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -929,7 +929,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   <!-- Breadcrumb -->
   <div class="breadcrumb">
     
-    <a href="home.html"><b style="font-size: medium;">Home</b></a> &gt; <b style="color: #8d8888;">Collection
+    <a href="home.php"><b style="font-size: medium;">Home</b></a> &gt; <b style="color: #8d8888;">Collection
   </div>
 
   <!-- Title -->
@@ -1243,7 +1243,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="home.html" data-key="commonB4">Home</a>
+    margin: 14px 0;" href="home.php" data-key="commonB4">Home</a>
 
           <a style="  display: block;
     text-decoration: none;
@@ -1402,7 +1402,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     align-items: center;
     z-index: 9999;" class="bottom-nav">
 
-  <a href="home.html" style="  flex: 1;
+  <a href="home.php" style="  flex: 1;
     text-align: center;
     text-decoration: none;
     color: #666;

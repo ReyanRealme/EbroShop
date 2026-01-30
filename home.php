@@ -541,7 +541,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
   </div>
 
  <div class="logo-area">
-  <a href="about.html" class="ebro-logo-link">
+  <a href="home.php" class="ebro-logo-link">
     
     <div class="ebro-logo-circle" title="EbRoShop">
       <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983404/j5tztu0kuzdspwmk3zfg.jpg" alt="EbRoShop Logo" class="ebro-logo-img">
@@ -594,7 +594,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 <!-- Main Links -->
-  <a href="home.html" class="menu-item">
+  <a href="home.php" class="menu-item">
     <!-- Home Icon -->
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1585,7 +1585,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_cooking; ?><span>products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_cooking; ?><span> products AVAILABLE</span></div>
             <br>
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
             padding: 10px 15px;
@@ -2325,7 +2325,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     text-decoration: none;
     color: #9a9a9a;
     font-size: 20px;
-    margin: 14px 0;" href="home.html" data-key="commonB4">Home</a>
+    margin: 14px 0;" href="home.php" data-key="commonB4">Home</a>
 
           <a style="  display: block;
     text-decoration: none;
@@ -2484,7 +2484,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     align-items: center;
     z-index: 9999;" class="bottom-nav">
 
-  <a href="home.html" style="  flex: 1;
+  <a href="home.php" style="  flex: 1;
     text-align: center;
     text-decoration: none;
     color: #666;
