@@ -108,106 +108,129 @@ if (isset($_GET['token'])):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Set New Password</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            text-align: center; 
-            padding: 20px; 
-            background: #f4f4f4; 
-            margin: 0;
-        }
-        .box { 
-            max-width: 400px; 
-            margin: 40px auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        }
-        h2 { 
-            color: #333; 
-            font-size: 24px; /* Larger Header */
-            margin-bottom: 20px;
-        }
-        input { 
-            width: 100%; 
-            padding: 15px; /* Bigger touch area */
-            margin: 15px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            font-size: 18px; /* Larger Text for Mobile */
-            box-sizing: border-box; 
-        }
-        button { 
-            background: #0076ad; 
-            color: white; 
-            border: none; 
-            width: 100%; 
-            padding: 16px; 
-            cursor: pointer; 
-            border-radius: 50px; 
-            font-size: 18px; 
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        button:active {
-            background: #005a84;
-            transform: scale(0.98);
-        }
+ 
 
-       /* Styling the password container to position the eye */ 
-       .password-container { 
-                    position: relative;
-                    width: 100%;
-        } 
-       .password-container input {
-                width: 100%; 
-                padding: 15px;
-                padding-right: 45px;
-                /* Leave space for the eye */ 
-                margin: 15px 0; 
-                border: 1px solid #ccc; 
-                border-radius: 8px; 
-                font-size: 18px; 
-                box-sizing: border-box; 
-        }
-       .toggle-password {
-                 position: absolute;
-                 right: 15px;
-                 top: 50%; 
-                 transform: translateY(-50%); 
-                 cursor: pointer; 
-                 color: #666; 
-                 font-size: 20px; 
-                 z-index: 2; 
-        } 
+<style>
+    :root {
+        --primary-green: #136835;
+        --accent-blue: #008cff;
+        --bg-light: #f8fafc;
+    }
+
+    .reset-card {
+        max-width: 420px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        padding: 40px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .card-header { text-align: center; margin-bottom: 30px; }
+    
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        background: var(--bg-light);
+        color: var(--primary-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin: 0 auto 15px;
+    }
+
+    .card-header h2 { color: #1e293b; font-size: 24px; margin-bottom: 8px; }
+    .card-header p { color: #64748b; font-size: 14px; }
+
+    .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 8px; }
+    
+    .password-wrapper { position: relative; margin-bottom: 25px; }
+    
+    .password-wrapper input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .password-wrapper input:focus { border-color: var(--primary-green); outline: none; }
+    
+    .toggle-eye { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94a3b8; }
+
+    .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover { background: #0e522a; transform: translateY(-2px); }
+
+    .info-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .info-header { display: flex; align-items: center; gap: 8px; color: var(--primary-green); font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+    
+    .info-list { list-style: none; padding: 0; }
+    .info-list li { font-size: 12.5px; color: #64748b; margin-bottom: 8px; line-height: 1.6; position: relative; padding-left: 15px; }
+    .info-list li::before { content: "•"; position: absolute; left: 0; color: var(--primary-green); font-weight: bold; }
 </style>
 </head>
 <body>
-    
-   <div class="box">
-    <h2 style='color:#136835;'>Enter New Password</h2>
-    <p style="color: #666; font-size: 14px;">Enter a strong password for your EbRoShop account.</p>
-    
-    <form method="POST" action="forget.php">
+
+   <div class="reset-card">
+    <div class="card-header">
+        <div class="icon-circle">
+            <i class="fa-solid fa-lock-open"></i>
+        </div>
+        <h2>Secure Your Account</h2>
+        <p>Create a new, strong password to regain access to EbRoShop.</p>
+    </div>
+
+    <form method="POST" action="forget.php" class="reset-form">
         <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-        <div class="password-container"> 
-            <input type="password" name="new_pass" id="new_pass" placeholder="አዲስ ሚስጥራዊ ቁጥር ያስገቡ" required minlength="6"> 
-            <i class="fa-solid fa-eye toggle-password" id="eyeIcon" onclick="togglePassword()"></i>
-        </div> 
-        <button type="submit" name="update_now">Update Password</button>
+        
+        <div class="input-group">
+            <label>New Password</label>
+            <div class="password-wrapper">
+                <input type="password" name="new_pass" id="new_pass" placeholder="••••••••" required minlength="6">
+                <i class="fa-solid fa-eye toggle-eye" id="eyeIcon" onclick="togglePassword()"></i>
+            </div>
+        </div>
+
+        <button type="submit" name="update_now" class="submit-btn">
+            Update Password <i class="fa-solid fa-arrow-right"></i>
+        </button>
     </form>
 
-    <div style="margin-top: 20px; padding: 15px; border-top: 1px dashed #136835; background-color: #f9fffb; border-radius: 8px;">
-        <h4 style="margin: 0 0 8px 0; color: #136835; font-size: 14px;">መከተል ያለብዎት መመሪያዎች፦</h4>
-        <ul style="margin: 0; padding-left: 20px; color: #4a5568; font-size: 12.5px; line-height: 1.6;">
+    <div class="info-section">
+        <div class="info-header">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>መከተል ያለብዎት መመሪያዎች</span>
+        </div>
+        <ul class="info-list">
             <li><strong>አዲስ ፓስወርድ ያስገቡ፦</strong> ቢያንስ 6 ሆሄያት ወይም ቁጥሮችን ይጠቀሙ።</li>
-            <li><strong>ደህንነት፦</strong> ለሌላ ሰው የማይገመት እና የእርስዎን ስም ወይም ስልክ ቁጥር ያላካተተ ቢሆን ይመረጣል።</li>
-            <li><strong>ምስጢራዊነት፦</strong> የፈጠሩትን አዲስ ሚስጥራዊ ቁጥር ለማንም ሰው አያጋሩ።</li>
+            <li><strong>ደህንነት፦</strong> የእርስዎን ስም ወይም ስልክ ቁጥር አይጠቀሙ።</li>
+            <li><strong>ምስጢራዊነት፦</strong> አዲሱን ሚስጥራዊ ቁጥር ለማንም አያጋሩ።</li>
         </ul>
-        <p style="margin-top: 10px; color: #718096; font-size: 12px; font-style: italic;">
-            * ይህ መመሪያ የአካውንትዎን ደህንነት በከፍተኛ ሁኔታ ለመጠበቅ ይረዳል።
-        </p>
     </div>
 </div>
 
