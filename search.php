@@ -105,8 +105,12 @@ include 'db.php';
     // GLOBAL FUNCTION TO HANDLE ADDING
 window.handleQuickAdd = function(product) {
     // 1. Check if sold out
-    const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out'));
-    if (isSoldOut) return;
+    const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
+    if (isSoldOut) {
+        alert("Sorry! This item is sold out. You can't add it right now. We'll add it soon.");
+        return; 
+    }
+
 
     // 2. Prepare the data for cart_handler.php
     const formData = new FormData();

@@ -44,6 +44,7 @@ $grand_total = 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Cart</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -949,7 +950,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <div class="u-summary-line"><small>Shipping</small><small>0.00 ETB</small></div>
                 
                 <div class="u-summary-line u-summary-total">
-                    <span>Grand Total</span>
+                    <span>Total Balance</span>
                     <span><?php echo number_format($grand_total, 0); ?> ETB</span>
                 </div>
                    
@@ -1014,7 +1015,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <div class="u-cart-empty-icon"><i class="fa-solid fa-basket-shopping"></i></div>
                 <h3 style="margin-bottom:10px;">Your bag is empty</h3>
                 <p style="color:#888; margin-bottom:25px;">Looks like you haven't added anything yet.</p>
-                <a href="collection.php" class="u-cart-shop-btn">Go Shopping</a>
+                <a href="collection.php" class="u-cart-shop-btn">Continue Shopping</a>
             </div>
         <?php endif; ?>
 
