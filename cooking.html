@@ -995,24 +995,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
 
 
-    <p data-key="commonB2">Select Language</p>
-     <!--for select language-->
-    <div class="custom-lang-dropdown">
-    <div class="lang-trigger" onclick="toggleLangMenu()">
-        <span id="current-lang-label"  style="  margin: 0;
-    font-size: 24px;
-    font-weight: 700;" data-key="commonB3">Language</span>
-        <span style=" margin-left: 240px;font-size: 26px;" class="toggle">+</span>
-    </div>
-    <ul class="lang-options" id="langOptions">
-        <li onclick="changeLanguage('en')">
-            <img src="https://flagcdn.com/w20/gb.png" alt="English"> English
-        </li>
-        <li onclick="changeLanguage('am')">
-            <img src="https://flagcdn.com/w20/et.png" alt="Amharic"> አማርኛ
-        </li>
-    </ul>
-</div>
+   
     
 
     <!-- Ebroshop Section (CLOSED by default) -->
@@ -1296,6 +1279,24 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 </nav>
 </div>
+
+
+<div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+    
+    <button onclick="updatePageLanguage('en')" id="btn-en" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
+        English
+    </button>
+    
+    <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
+    
+    <button onclick="updatePageLanguage('am')" id="btn-am" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
+        አማርኛ
+    </button>
+    
+</div>
+
 
   <script>
        /*For signup or logout*/
@@ -1605,6 +1606,47 @@ function toggleSection(id, header) {
         icon.textContent = '+';
     }
 }
+
+
+
+ function updatePageLanguage(lang) {
+        if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
+            const selectedLanguage = ebroTranslations[lang];
+            
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) el.innerText = selectedLanguage[key];
+            });
+
+
+            const btnEn = document.getElementById('btn-en');
+            const btnAm = document.getElementById('btn-am');
+
+            if (lang === 'en') {
+                btnEn.style.background = "#136835";
+                btnEn.style.color = "white";
+                
+                btnAm.style.background = "transparent";
+                btnAm.style.color = "#136835";
+            } else {
+                btnAm.style.background = "#136835";
+                btnAm.style.color = "white";
+                
+                btnEn.style.background = "transparent";
+                btnEn.style.color = "#136835";
+            }
+
+            localStorage.setItem('userLanguage', lang);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('userLanguage') || 'en';
+        updatePageLanguage(savedLang);
+    });
+
+
+
   </script>
 <script src="languages.js"></script>
 </body>

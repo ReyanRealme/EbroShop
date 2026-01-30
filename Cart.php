@@ -1024,203 +1024,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-<img src="https://res.cloudinary.com/die8hxris/image/upload/v1765983301/wwa0hvys9hynad7fju9u.jpg" width="400px" height="150px"/>
-<!--FAQ's-->
- <div style="   margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f7f7f7;
-    color: #222;">
 
-<div style="  padding: 20px;" class="footer">
-
-    <h2 style="    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;" data-key="commonB1">CONNECT WITH US</h2>
-
-    <div style="    display: flex;
-    gap: 24px;
-    font-size: 32px;
-    margin-bottom: 24px;" class="social-icons">
-        <a style=" color: #222;
-    text-decoration: none;" href="https://www.facebook.com/profile.php?id=100083927815758"><i class="fab fa-facebook-f"></i></a>
-        <a style=" color: #222;
-    text-decoration: none;" href="#"><i class="fab fa-instagram"></i></a>
-    </div>
+ 
 
 
-    <p data-key="commonB2">Select Language</p>
-     <!--for select language-->
-    <div class="custom-lang-dropdown">
-    <div class="lang-trigger" onclick="toggleLangMenu()">
-        <span id="current-lang-label"  style="  margin: 0;
-    font-size: 24px;
-    font-weight: 700;" data-key="commonB3">Language</span>
-        <span style=" margin-left: 240px;font-size: 26px;" class="toggle">+</span>
-    </div>
-    <ul class="lang-options" id="langOptions">
-        <li onclick="changeLanguage('en')">
-            <img src="https://flagcdn.com/w20/gb.png" alt="English"> English
-        </li>
-        <li onclick="changeLanguage('am')">
-            <img src="https://flagcdn.com/w20/et.png" alt="Amharic"> አማርኛ
-        </li>
-    </ul>
-</div>
+    
     
 
-    <!-- Ebroshop Section (CLOSED by default) -->
-    <div style="   border-top: 1px solid #ddd;
-    padding: 18px 0;" class="section">
-        <div style=" display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;" class="section-header" onclick="toggleSection('adeeg', this)">
-            <h3 style="  margin: 0;
-    font-size: 24px;
-    font-weight: 700;">Ebroshop</h3>
-            <span style="  font-size: 26px;" class="toggle">+</span>
-        </div>
-
-        <div style="margin-top: 16px;" class="links hidden" id="adeeg">
-          <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="home.php" data-key="commonB4">Home</a>
-
-          <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="about.php" data-key="commonB5">About-us</a>
-           
-           <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="faq.html" data-key="commonB6">FAQs</a>
-            <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="contact.html" data-key="commonB7">Contact Us</a>
-        </div>
-    </div>
-
-    <!-- Store Policy -->
-    <div style="   border-top: 1px solid #ddd;
-    padding: 18px 0;" class="section">
-        <div style=" display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;" class="section-header" onclick="toggleSection('store', this)">
-            <h3 style="  margin: 0;
-    font-size: 24px;
-    font-weight: 700;" data-key="commonB8">Store Policy</h3>
-            <span style="  font-size: 26px;" class="toggle">+</span>
-        </div>
-
-        <div style="margin-top: 16px;" class="links hidden" id="store">
-           <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="terms.html" data-key="commonB9">Terms Of Service</a>
-           
-           <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="privacy.html" data-key="commonB10">Privacy Policy</a>
-         
-            <a style="  display: block;
-    text-decoration: none;
-    color: #9a9a9a;
-    font-size: 20px;
-    margin: 14px 0;" href="returns.html" data-key="commonB11">Return Policy</a>
-        </div>
-    </div>
-
-    <!-- Contact Us -->
-    <div style=" border-top: 1px solid #ddd;
-    padding: 18px 0;" class="section">
-        <div style=" display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;" class="section-header" onclick="toggleSection('contact', this)">
-            <h3 style="  margin: 0;
-    font-size: 24px;
-    font-weight: 700;" data-key="commonB12">Contact Us</h3>
-            <span style="  font-size: 26px;" class="toggle">+</span>
-        </div>
-
-        <div style="margin-top: 16px;" class="links hidden" id="contact">
-             <a style="  display: block;
-    text-decoration: none;
-    color: #000000;
-    font-size: 20px;
-    margin: 14px 0;">
-     <span data-key="commonB13">Phone:</span>
-      <b style="color: #676767;" data-key="commonB16">+251970130755</b></a>
-           <a style="  display: block;
-    text-decoration: none;
-    color: #000000;
-    font-size: 20px;
-    margin: 14px 0;" >
-    <span data-key="commonB14">Email: </span>
-    <b style="color: #676767;" data-key="commonB17">ebroshoponline@gmail.com</b></a>
-        </div>
-    </div>
-
-</div>
-</div>
-
-
-
-<!--Last footer-->
-
-<div style="  margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #ffffff;">
-<div style=" text-align: center;
-    padding: 40px 20px 30px;" class="footer-bottom">
-
-    <!-- Logo -->
-    <div class="footer-logo">
-        <img style="  max-width: 160px;
-    margin-bottom: 24px;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983370/zz6tex5swhmvjff8aphf.jpg" alt="Ebroshop Logo">
-    </div>
-
-    <!-- Copyright -->
-    <div style="  color: #828080;
-    font-size: 28px;
-    font-weight: 400;
-    margin-bottom: 40px;" class="footer-text">
-        <span data-key="commonB15">EbRoShop.Com©2025 All Rights Reserved</span>
-        <a href="developer.html" data-key="commonB18" style="text-decoration: none; color: #828080;"></a>
-    </div>
-
-    <!-- Payment / Partner Logos (Clickable) -->
-    <div style=" display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 32px;
-    flex-wrap: wrap;" class="payment-logos">
-        <a href="tel:*889#" target="_self">
-            <img style=" height: 40px;
-    object-fit: contain;
-    transition: transform 0.2s ease;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983122/fqldh9ima4wy9hrsjkhv.jpg" alt="CBE">
-        </a>
-
-        <a href="tel:*127#" target="_self">
-            <img style=" height: 40px;
-    object-fit: contain;
-    transition: transform 0.2s ease;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983555/e6oydnwyeoxag8vhar1w.jpg" alt="Telebirr">
-        </a>
-    </div>
-</div>
-</div>
-</div>
 
 
 
@@ -1351,6 +1161,22 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
 
+
+<div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+    
+    <button onclick="updatePageLanguage('en')" id="btn-en" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
+        English
+    </button>
+    
+    <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
+    
+    <button onclick="updatePageLanguage('am')" id="btn-am" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
+        አማርኛ
+    </button>
+    
+</div>
 
 <script>
         /*For signup or logout*/
@@ -1619,6 +1445,45 @@ function toggleSection(id, header) {
         icon.textContent = '+';
     }
 }
+
+
+ function updatePageLanguage(lang) {
+        if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
+            const selectedLanguage = ebroTranslations[lang];
+            
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) el.innerText = selectedLanguage[key];
+            });
+
+
+            const btnEn = document.getElementById('btn-en');
+            const btnAm = document.getElementById('btn-am');
+
+            if (lang === 'en') {
+                btnEn.style.background = "#136835";
+                btnEn.style.color = "white";
+                
+                btnAm.style.background = "transparent";
+                btnAm.style.color = "#136835";
+            } else {
+                btnAm.style.background = "#136835";
+                btnAm.style.color = "white";
+                
+                btnEn.style.background = "transparent";
+                btnEn.style.color = "#136835";
+            }
+
+            localStorage.setItem('userLanguage', lang);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('userLanguage') || 'en';
+        updatePageLanguage(savedLang);
+    });
+
+
 </script>
 <script src="languages.js"></script>
 </body>

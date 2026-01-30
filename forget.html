@@ -1442,34 +1442,28 @@ function toggleSection(id, header) {
 
 
     function updatePageLanguage(lang) {
-        // languages.js ውስጥ ያለውን 'ebroTranslations' ይጠቀማል
         if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
             const selectedLanguage = ebroTranslations[lang];
             
-            // 1. ጽሁፎችን መቀየር
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (selectedLanguage[key]) el.innerText = selectedLanguage[key];
             });
 
-            // 2. የቢጫ ቁልፎቹን ቀለም ማስተካከል
+
             const btnEn = document.getElementById('btn-en');
             const btnAm = document.getElementById('btn-am');
 
             if (lang === 'en') {
-                // እንግሊዝኛ ሲመረጥ፡ አረንጓዴ ጀርባ + ነጭ ጽሁፍ
                 btnEn.style.background = "#136835";
                 btnEn.style.color = "white";
                 
-                // አማርኛው፡ ነጭ ጀርባ + አረንጓዴ ጽሁፍ (እንዲታይ)
                 btnAm.style.background = "transparent";
                 btnAm.style.color = "#136835";
             } else {
-                // አማርኛ ሲመረጥ፡ አረንጓዴ ጀርባ + ነጭ ጽሁፍ
                 btnAm.style.background = "#136835";
                 btnAm.style.color = "white";
                 
-                // እንግሊዝኛው፡ ነጭ ጀርባ + አረንጓዴ ጽሁፍ (እንዲታይ)
                 btnEn.style.background = "transparent";
                 btnEn.style.color = "#136835";
             }

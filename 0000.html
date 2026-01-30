@@ -1,209 +1,218 @@
-<?php
-include 'db.php'; 
-// --- 1. ERROR REPORTING ---
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// --- 2. DATABASE CONNECTION ---
-// If db.php fails, we handle it gracefully here
-if (!file_exists('db.php')) {
-    die("Error: db.php is missing from the server.");
-}
-
-
-// ==========================================
-// PART A: SENDING THE RESET LINK
-// ==========================================
-if (isset($_POST['request_reset'])) {
-    $email = $_POST['email'];
-    $token = bin2hex(random_bytes(32));
-    
-    // Update the user record
-    $stmt = $conn->prepare("UPDATE users SET reset_token = ? WHERE email = ?");
-    $stmt->bind_param("ss", $token, $email);
-    $stmt->execute();
-
-    if ($stmt->affected_rows > 0) {
-        $apiKey = getenv('BREVO_API_KEY'); 
-        $senderEmail = 'ebroshoponline@gmail.com'; 
-
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-        $host_url = $_SERVER['HTTP_HOST'];
-        $resetLink = "$protocol://$host_url/forget.php?token=$token";
-
-        $data = array(
-            "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
-            "to" => array(array("email" => $email)),
-            "subject" => "Reset Your Password",
-            "htmlContent" => "<html><body><h3>Reset Password</h3><p>Link: <a href='$resetLink'>$resetLink</a></p></body></html>"
-        );
-
-        $ch = curl_init('https://api.brevo.com/v3/smtp/email');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'api-key: ' . $apiKey,
-            'Content-Type: application/json',
-            'Accept: application/json'
-        ));
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($httpCode == 201 || $httpCode == 200) {
-            echo "<script>alert('Success! Check email.'); window.location.href='login.html';</script>";
-        } else {
-            echo "<h3>API Error ($httpCode)</h3><pre>$response</pre>";
-        }
-    } else {
-        echo "<script>alert('Email not found.'); window.history.back();</script>";
-    }
-}
-
-// ==========================================
-// PART B: NEW PASSWORD FORM
-// ==========================================
-// ==========================================
-// PART B: THE NEW PASSWORD FORM (MOBILE OPTIMIZED)
-// ==========================================
-if (isset($_GET['token'])): 
-    $token = $_GET['token'];
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Set New Password</title>
+    <title>Our Leadership - EbRoShop</title>
+     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            text-align: center; 
-            padding: 20px; 
-            background: #f4f4f4; 
-            margin: 0;
-        }
-        .box { 
-            max-width: 400px; 
-            margin: 40px auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        }
-        h2 { 
-            color: #333; 
-            font-size: 24px; /* Larger Header */
-            margin-bottom: 20px;
-        }
-        input { 
-            width: 100%; 
-            padding: 15px; /* Bigger touch area */
-            margin: 15px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            font-size: 18px; /* Larger Text for Mobile */
-            box-sizing: border-box; 
-        }
-        button { 
-            background: #0076ad; 
-            color: white; 
-            border: none; 
-            width: 100%; 
-            padding: 16px; 
-            cursor: pointer; 
-            border-radius: 50px; 
-            font-size: 18px; 
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        button:active {
-            background: #005a84;
-            transform: scale(0.98);
+        :root {
+            --primary: #136835;
+            --secondary: #0b91ff;
+            --text: #2d3436;
         }
 
-       /* Styling the password container to position the eye */ 
-       .password-container { 
-                    position: relative;
-                    width: 100%;
-        } 
-       .password-container input {
-                width: 100%; 
-                padding: 15px;
-                padding-right: 45px;
-                /* Leave space for the eye */ 
-                margin: 15px 0; 
-                border: 1px solid #ccc; 
-                border-radius: 8px; 
-                font-size: 18px; 
-                box-sizing: border-box; 
+        body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f0f2f5; color: var(--text); }
+
+        /* Top Header Section */
+        .hero { 
+            background: linear-gradient(135deg, var(--primary) 0%, #0a4d26 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
-       .toggle-password {
-                 position: absolute;
-                 right: 15px;
-                 top: 50%; 
-                 transform: translateY(-50%); 
-                 cursor: pointer; 
-                 color: #666; 
-                 font-size: 20px; 
-                 z-index: 2; 
-        } 
-</style>
+
+        .hero h1 { font-size: 36px; margin: 0; letter-spacing: 1px; }
+        .hero p { font-size: 18px; opacity: 0.9; margin-top: 10px; }
+
+        /* Grid Layout */
+        .container { max-width: 1100px; margin: -60px auto 60px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+
+        /* Host Card Design */
+        .host-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .host-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+
+        /* Verified Badge */
+        .verified-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .image-area { height: 300px; overflow: hidden; background: #e0e0e0; }
+        .image-area img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: 0.5s; }
+        .host-card:hover .image-area img { filter: grayscale(0%); scale: 1.05; }
+
+        .content { padding: 30px; text-align: center; }
+        .content h2 { margin: 0; color: var(--primary); font-size: 26px; }
+        .content .title { color: var(--secondary); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; display: block; margin: 10px 0 20px; }
+        .content p { font-size: 15px; color: #636e72; line-height: 1.6; margin-bottom: 25px; }
+
+        /* Powerful Contact Buttons */
+        .action-btns { display: flex; gap: 10px; justify-content: center; }
+        .btn { 
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-tg { background: #0088cc; color: white; }
+        .btn-call { background: var(--primary); color: white; }
+        .btn:hover { opacity: 0.85; filter: brightness(1.1); }
+
+        @media (max-width: 768px) { .hero h1 { font-size: 28px; } }
+
+
+
+
+        .language-bar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 10000;
+    border: 2px solid var(--primary); /* Uses your #136835 green */
+}
+
+.lang-node {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 13px;
+    background: transparent;
+    color: var(--primary);
+    transition: 0.3s;
+}
+
+.lang-node.active {
+    background: var(--primary);
+    color: white !important;
+}
+
+.divider { width: 1px; height: 20px; background: #eee; align-self: center; }
+    </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style='color:#136835;'>Enter New Password</h2>
-        <p style="color: #666; font-size: 14px;">Enter a strong password for your EbRoShop account.</p>
-        <form method="POST" action="forget.php">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-            <div class="password-container"> 
-              <input type="password" name="new_pass" id="new_pass" placeholder="Enter New Password" required minlength="6"> 
-              <i class="fa-solid fa-eye toggle-password" id="eyeIcon" onclick="togglePassword()"></i>
-            </div> 
-         <button type="submit" name="update_now">Update Password</button>
-        </form>
-    </div>
-      <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById("new_pass");
-            const eyeIcon = document.getElementById("eyeIcon");
+<body>
 
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                // Change eye to eye-slash
-                eyeIcon.classList.remove("fa-eye");
-                eyeIcon.classList.add("fa-eye-slash");
-            } else {
-                passwordInput.type = "password";
-                // Change eye-slash back to eye
-                eyeIcon.classList.remove("fa-eye-slash");
-                eyeIcon.classList.add("fa-eye");
-            }
+    <section class="hero">
+        <h1 data-key="host1">EbRoShop Leadership</h1>
+        <p data-key="host2">Expert hosts dedicated to your convenience and safety.</p>
+    </section>
+
+    <div class="container">
+        
+        <div class="host-card">
+            <div class="verified-badge"><i class="fas fa-check-circle" style="margin-right:5px;"></i> VERIFIED HOST</div>
+            <div class="image-area">
+              <img src="https://res.cloudinary.com/die8hxris/image/upload/v1767515768/yak7fuhcfakqshstb3fd.png" alt="CEO">
+            </div>
+            <div class="content">
+                <h2 data-key="host3">Ebrahim Hassen</h2>
+                <span class="title" data-key="host4">Chief Operations</span>
+                <p data-key="host5">Expert in Ethiopian logistics and quality control. Ebrahim ensures that every product in our store meets international health standards.</p>
+                
+                <div class="action-btns">
+                    <a href="https://t.me/ebhayru55" class="btn btn-tg"><i class="fab fa-telegram-plane"></i> <span data-key="host6">Telegram</span></a>
+                    <a href="tel:+251970130755" class="btn btn-call"><i class="fas fa-phone-alt"></i> <span data-key="host7">Call</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="host-card">
+            <div class="verified-badge"><i class="fas fa-check-circle" style="margin-right:5px;"></i> ACTIVE NOW</div>
+            <div class="image-area">
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1767515793/khg8ldx00chof3dt01tn.jpg" alt="Support">
+            </div>
+            <div class="content">
+                <h2 data-key="host8">Mujib Abrar</h2>
+                <span class="title" data-key="host9">Customer Experience</span>
+                <p data-key="host10">Focused on solving customer issues within 1 hours. Mujib manages our rapid-response delivery team across Addis Ababa.</p>
+                
+                <div class="action-btns">
+                    <a href="https://t.me/Rebyi43" class="btn btn-tg"><i class="fab fa-telegram-plane"></i> <span data-key="host6">Telegram</span></a>
+                    <a href="tel:+251991164251" class="btn btn-call"><i class="fas fa-phone-alt"></i> <span data-key="host7">Call</span></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="text-align: center; padding: 40px; color: #777;">
+        <p><i class="fas fa-shield-alt"></i> <span data-key="host11">100% Secure Shopping Guaranteed by the EbRoShop Team.</span></p>
+    </div>
+
+ <div class="language-bar">
+        <button onclick="updatePageLanguage('en')" id="btn-en" class="lang-node active">English</button>
+        <div class="divider"></div>
+        <button onclick="updatePageLanguage('am')" id="btn-am" class="lang-node">አማርኛ</button>
+    </div>
+
+   <script src="languages.js"></script>
+<script>
+    function updatePageLanguage(lang) {
+        // Check if the translations object from languages.js is loaded
+        if (typeof translations !== 'undefined' && translations[lang]) {
+            const selectedLanguage = translations[lang];
+            
+            // Loop through every element that has a data-key
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) {
+                    el.innerText = selectedLanguage[key];
+                }
+            });
+            
+            // Update the button colors (Active/Inactive)
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-am').classList.toggle('active', lang === 'am');
+            
+            // Save the choice so it stays when the user refreshes
+            localStorage.setItem('ebro_lang', lang);
+        } else {
+            console.error("Translations not found. Check your languages.js file!");
         }
-    </script>
+    }
+
+    // Run this as soon as the page opens
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('ebro_lang') || 'en';
+        updatePageLanguage(savedLang);
+    });
+</script>
+
 </body>
 </html>
-<?php endif; ?>
-
-
-<?php
-// ==========================================
-// PART C: UPDATING THE DATABASE
-// ==========================================
-if (isset($_POST['update_now'])) {
-    $token = $_POST['token'];
-    $hashed = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
-    
-    $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL WHERE reset_token = ?");
-    $stmt->bind_param("ss", $hashed, $token);
-    $stmt->execute();
-    
-    if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Your password has been successfully changed! Please login.'); window.location.href='login.html';</script>";
-    } else {
-        echo "<h3>Link invalid or expired.</h3>";
-    }
-}
-?>

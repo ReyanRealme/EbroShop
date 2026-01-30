@@ -258,19 +258,23 @@ body.search-open .insta-social i {
             <button type="submit" class="green-glow-btn">Transmit Signal</button>
         </form>
 
-        <div class="lang-container" style="margin: 20px 0; position: relative;">
-            <button type="button" onclick="toggleLangMenu()" style="background:white; border:1.5px solid #e2e8f0; padding:10px 15px; border-radius:15px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; width:100%;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <i class="fas fa-globe" style="color:var(--neon-green);"></i>
-                    <span id="current-lang-label" style="font-size:13px; font-weight:700; color:var(--dark-green);" data-key="commonB3">Language</span>
-                </div>
-                <i class="fas fa-chevron-up toggle-icon" style="color:#718096; transition:0.3s;"></i>
-            </button>
-            <ul id="langOptions" style="display:none; position:absolute; bottom:110%; left:0; width:100%; background:white; border-radius:15px; list-style:none; padding:5px; box-shadow:0 -10px 25px rgba(0,0,0,0.1); border:1px solid #eee; z-index:100;">
-                <li onclick="setLanguage('en')" style="padding:10px 15px; cursor:pointer; font-size:13px; font-weight:600;"><img src="https://flagcdn.com/w20/gb.png" style="width:18px;"> English</li>
-                <li onclick="setLanguage('am')" style="padding:10px 15px; cursor:pointer; font-size:13px; font-weight:600;"><img src="https://flagcdn.com/w20/et.png" style="width:18px;"> አማርኛ</li>
-            </ul>
-        </div>
+        
+
+        <div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+    
+    <button onclick="updatePageLanguage('en')" id="btn-en" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
+        English
+    </button>
+    
+    <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
+    
+    <button onclick="updatePageLanguage('am')" id="btn-am" 
+        style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
+        አማርኛ
+    </button>
+    
+</div>
 
         <div class="location">
             <i class="fas fa-satellite"></i> STATION: MEKELLE, ETHIOPIA
@@ -349,6 +353,48 @@ body.search-open .insta-social i {
         menu.style.display = isOpen ? "none" : "block";
         if (icon) icon.style.transform = isOpen ? "rotate(0deg)" : "rotate(180deg)";
     }
+
+    
+
+
+ function updatePageLanguage(lang) {
+        if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
+            const selectedLanguage = ebroTranslations[lang];
+            
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) el.innerText = selectedLanguage[key];
+            });
+
+
+            const btnEn = document.getElementById('btn-en');
+            const btnAm = document.getElementById('btn-am');
+
+            if (lang === 'en') {
+                btnEn.style.background = "#136835";
+                btnEn.style.color = "white";
+                
+                btnAm.style.background = "transparent";
+                btnAm.style.color = "#136835";
+            } else {
+                btnAm.style.background = "#136835";
+                btnAm.style.color = "white";
+                
+                btnEn.style.background = "transparent";
+                btnEn.style.color = "#136835";
+            }
+
+            localStorage.setItem('userLanguage', lang);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('userLanguage') || 'en';
+        updatePageLanguage(savedLang);
+    });
+
+
+
 </script>
 </body>
 </html>
