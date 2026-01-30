@@ -1111,7 +1111,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             padding: 10px 20px 10px 20px; /* Padding inside the green box */
             border-radius: 5px 5px 0 0; /* Rounded top corners */
             position: relative;
-            z-index: 2; /* Ensures the green box sits above the line */" class="category-header">
+            z-index: 2; /* Ensures the green box sits above the line */" class="category-header" data-key="home1">
                 Shop by categories
             </div>
         </div>
@@ -1135,7 +1135,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Basic Food</a>
+            transition: color 0.2s;" class="category-link" data-key="common10">Basic Food</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1152,7 +1152,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Cooking Ingredients</a>
+            transition: color 0.2s;" class="category-link" data-key="common11">Cooking Ingredients</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1168,7 +1168,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Baby Products</a>
+            transition: color 0.2s;" class="category-link" data-key="common12">Baby Products</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1185,7 +1185,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Cosmotics</a>
+            transition: color 0.2s;" class="category-link" data-key="common13">Cosmotics</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1202,7 +1202,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Packaged Goods</a>
+            transition: color 0.2s;" class="category-link" data-key="common14">Packaged Goods</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1219,7 +1219,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Food Oils</a>
+            transition: color 0.2s;" class="category-link" data-key="common19">Food Oils</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1236,7 +1236,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Liquid Soap</a>
+            transition: color 0.2s;" class="category-link" data-key="common21">Liquid Soap</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1253,7 +1253,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Packed Foods</a>
+            transition: color 0.2s;" class="category-link" data-key="common17">Packed Foods</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1270,7 +1270,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Dayper $ Wipes</a>
+            transition: color 0.2s;" class="category-link" data-key="common16">Dayper $ Wipes</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1289,7 +1289,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Spices and Legume powders</a>
+            transition: color 0.2s;" class="category-link" data-key="common18">Spices and Legume powders</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1306,7 +1306,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Laundery powders</a>
+            transition: color 0.2s;" class="category-link" data-key="common15">Laundery powders</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1325,7 +1325,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-weight: 500;
             line-height: 1.2; /* Ensures multi-line text (like 'Chilled...') is legible */
             text-align: center; /* Center multi-line text */
-            transition: color 0.2s;" class="category-link">Modes and Softs</a>
+            transition: color 0.2s;" class="category-link" data-key="common20">Modes and Softs</a>
                     <span style=" color: #2196f3; /* Bright Blue color for the arrow */
             font-size: 1.2em;
             font-weight: bold;
@@ -1363,7 +1363,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 100px;
         object-fit:cover;
         display: block;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="EbRoShop.com">Basic Foods</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="EbRoShop.com" data-key="common10">Basic Foods</a>
     </div>
 
 
@@ -1377,7 +1377,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 90px;
         object-fit:cover;
         display: block;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="EbRoShop.com">Packed Foods</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="EbRoShop.com" data-key="common17">Packed Foods</a>
     </div>
 
 
@@ -1391,7 +1391,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 100px;
         object-fit:cover;
         display:block;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="EbRoShop.com">Food Oils</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="EbRoShop.com" data-key="common19">Food Oils</a>
     </div>
 
     <div style="text-align: center;" class="item">
@@ -1404,7 +1404,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:contain;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="EbRoShop.com">Cooking Ingredient</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="EbRoShop.com" data-key="common11">Cooking Ingredient</a>
     </div>
 
    <div style="text-align: center;" class="item">
@@ -1417,7 +1417,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 100px;
         object-fit:cover;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="EbRoShop.com">Spiecs and Legume powders</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="EbRoShop.com" data-key="common18">Spiecs and Legume powders</a>
     </div>
 
    <div style="text-align: center;" class="item">
@@ -1430,7 +1430,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:contain;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="EbRoShop.com">Baby Products</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="EbRoShop.com" data-key="common12">Baby Products</a>
     </div>
 
     <div style="text-align: center;" class="item">
@@ -1443,7 +1443,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:contain;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="EbRoShop.com">Dayper and Wipes</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="EbRoShop.com" data-key="common13">Dayper and Wipes</a>
     </div>
 
     <div style="text-align: center;" class="item">
@@ -1456,7 +1456,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 120px;
         object-fit:contain;
         display:block;
-        margin:auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="EbRoShop.com">Cosmotics</a>
+        margin:auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="EbRoShop.com" data-key="common13">Cosmotics</a>
     </div>
 
 
@@ -1471,7 +1471,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:cover;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="EbRoShop.com">Liquid Soap</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="EbRoShop.com" data-key="common21">Liquid Soap</a>
     </div>
 
      <div style="text-align: center;" class="item">
@@ -1484,7 +1484,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:cover;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="EbRoShop.com">Laundry Powder</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="EbRoShop.com" data-key="common15">Laundry Powder</a>
     </div>
 
    <div style="text-align: center;" class="item">
@@ -1497,7 +1497,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:cover;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="EbRoShop.com">Modes&Soft</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="EbRoShop.com" data-key="common20">Modes&Soft</a>
     </div>
 
      <div style="text-align: center;" class="item">
@@ -1510,7 +1510,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         height: 110px;
         object-fit:cover;
         display:grid;
-        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="EbRoShop.com">Packaged Goods</a>
+        margin: auto;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="EbRoShop.com" data-key="common14">Packaged Goods</a>
     </div>
 
    
@@ -1534,7 +1534,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div style="    padding: 20px;
             font-size: 1.5em;
             font-weight: bold;
-            color: #333; background-color: white" class="header">
+            color: #333; background-color: white" class="header" data-key="common11">
         Cooking Ingredients
     </div>
 
@@ -1542,7 +1542,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <img style="  width: 100%;
             height: auto;
             border-radius: 10px;
-            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983254/w0bah8m4ptlmqezh5cao.jpg" alt="A large basket of mixed fruits and vegetables" class="hero-image">
+            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983254/w0bah8m4ptlmqezh5cao.jpg" alt="Ebroshop" class="hero-image">
     </div>
 
     <div style="  display: flex;
@@ -1569,7 +1569,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765997285/todusadqs8x9qmgprmzr.jpg" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: contain; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1578,14 +1578,14 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <div style="  padding: 0 10px;" class="product-details">
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; " class="product-title">Cooking Items</p>
+            margin: 0 0 5px 0; " class="product-title" data-key="home2">Cooking Items</p>
                 
                 <div style="font-size: 0.7em;
             color: #007bff; /* Blue color for link-like text */
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_cooking; ?><span> products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_cooking; ?><span data-key="home3"> products AVAILABLE</span></div>
             <br>
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
             padding: 10px 15px;
@@ -1599,7 +1599,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./cooking.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./cooking.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1621,7 +1621,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037404/rywjqsflbnzcgcjl6ksc.png" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: contain; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1631,7 +1631,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
              
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; text-align: center;" class="product-title">Food Oils</p>
+            margin: 0 0 5px 0; text-align: center;" class="product-title" data-key="common19">Food Oils</p>
                 
           
                 <div style="font-size: 0.7em;
@@ -1639,7 +1639,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_oil; ?> <span> products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_oil; ?> <span data-key="home3"> products AVAILABLE</span></div>
              <br>
         
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
@@ -1654,7 +1654,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./oil.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./oil.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1676,7 +1676,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1765998005/a2av0q7gm2xjpc9jmkw2.jpg" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: contain; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1686,7 +1686,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
              
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; " class="product-title">Spiecs powders</p>
+            margin: 0 0 5px 0; " class="product-title" data-key="common18">Spiecs powders</p>
                 
           
                 <div style="font-size: 0.7em;
@@ -1694,7 +1694,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_spiecs; ?> <span> products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_spiecs; ?> <span data-key="home3"> products AVAILABLE</span></div>
              <br>
         
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
@@ -1709,7 +1709,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./otheringrident.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./otheringrident.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1733,7 +1733,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div style="    padding: 20px;
             font-size: 1.5em;
             font-weight: bold;
-            color: #333; background-color: white" class="header">
+            color: #333; background-color: white" class="header" data-key="common12">
         Baby Products
     </div>
 
@@ -1741,7 +1741,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <img style="  width: 100%;
             height: auto;
             border-radius: 10px;
-            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983212/rbjmgnyphxsvylfbffag.jpg" alt="A large basket of mixed fruits and vegetables" class="hero-image">
+            object-fit: cover;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765983212/rbjmgnyphxsvylfbffag.jpg" alt="Ebroshop" class="hero-image">
     </div>
 
     <div style="  display: flex;
@@ -1768,7 +1768,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766037147/rkwxrxokurza1m4wsdlp.jpg" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: contain; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1777,14 +1777,14 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <div style="  padding: 0 10px;" class="product-details">
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; " class="product-title">Powder milks</p>
+            margin: 0 0 5px 0; " class="product-title" data-key="home5">Powder milks</p>
                 
                 <div style="font-size: 0.7em;
             color: #007bff; /* Blue color for link-like text */
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_baby; ?><span> products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_baby; ?><span data-key="home3"> products AVAILABLE</span></div>
             <br>
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
             padding: 10px 15px;
@@ -1798,7 +1798,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./babyproduct.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./babyproduct.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1820,7 +1820,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766038304/mzrwavgcf09vh0rtycze.jpg" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: cover; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1830,7 +1830,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
              
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; text-align: center;" class="product-title">Dayper$Wipes</p>
+            margin: 0 0 5px 0; text-align: center;" class="product-title" data-key="common16">Dayper$Wipes</p>
                 
           
                 <div style="font-size: 0.7em;
@@ -1838,7 +1838,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_dayper; ?><span> products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_dayper; ?><span data-key="home3"> products AVAILABLE</span></div>
              <br>
         
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
@@ -1853,7 +1853,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./dayper.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./dayper.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1875,7 +1875,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             margin-bottom: 10px;" class="product-image-container">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="Broccoli heads" style="width: 100%;
+                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1766838399/augtqol2uwhqyoevbc25.jpg" alt="Ebroshop" style="width: 100%;
             height: 100%;
             object-fit: cover; /* Ensures the image covers the area without distortion */
             display: block;"  class="product-image">
@@ -1885,7 +1885,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
              
                 <p style="   font-size: 1.1em;
             font-weight: 500;
-            margin: 0 0 5px 0; " class="product-title">Cosmotics</p>
+            margin: 0 0 5px 0; " class="product-title" data-key="common13">Cosmotics</p>
                 
           
                 <div style="font-size: 0.7em;
@@ -1893,7 +1893,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             text-transform: uppercase;
             font-weight: 500;
             margin-top: 10px;
-            display: block; text-align: center;" class="more-sizes"><?php echo $total_Cosmotics; ?> <span>products AVAILABLE</span></div>
+            display: block; text-align: center;" class="more-sizes"><?php echo $total_Cosmotics; ?> <span data-key="home3">products AVAILABLE</span></div>
              <br>
         
                 <a style="  width: calc(100% - 20px); /* 100% width minus padding */
@@ -1908,7 +1908,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s; text-decoration: none;" href="./cosmotics.php">Shop Now</a>
+            transition: background-color 0.2s; text-decoration: none;" href="./cosmotics.php" data-key="home4">Shop Now</a>
             </div>
         </div>
 
@@ -1953,7 +1953,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 100%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="Al Fanar Gold Rice">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765982579/evjtsvqkvldgvvmd3ysp.jpg" alt="Ebroshop">
             </a>
         </div>
 
@@ -1980,7 +1980,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 100%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="LG Electronics">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1765994814/nyrmtfsropad9nfdzcoj.jpg" alt="Ebroshop">
             </a>
         </div>
         
@@ -2007,7 +2007,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 120%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="Moulinex Appliances">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766040441/ymygehaukqhvpuezdpv9.jpg" alt="Ebroshop">
             </a>
         </div>
 
@@ -2034,7 +2034,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 90%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="Skechers Shoes">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766041417/o0naa6476jcshxvzvuoc.jpg" alt="Ebroshop">
             </a>
         </div>
 
@@ -2061,7 +2061,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 90%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="Skechers Shoes">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766042545/pgkxnbwum9blvyfwy5oa.jpg" alt="Ebroshop">
             </a>
         </div>
 
@@ -2088,7 +2088,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <img style=" width: 90%; 
             height: 90%;
             object-fit: contain;
-            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="Skechers Shoes">
+            border-radius: 50%;" src="https://res.cloudinary.com/die8hxris/image/upload/v1766043575/vrgmwqovhajffzvdabh4.jpg" alt="Ebroshop">
             </a>
         </div>
     </div>
@@ -2111,8 +2111,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       margin-right: 15px;" class="fa-solid fa-truck-fast feature-icon"></i>
       <div>
         <div style=" font-size: 20px;
-      font-weight: bold;" class="feature-title">FAST DELIVERY</div>
-        <div class="feature-text">Quick Delivery All over Addis Abeba Without charge</div>
+      font-weight: bold;" class="feature-title" data-key="home6">FAST DELIVERY</div>
+        <div class="feature-text" data-key="home7">Quick Delivery All over Addis Abeba Without charge</div>
       </div>
     </div>
 
@@ -2124,9 +2124,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       margin-right: 15px;" class="fa-solid fa-headset feature-icon"></i>
       <div>
         <div style=" font-size: 20px;
-      font-weight: bold;" class="feature-title">QUICK SUPPORT</div>
+      font-weight: bold;" class="feature-title" data-key="home8">QUICK SUPPORT</div>
         <div style="  font-size: 15px;
-      margin-top: 4px;" class="feature-text">Contact us between 7am to 11pm, 7 days a week</div>
+      margin-top: 4px;" class="feature-text" data-key="home9">Contact us between 7am to 11pm, 7 days a week</div>
       </div>
     </div>
 
@@ -2138,9 +2138,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       margin-right: 15px;" class="fa-solid fa-rotate-left feature-icon"></i>
       <div>
         <div style=" font-size: 20px;
-      font-weight: bold;" class="feature-title">3 DAYS RETURN</div>
+      font-weight: bold;" class="feature-title" data-key="home10">3 DAYS RETURN</div>
         <div style="  font-size: 15px;
-      margin-top: 4px;" class="feature-text">Simply return it within 3 days for an exchange.</div>
+      margin-top: 4px;" class="feature-text" data-key="home11">Simply return it within 3 days for an exchange.</div>
       </div>
     </div>
 
@@ -2152,9 +2152,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       margin-right: 15px;" class="fa-solid fa-lock feature-icon"></i>
       <div>
         <div style=" font-size: 20px;
-      font-weight: bold;" class="feature-title">100% SECURE PAYMENT</div>
+      font-weight: bold;" class="feature-title" data-key="home12">100% SECURE PAYMENT</div>
         <div style="  font-size: 15px;
-      margin-top: 4px;" class="feature-text">We ensure secure payment of your orders</div>
+      margin-top: 4px;" class="feature-text" data-key="home13">We ensure secure payment of your orders</div>
       </div>
     </div>
   </div>
@@ -2172,7 +2172,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
   <h1 style=" margin-top: 10px;
       font-size: 28px;
-      font-weight: bold;">GET IN TOUCH</h1>
+      font-weight: bold;" data-key="home14">GET IN TOUCH</h1>
  
 
   <div style="margin-top: 10px;
@@ -2199,7 +2199,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
       <div style=" text-align: left;" class="text-block">
         <div style=" font-size: 16px;
-      font-weight: bold;" class="label">WHATSAPP</div>
+      font-weight: bold;" class="label" data-key="home15">WHATSAPP</div>
         <div style=" font-size: 16px;
       margin-top: 3px;" class="value">+251989498343</div>
       </div>
@@ -2225,7 +2225,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       </div>
       <div style=" text-align: left;" class="text-block">
         <div style=" font-size: 16px;
-      font-weight: bold;" class="label">PHONE</div>
+      font-weight: bold;" class="label" data-key="home16">PHONE</div>
         <div style=" font-size: 16px;
       margin-top: 3px;" class="value">+251943975584</div>
       </div>
@@ -2251,7 +2251,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
       </div>
       <div style=" text-align: left;" class="text-block">
         <div style=" font-size: 16px;
-      font-weight: bold;" class="label">EMAIL</div>
+      font-weight: bold;" class="label" data-key="home17">EMAIL</div>
         <div style=" font-size: 16px;
       margin-top: 3px;" class="value">ebrohayru77@gmail.com</div>
       </div>
