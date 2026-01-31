@@ -156,50 +156,40 @@ window.handleQuickAdd = function(product) {
 
 
 function updatePageLanguage(lang) {
-    // በእርስዎ languages.js ውስጥ ያለው ስም 'ebroTranslations' መሆኑን ያረጋግጡ
-    if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
-        const selectedLanguage = ebroTranslations[lang];
-        
-        // 1. ሁሉንም data-key ያላቸውን ጽሁፎች መቀየር
-        document.querySelectorAll('[data-key]').forEach(el => {
-            const key = el.getAttribute('data-key');
-            if (selectedLanguage[key]) {
-                el.innerText = selectedLanguage[key];
-            }
-        });
+        if (typeof ebroTranslations !== 'undefined' && ebroTranslations[lang]) {
+            const selectedLanguage = ebroTranslations[lang];
+            
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (selectedLanguage[key]) el.innerText = selectedLanguage[key];
+            });
 
-        // 2. የቢጫ ቁልፎቹን ቀለም ማስተካከል (Inline CSS Fix)
-        const btnEn = document.getElementById('btn-en');
-        const btnAm = document.getElementById('btn-am');
 
-        if (btnEn && btnAm) {
+            const btnEn = document.getElementById('btn-en');
+            const btnAm = document.getElementById('btn-am');
+
             if (lang === 'en') {
-                // እንግሊዝኛ ሲመረጥ
-                btnEn.style.backgroundColor = "#136835";
-                btnEn.style.color = "white"; // ነጭ ጽሁፍ በአረንጓዴ ላይ
+                btnEn.style.background = "#136835";
+                btnEn.style.color = "white";
                 
-                btnAm.style.backgroundColor = "transparent";
-                btnAm.style.color = "#136835"; // አረንጓዴ ጽሁፍ በነጭ ላይ
+                btnAm.style.background = "transparent";
+                btnAm.style.color = "#136835";
             } else {
-                // አማርኛ ሲመረጥ
-                btnAm.style.backgroundColor = "#136835";
-                btnAm.style.color = "white"; // ነጭ ጽሁፍ በአረንጓዴ ላይ
+                btnAm.style.background = "#136835";
+                btnAm.style.color = "white";
                 
-                btnEn.style.backgroundColor = "transparent";
-                btnEn.style.color = "#136835"; // አረንጓዴ ጽሁፍ በነጭ ላይ (አሁን ይታያል!)
+                btnEn.style.background = "transparent";
+                btnEn.style.color = "#136835";
             }
+
+            localStorage.setItem('userLanguage', lang);
         }
-
-        // ምርጫውን በኮምፒውተሩ ላይ ማስቀመጥ
-        localStorage.setItem('userLanguage', lang);
     }
-}
 
-// ገጹ ሲከፈት የተቀመጠውን ቋንቋ መጫን
-document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('userLanguage') || 'en';
-    updatePageLanguage(savedLang);
-});
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('userLanguage') || 'en';
+        updatePageLanguage(savedLang);
+    });
 
 </script>
 </body>
