@@ -9,14 +9,14 @@ $dynamic_html = "";
 if ($result && $result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $isSoldOut = ($row['status'] == 'sold_out');
-        $badge = $isSoldOut ? '<div style="position: absolute; top: 10px; left: 10px; background: #e74c3c; color: white; padding: 5px 12px; font-size: 12px; border-radius: 5px; font-weight: bold; z-index: 2;">SOLD OUT</div>' : '';
+        $badge = $isSoldOut ? '<div style=" position: absolute; top: 20px; left: -32px; transform: rotate(-45deg);  background: #e74c3c;   color: white;   padding: 5px 0;  width: 80px;   text-align: center;  font-size: 11px;  font-weight: bold; z-index: 2;  box-shadow: 0 2px 4px rgba(0,0,0,0.2);">  SOLD OUT</div>' : '';
         
         if ($isSoldOut) {
-            $btnStyle = "background-color: #0e7dc7ff; cursor: not-allowed;";
-            $btnText = "Sold Out";
-            // For sold out, just a simple disabled button
-            $buttonHtml = '<button type="button" style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">'.$btnText.'</button>';
-        } else {
+              $btnStyle = "background-color: #0e7dc7ff; cursor: pointer;";
+              $btnText = "Sold Out";
+              // This tells the browser to run the function above
+              $buttonHtml = '<button type="button" onclick="handleSoldOut()" style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">'.$btnText.'</button>';
+          } else {
             $btnStyle = "background-color: #136835; cursor: pointer;";
             $btnText = "Quick Add";
             // This FORM is what sends data to the database
@@ -51,7 +51,7 @@ $js_code = "
 <script>
 // Faithfully Alert Fix
 function handleSoldOut() {
-    alert(\"This item is sold out. You can't add it right now. We'll add it soon.\");
+    alert('Sorry! This item is sold out. We will add more soon!\\n\\nይቅርታ! ይህ እቃ አልቋል። አሁን ላይ ወደ ቦርሳዎ መጨመር አይችሉም። በቅርቡ እናስመጣለን።');
 }
 
 // Quick Add Fix

@@ -154,28 +154,28 @@
     <div class="overlay-mask" id="overlayMask">
         <div class="sidebar">
             <div class="side-header">
-                <h2 id="display-title">Login</h2>
+                <h2 id="display-title" >Login</h2>
                 <a href="javascript:history.back()" class="close-x">&times;</a>
             </div>
             <div id="view-logged-out" class="view-container">
                 <form action="login.php" method="POST">
-                    <label class="field-label">Email Address <span class="star">*</span></label>
+                    <label class="field-label" data-key="login1">Email Address <span class="star">*</span></label>
                     <input type="email" name="email" class="input-box" placeholder="Email Address" required>
                     
-                    <label class="field-label">Password <span class="star">*</span></label>
+                    <label class="field-label"  data-key="login2">Password <span class="star">*</span></label>
                     <div class="password-container">
                         <input type="password" name="password" id="login-pass" class="input-box input-box-pass" placeholder="Password" required>
                         <i class="fa-solid fa-eye toggle-icon" onclick="togglePassword()"></i>
                     </div>
 
-                    <button type="submit" class="btn-blue btn-login">Login</button>
+                    <button type="submit" class="btn-blue btn-login"  data-key="login3">Login</button>
                 </form>
                 
-                <a href="forget.html" class="forgot-link">Forgot your password?</a>
+                <a href="forget.html" class="forgot-link" data-key="login4">Forgot your password?</a>
                 
                 <div style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif;">
-                   <span style="color: #333; font-size: 12px;"><b>Do not have an account?</b> </span>
-                   <a href="register.html" style=" color: #0076ad; text-decoration: none; font-weight: bold; font-size: 16px;">Sign Up</a>
+                   <span style="color: #333; font-size: 12px;"><b  data-key="login5">Do not have an account?</b> </span>
+                   <a href="register.html" style=" color: #0076ad; text-decoration: none; font-weight: bold; font-size: 16px;"  data-key="login6">Sign Up</a>
                 </div>
 
                
@@ -183,19 +183,24 @@
 
             <div id="view-logged-in" class="view-container">
                 <ul class="account-menu">
-                    <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> Account Details</a></li>
-                    <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> Addresses</a></li>
+                    <li class="menu-row"><a href="account.php"><i class="fa-regular fa-user"></i> <span data-key="login7"> Account Details</span></a></li>
+                    <li class="menu-row"><a href="address.php"><i class="fa-solid fa-location-dot"></i> <span  data-key="login8">Addresses</span></a></li>
                     <li class="menu-row">
                         <a href="edit_profile.php">
-                            <i class="fa-solid fa-user-pen"></i> Edit Profile
+                            <i class="fa-solid fa-user-pen"></i> <span  data-key="login9">Edit Profile</span>
                         </a>
                     </li>
                     <li class="menu-row">
                         <a href="javascript:void(0)" onclick="handleAdminRedirect()"><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
                     </li>
 
-                    <li class="menu-row"><a href="change_password.html"><i class="fa-solid fa-lock"></i> Change Password</a></li>
-                    <li class="menu-row"><a href="javascript:void(0)" onclick="confirmLogout()" style="color: #cc0000;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
+                    <li class="menu-row"><a href="change_password.html"><i class="fa-solid fa-lock"></i> <span  data-key="login10">Change Password</span></a></li>
+                    <li class="menu-row">
+                        <a href="javascript:void(0)" onclick="confirmLogout()" style="color: #cc0000;">
+                            <i class="fa-solid fa-right-from-bracket"></i> 
+                            <span data-key="login11">Log Out</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -786,24 +786,24 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     font-weight: 800; 
     font-size: 22px; 
     letter-spacing: -0.5px;
-">
+" data-key="order1">
     Confirm Your Order Details
 </div>
 
   <div id="products"></div>
 
   <div class="box">
-    <div class="row"><span>Subtotal</span><strong id="subtotal">ETB 0</strong></div>
-    <div class="row"><span style="color:rgb(9, 81, 115)">Total</span><strong id="total">ETB 0</strong></div>
+    <div class="row"><span >Subtotal</span><strong id="subtotal">ETB 0</strong></div>
+    <div class="row"><span style="color:rgb(9, 81, 115)" data-key="order2">Total</span><strong id="total">ETB 0</strong></div>
   </div>
 
-<label style="color: #0c2c4e;">Full Name<b style="color: rgb(51, 5, 5);">*</b></label>
+<label style="color: #0c2c4e;"> <span data-key="order3">Full Name</span><b style="color: #cc0000;">*</b></label>
 <div class="input">
     <span>👤</span>
     <input id="name" style="background-color: #f0f0f0; cursor: not-allowed;" readonly>
 </div>
 
-<label style="color: #0c2c4e;">Phone*</label>
+<label style="color: #0c2c4e;"><span data-key="order4">Phone</span><b style="color: #cc0000;">*</b></label>
 <div class="input">
     <span>📞</span>
     <input id="phone" style="background-color: #f0f0f0; cursor: not-allowed;" readonly>
@@ -812,12 +812,12 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <input type="hidden" id="userEmail" value="<?php echo isset($_SESSION['email']) ? $_SESSION['email'] : ''; ?>">
 
   <div class="radio">
-    <label><input type="radio" name="pay" value="Cash" checked> Cash</label>
-    <label><input type="radio" name="pay" value="Transfer"> Transfer</label>
+    <label><input type="radio" name="pay" value="Cash" checked> <span data-key="order5">Cash</label>
+    <label><input type="radio" name="pay" value="Transfer"> <span data-key="order6">Transfer</label>
   </div>
 
   <div class="upload-box" id="uploadBox">
-    <h3>Please upload your transfer screenshot here</h3>
+    <h3 data-key="order7">Please upload your transfer screenshot here</h3>
     <input type="file" id="proof" accept="image/*">
 
 
@@ -828,7 +828,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <svg style="width: 24px; height: 24px; stroke: #136835; fill: none; stroke-width: 2;" viewBox="0 0 24 24">
             <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
         </svg>
-        Payment Methods
+        <span data-key="order8">Payment Methods</span>
     </h3>
 
     <div style="background: linear-gradient(135deg, #4b2c85 0%, #6a3dbb 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(75, 44, 133, 0.3); position: relative; overflow: hidden;">
@@ -836,7 +836,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
             <div>
                 <p style="font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Commercial Bank of Ethiopia (CBE)</p>
                 <h4 style="font-size: 20px; margin: 0; letter-spacing: 1.5px;">1000617484793</h4>
-                <p style="margin-top: 10px; font-weight: 600; font-size: 14px;">Name: Hayru Dejene</p>
+                <p style="margin-top: 10px; font-weight: 600; font-size: 14px;" data-key="order9">Name: Hayru Dejene</p>
             </div>
             <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; font-weight: bold; font-size: 12px;">CBE</div>
         </div>
@@ -857,7 +857,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
     <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; margin-top: 20px; border-radius: 4px;">
         <p style="margin: 0; font-size: 13px; color: #856404; line-height: 1.5;">
-            <strong>📌 Important:</strong> Please send a screenshot of your payment receipt or the transaction SMS to us in above <b style="color: #0c2c4e;">Choose File</b> box. or by reply order message in your email or send by this email <b style="color: #0c2c4e;">ebroshoponline@gmail.com</b>.</p>
+            <strong data-key="order10">📌 Important:</strong> <span data-key="order11">Please send a screenshot of your payment receipt or the transaction SMS to us in above</span> <b style="color: #0c2c4e;">Choose File</b> <span data-key="order12">box.</span></p>
     </div>
 
 </div>
@@ -937,12 +937,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     </div>
    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #c6f6d5;">
     <p style="margin: 0 0 5px 0; color: #2f855a; font-size: 11.5px; line-height: 1.4; font-style: italic;">
-        • የእርስዎ ስም እና ስልክ ቁጥር ከፕሮፋይልዎ ላይ በቀጥታ ተወስዷል። መቀየር ካስፈለገዎት <b>"Edit Profile"</b> ይጠቀሙ።
+        • የእርስዎ ስም እና ስልክ ቁጥር ከፕሮፋይልዎ ላይ በቀጥታ ተወስዷል። መቀየር ካስፈለገዎት <b>"Edit Profile"</b> ይጫኑ።
     </p>
     <p style="margin: 0; color: #2f855a; font-size: 11.5px; line-height: 1.4; font-style: italic;">
         • ዕቃው የሚላክበትን አድራሻ ለማስገባት ወይም ለመቀየር <b>"Manage Address"</b> የሚለውን ይጫኑ።
     </p>
 </div>
+
 </div>
 
 
@@ -950,7 +951,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
   <br>
-  <button onclick="handleOrderClick()">ORDER NOW</button>
+  <button onclick="handleOrderClick()" data-key="order13">ORDER NOW</button>
 </div>
 </div>
 
@@ -1274,20 +1275,20 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
 
-<div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+<div class="language-bar" style="position:absolute; top: 110px; right: 0px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
     
     <button onclick="updatePageLanguage('en')" id="btn-en" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
         English
     </button>
-    
+
     <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
-    
+
     <button onclick="updatePageLanguage('am')" id="btn-am" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
         አማርኛ
     </button>
-    
+
 </div>
 
 <script>
@@ -1408,12 +1409,17 @@ function handleOrderClick() {
 
     // CHANGE: We remove "isLoggedIn". 
     // We check if name is filled (this proves loadDatabaseData worked).
-    if (name !== "") {
-        submitOrder(); 
-    } else {
-        alert("Please login to continue.");
-        window.location.href = "login.html";
-    }
+   if (name !== "") {
+    submitOrder(); 
+} else {
+    // Look for the translated message, fallback to English if missing
+    const loginRequiredMsg = (typeof translations !== 'undefined' && translations.order14) 
+                             ? translations.order14 
+                             : "Please login to continue.";
+    
+    alert(loginRequiredMsg);
+    window.location.href = "login.html";
+}
 }
 
 
@@ -1426,25 +1432,41 @@ const payment = paymentElement ? paymentElement.value : null;
 const proof = document.getElementById("proof");
 
   if (!name || !phone) { 
-    alert("Please fill in your name and phone number."); 
+    const fillDetailsMsg = (typeof translations !== 'undefined' && translations.order15) 
+                           ? translations.order15 
+                           : "Please fill in your name and phone number.";
+                           
+    alert(fillDetailsMsg); 
     return; 
-  }
+}
 
   // 1. Check if a payment method is selected
 if (!payment) {
-    alert("Please select a payment method.");
+    const selectPaymentMsg = (typeof translations !== 'undefined' && translations.order16) 
+                             ? translations.order16 
+                             : "Please select a payment method.";
+                             
+    alert(selectPaymentMsg);
     return;
 }
 
 // 2. MUST REQUIRE FILE if Transfer is selected
 if (payment === "Transfer") {
     if (proof.files.length === 0) {
-        alert("Please upload your payment receipt (Transfer Proof) before sending the order.");
+        const uploadProofMsg = (typeof translations !== 'undefined' && translations.order17) 
+                               ? translations.order17 
+                               : "Please upload your payment receipt (Transfer Proof) before sending the order.";
+                               
+        alert(uploadProofMsg);
         return; // Stops the order from sending
     }
 }
   
-  alert("Processing your order... Please wait.");
+  const processingMsg = (typeof translations !== 'undefined' && translations.order18) 
+                      ? translations.order18 
+                      : "⏳ Processing your order... ━━━━━━━━━━━━━━ Please wait";
+
+alert(processingMsg);
 
   // Define dbResult at the top so it is available to the Telegram part below
   let dbResult = { success: false, order_id: 'N/A' };

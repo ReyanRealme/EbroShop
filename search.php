@@ -32,17 +32,17 @@ include 'db.php';
 <div id="searchWrapper">
     <div id="searchPanel">
         <div class="search-header">
-            <h2>Search</h2>
+            <h2 data-key="Search1">Search</h2>
             <a href="javascript:history.back()" style="text-decoration:none; color:#333; font-size:24px;">✕</a>
         </div>
         <div class="input-area">
             <div class="search-box-wrapper">
-                <input id="searchInput" type="text" placeholder="Search items..." autocomplete="off">
+                <input id="searchInput" type="text" placeholder="Search items...እዚህ ይጻፉ" autocomplete="off">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
         <div class="results-container" id="searchResults">
-            <div class="status-msg">Start typing to find products...</div>
+            <div class="status-msg" data-key="Search2">Start typing to find products...</div>
         </div>
     </div>
     <div style="flex:1" onclick="history.back()"></div>
@@ -81,25 +81,33 @@ include 'db.php';
         const query = searchInput.value.trim();
 
         if (query.length < 1) {
-            searchResults.innerHTML = '<div class="status-msg">Start typing to find product</div>';
-            return;
-        }
+    const startTypingMsg = (typeof translations !== 'undefined' && translations.search3) 
+                           ? translations.search3 
+                           : "Start typing to find products";
+                           
+    searchResults.innerHTML = `<div class="status-msg">${startTypingMsg}</div>`;
+    return;
+}
 
         // Fetch from your PHP worker
         fetch(`fetch_search_results.php?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(products => {
-                if (products.length === 0) {
-                    searchResults.innerHTML = '<div class="status-msg">No products found</div>';
-                    return;
-                }
+               if (products.length === 0) {
+    const noResultsMsg = (typeof translations !== 'undefined' && translations.search4) 
+                         ? translations.search4 
+                         : "No products found";
+                         
+    searchResults.innerHTML = `<div class="status-msg">${noResultsMsg}</div>`;
+    return;
+}
 
                 searchResults.innerHTML = products.map(p => {
                     const isSoldOut = (p.status && (p.status.toLowerCase() === 'sold_out' || p.status.toLowerCase() === 'out of stock'));
 
                     return `
                         <div class="product-card" style="position: relative; ${isSoldOut ? 'opacity: 0.6;' : ''}">
-                            ${isSoldOut ? '<div style="position:absolute; top:10px; left:10px; background:red; color:white; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold; z-index:2;">SOLD OUT</div>' : ''}
+                            ${isSoldOut ? '<div style=" position: absolute; top: 20px; left: -32px; transform: rotate(-45deg);  background: #e74c3c;   color: white;   padding: 5px 0;  width: 120px;   text-align: center;  font-size: 11px;  font-weight: bold; z-index: 2;  box-shadow: 0 2px 4px rgba(0,0,0,0.2);">  SOLD OUT</div>' : ''}
                             
                             <img src="${p.image_url}" alt="${p.name}">
                             <div class="product-name">${p.name}</div>
@@ -125,9 +133,13 @@ window.handleQuickAdd = function(product) {
     // 1. Check if sold out
     const isSoldOut = (product.status && (product.status.toLowerCase() === 'sold_out' || product.status.toLowerCase() === 'out of stock'));
     if (isSoldOut) {
-        alert("Sorry! This item is sold out. You can't add it right now. We'll add it soon.");
-        return; 
-    }
+    const soldOutAlert = (typeof translations !== 'undefined' && translations.search5) 
+                         ? translations.search5 
+                         : "Sorry! This item is sold out. We'll add it soon.";
+                         
+    alert(soldOutAlert);
+    return; 
+}
 
 
     // 2. Prepare the data for cart_handler.php

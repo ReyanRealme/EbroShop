@@ -905,8 +905,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
     <div class="u-cart-container">
         
         <header class="u-cart-header">
-            <h1>Shopping Bag</h1>
-            <span class="u-cart-badge"><?php echo $res->num_rows; ?> Items</span>
+            <h1 data-key="cart1">Shopping Bag</h1>
+            <span class="u-cart-badge"><?php echo $res->num_rows; ? data-key="cart2"> Items</span>
         </header>
 
         <?php if ($res->num_rows > 0): ?>
@@ -921,7 +921,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                     </div>
                     
                     <div class="u-cart-info">
-                        <a href="Cart.php?u_remove_id=<?php echo $item['cid']; ?>" class="u-cart-delete-btn" onclick="return confirm('Remove?')">
+                        <a href="Cart.php?u_remove_id=<?php echo $item['cid']; ?>" 
+                         class="u-cart-delete-btn" 
+                         onclick="return confirm('Are you sure you want to remove this item?\nእርግጠኛ ነዎት ይህንን ዕቃ መሰረዝ ይፈልጋሉ?')">
                             <i class="fa-solid fa-xmark"></i>
                         </a>
                         
@@ -950,7 +952,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 <div class="u-summary-line"><small>Shipping</small><small>0.00 ETB</small></div>
                 
                 <div class="u-summary-line u-summary-total">
-                    <span>Total Balance</span>
+                    <span data-key="cart3">Total Balance</span>
                     <span><?php echo number_format($grand_total, 0); ?> ETB</span>
                 </div>
                    
@@ -1004,8 +1006,8 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-                <a href="order.html" class="u-cart-checkout-btn">Checkout Now <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
-                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-right:8px"></i>  Continue Shopping</a>
+                <a href="order.html" class="u-cart-checkout-btn" <span data-key="cart4">Checkout Now</span> <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
+                 <a href="collection.php" class="u-cart-checkout-btn"><i class="fa-solid fa-arrow-left" style="margin-right:8px"></i>  <span data-key="cart5">Continue Shopping</a>
                 
                 
             </div>
@@ -1013,9 +1015,9 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         <?php else: ?>
             <div class="u-cart-empty">
                 <div class="u-cart-empty-icon"><i class="fa-solid fa-basket-shopping"></i></div>
-                <h3 style="margin-bottom:10px;">Your bag is empty</h3>
-                <p style="color:#888; margin-bottom:25px;">Looks like you haven't added anything yet.</p>
-                <a href="collection.php" class="u-cart-shop-btn">Continue Shopping</a>
+                <h3 style="margin-bottom:10px;" data-key="cart6">Your bag is empty</h3>
+                <p style="color:#888; margin-bottom:25px;" data-key="cart7">Looks like you have not added anything yet.</p>
+                <a href="collection.php" class="u-cart-shop-btn" data-key="cart8">Continue Shopping</a>
             </div>
         <?php endif; ?>
 
@@ -1162,20 +1164,20 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 
 
 
-<div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+<div class="language-bar" style="position:absolute; top: 110px; right: 0px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
     
     <button onclick="updatePageLanguage('en')" id="btn-en" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
         English
     </button>
-    
+
     <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
-    
+
     <button onclick="updatePageLanguage('am')" id="btn-am" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
         አማርኛ
     </button>
-    
+
 </div>
 
 <script>

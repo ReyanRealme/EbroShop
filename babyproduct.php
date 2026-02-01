@@ -9,7 +9,7 @@ $dynamic_html = "";
 if ($result && $result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $isSoldOut = ($row['status'] == 'sold_out');
-        $badge = $isSoldOut ? '<div style=" position: absolute; top: 20px; left: -32px; transform: rotate(-45deg);  background: #e74c3c;   color: white;   padding: 5px 0;  width: 90px;   text-align: center;  font-size: 11px;  font-weight: bold; z-index: 2;  box-shadow: 0 2px 4px rgba(0,0,0,0.2);" data-key="aa1">  SOLD OUT</div>' : '';
+        $badge = $isSoldOut ? '<div style=" position: absolute; top: 20px; left: -32px; transform: rotate(-45deg);  background: #e74c3c;   color: white;   padding: 5px 0;  width: 80px;   text-align: center;  font-size: 11px;  font-weight: bold; z-index: 2;  box-shadow: 0 2px 4px rgba(0,0,0,0.2);" >  SOLD OUT</div>' : '';
         
       if ($isSoldOut) {
               $btnStyle = "background-color: #0e7dc7ff; cursor: pointer;";

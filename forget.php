@@ -83,9 +83,12 @@ $data = array(
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($httpCode == 201 || $httpCode == 200) {
-            echo "<script>alert('Success! Check email.'); window.location.href='login.html';</script>";
-        } else {
+       if ($httpCode == 201 || $httpCode == 200) {
+          echo "<script>
+                  alert('Success! We have sent a reset link to your email. Please check your inbox.\\n\\nመልእክቱ ተልኳል! የይለፍ ቃል መቀየሪያ ሊንክ ወደ ኢሜይልዎ ልከናል። እባክዎ ኢሜይልዎን ገብተው ያረጋግጡ።'); 
+                  window.location.href='login.html';
+                </script>";
+      } else {
             echo "<h3>API Error ($httpCode)</h3><pre>$response</pre>";
         }
     } else {
@@ -271,7 +274,10 @@ if (isset($_POST['update_now'])) {
     $stmt->execute();
     
     if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Your password has been successfully changed! Please login.'); window.location.href='login.html';</script>";
+    echo "<script>
+            alert('Success! Your password has been reset. Please login with your new password.\\n\\nእንኳን ደስ አለዎት! የይለፍ ቃልዎ በትክክል ተቀይሯል። እባክዎ በአዲሱ የይለፍ ቃልዎ ይግቡ።'); 
+            window.location.href='login.html';
+          </script>";
     } else {
         echo "<h3>Link invalid or expired.</h3>";
     }

@@ -1,218 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Leadership - EbRoShop</title>
-     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --primary: #136835;
-            --secondary: #0b91ff;
-            --text: #2d3436;
-        }
+<?php
 
-        body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f0f2f5; color: var(--text); }
+include 'db.php';
 
-        /* Top Header Section */
-        .hero { 
-            background: linear-gradient(135deg, var(--primary) 0%, #0a4d26 100%);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fname = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $lname = mysqli_real_escape_string($conn, $_POST['last_name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $pass  = $_POST['password'];
 
-        .hero h1 { font-size: 36px; margin: 0; letter-spacing: 1px; }
-        .hero p { font-size: 18px; opacity: 0.9; margin-top: 10px; }
+    $checkEmail = "SELECT email FROM users WHERE email = '$email'";
+    $result = $conn->query($checkEmail);
 
-        /* Grid Layout */
-        .container { max-width: 1100px; margin: -60px auto 60px; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Error: Email already exists.'); window.history.back();</script>";
+    } else {
+        $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role) 
+                VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer')";
 
-        /* Host Card Design */
-        .host-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
+ 
+       
 
-        .host-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-
-        /* Verified Badge */
-        .verified-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .image-area { height: 300px; overflow: hidden; background: #e0e0e0; }
-        .image-area img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: 0.5s; }
-        .host-card:hover .image-area img { filter: grayscale(0%); scale: 1.05; }
-
-        .content { padding: 30px; text-align: center; }
-        .content h2 { margin: 0; color: var(--primary); font-size: 26px; }
-        .content .title { color: var(--secondary); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; display: block; margin: 10px 0 20px; }
-        .content p { font-size: 15px; color: #636e72; line-height: 1.6; margin-bottom: 25px; }
-
-        /* Powerful Contact Buttons */
-        .action-btns { display: flex; gap: 10px; justify-content: center; }
-        .btn { 
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-tg { background: #0088cc; color: white; }
-        .btn-call { background: var(--primary); color: white; }
-        .btn:hover { opacity: 0.85; filter: brightness(1.1); }
-
-        @media (max-width: 768px) { .hero h1 { font-size: 28px; } }
-
-
-
-
-        .language-bar {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    background: white;
-    padding: 5px;
-    border-radius: 50px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    z-index: 10000;
-    border: 2px solid var(--primary); /* Uses your #136835 green */
-}
-
-.lang-node {
-    border: none;
-    padding: 8px 18px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 13px;
-    background: transparent;
-    color: var(--primary);
-    transition: 0.3s;
-}
-
-.lang-node.active {
-    background: var(--primary);
-    color: white !important;
-}
-
-.divider { width: 1px; height: 20px; background: #eee; align-self: center; }
-    </style>
-</head>
-<body>
-<body>
-
-    <section class="hero">
-        <h1 data-key="host1">EbRoShop Leadership</h1>
-        <p data-key="host2">Expert hosts dedicated to your convenience and safety.</p>
-    </section>
-
-    <div class="container">
-        
-        <div class="host-card">
-            <div class="verified-badge"><i class="fas fa-check-circle" style="margin-right:5px;"></i> VERIFIED HOST</div>
-            <div class="image-area">
-              <img src="https://res.cloudinary.com/die8hxris/image/upload/v1767515768/yak7fuhcfakqshstb3fd.png" alt="CEO">
-            </div>
-            <div class="content">
-                <h2 data-key="host3">Ebrahim Hassen</h2>
-                <span class="title" data-key="host4">Chief Operations</span>
-                <p data-key="host5">Expert in Ethiopian logistics and quality control. Ebrahim ensures that every product in our store meets international health standards.</p>
-                
-                <div class="action-btns">
-                    <a href="https://t.me/ebhayru55" class="btn btn-tg"><i class="fab fa-telegram-plane"></i> <span data-key="host6">Telegram</span></a>
-                    <a href="tel:+251970130755" class="btn btn-call"><i class="fas fa-phone-alt"></i> <span data-key="host7">Call</span></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="host-card">
-            <div class="verified-badge"><i class="fas fa-check-circle" style="margin-right:5px;"></i> ACTIVE NOW</div>
-            <div class="image-area">
-                <img src="https://res.cloudinary.com/die8hxris/image/upload/v1767515793/khg8ldx00chof3dt01tn.jpg" alt="Support">
-            </div>
-            <div class="content">
-                <h2 data-key="host8">Mujib Abrar</h2>
-                <span class="title" data-key="host9">Customer Experience</span>
-                <p data-key="host10">Focused on solving customer issues within 1 hours. Mujib manages our rapid-response delivery team across Addis Ababa.</p>
-                
-                <div class="action-btns">
-                    <a href="https://t.me/Rebyi43" class="btn btn-tg"><i class="fab fa-telegram-plane"></i> <span data-key="host6">Telegram</span></a>
-                    <a href="tel:+251991164251" class="btn btn-call"><i class="fas fa-phone-alt"></i> <span data-key="host7">Call</span></a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div style="text-align: center; padding: 40px; color: #777;">
-        <p><i class="fas fa-shield-alt"></i> <span data-key="host11">100% Secure Shopping Guaranteed by the EbRoShop Team.</span></p>
-    </div>
-
- <div class="language-bar">
-        <button onclick="updatePageLanguage('en')" id="btn-en" class="lang-node active">English</button>
-        <div class="divider"></div>
-        <button onclick="updatePageLanguage('am')" id="btn-am" class="lang-node">አማርኛ</button>
-    </div>
-
-   <script src="languages.js"></script>
-<script>
-    function updatePageLanguage(lang) {
-        // Check if the translations object from languages.js is loaded
-        if (typeof translations !== 'undefined' && translations[lang]) {
-            const selectedLanguage = translations[lang];
+        if ($conn->query($sql) === TRUE) {
             
-            // Loop through every element that has a data-key
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (selectedLanguage[key]) {
-                    el.innerText = selectedLanguage[key];
-                }
-            });
+            // --- BREVO EMAIL SYSTEM ---
+            $apiKey = getenv('BREVO_API_KEY'); 
+            $senderEmail = 'ebroshoponline@gmail.com'; // MUST be verified in Brevo
+            $siteUrl = "https://ebroshop.onrender.com"; // Your Render URL
             
-            // Update the button colors (Active/Inactive)
-            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-            document.getElementById('btn-am').classList.toggle('active', lang === 'am');
+            // Your Cloudinary Logo
+            $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
+
+         $data = array(
+                "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
+                "to" => array(array("email" => $email, "name" => $fname)),
+                "subject" => "Customer account confirmation",
+                "htmlContent" => "
             
-            // Save the choice so it stays when the user refreshes
-            localStorage.setItem('ebro_lang', lang);
+                    <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; border: 1px solid #eee; text_align:center;'>
+                        
+                        <div style='text-align: left;'>
+                            <img src='$logoUrl' alt='EbRoShop Logo' style='width: 260px; height: auto; display: block;'>
+                        </div>
+
+                        <h1 style=' color: #136835;'>Welcome to EbRoShop!</h1>
+
+                        <p style='font-size: 16px; color: #555;'>
+                            Hello $fname, your customer account is now active.</p>
+                           <p style='color:#777;'>Next time you shop with us, log in for faster checkout.</p>
+                     
+                          <br>
+                         
+                          <div style='text-align: center; margin: 30px 0;'>
+                            <a href='$siteUrl' style='background-color: #136835; color: white; padding: 15px 35px; text-decoration: none; font-size: 18px; border-radius: 50px; display: inline-block; font-weight: bold;'>
+                              Visit our store
+                           </a>
+                          </div>
+                           <br>
+                           <br>
+                        <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. You can also reach us by calling our helpline number at <b style='color: #0b91ff;'>+251970130755</b></p>
+
+                    
+                    </div>"
+            );
+
+            // FIXED URL: api.brevo.com
+            $ch = curl_init('https://api.brevo.com/v3/smtp/email');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+                'Accept: application/json'
+            ));
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            // Success message
+            echo "<script>
+                    alert('Congratulations! You have successfully created account for EbRoShop. Welcome message sent to your email $email');
+                    window.location.href = 'login.html';
+                  </script>";
         } else {
-            console.error("Translations not found. Check your languages.js file!");
+            echo "Error: " . $conn->error;
         }
-    }
-
-    // Run this as soon as the page opens
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedLang = localStorage.getItem('ebro_lang') || 'en';
-        updatePageLanguage(savedLang);
-    });
-</script>
-
-</body>
-</html>
+ }
+ }
+$conn->close();
+?>

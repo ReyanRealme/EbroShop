@@ -936,6 +936,7 @@ body {
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
       border: 1px solid rgba(12, 24, 20, 0.03);
       margin: 0px auto;" class="card">
+      <br>
     <h1 style="text-align: center;color: var(--accent); font-family: 'Times New Roman', Times, serif;" class="hero animate-on-scroll" data-key="about1"><b>🎙</b>About us</h1>
 
     <div class="animate-on-scroll">

@@ -882,7 +882,13 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
                 </div>
                 <div class="actions-grid">
                     <a href="address.php?view=edit&id=<?php echo $addr['id']; ?>" class="btn-action"  data-key="address5">Edit</a>
-                    <a href="address.php?delete=<?php echo $addr['id']; ?>" class="btn-action" style="color: #cc0000;" onclick="return confirm('Remove this address?')" data-key="address6">Remove</a>
+                    <a href="address.php?delete=<?php echo $addr['id']; ?>" 
+                       class="btn-action" 
+                       style="color: #cc0000;" 
+                       onclick="return confirm('Are you sure you want to remove this address?\nእርግጠኛ ነዎት ይህንን አድራሻ መሰረዝ ይፈልጋሉ?')" 
+                       data-key="address6">
+                       Remove
+                    </a>
                 </div>
             </div>
         <?php endwhile; ?>
@@ -1273,20 +1279,20 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 </div>
 
 
-<div class="language-bar" style="position: fixed; top: 20px; right: 20px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
+<div class="language-bar" style="position:absolute; top: 110px; right: 0px; display: flex; background: white; padding: 5px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; border: 2px solid #136835;">
     
     <button onclick="updatePageLanguage('en')" id="btn-en" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: #136835; color: white;">
         English
     </button>
-    
+
     <div style="width: 1px; height: 20px; background: #eee; align-self: center; margin: 0 2px;"></div>
-    
+
     <button onclick="updatePageLanguage('am')" id="btn-am" 
         style="border: none; padding: 8px 18px; border-radius: 50px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.3s; background: transparent; color: #136835;">
         አማርኛ
     </button>
-    
+
 </div>
  <script>
       /*For signup or logout*/
