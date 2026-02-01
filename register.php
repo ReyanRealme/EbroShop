@@ -8,6 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $pass  = $_POST['password'];
+    
+    // Capture the checkbox value (1 if checked, 0 if not)
+    $agreed = isset($_POST['terms_agree']) ? 1 : 0;
 
     $checkEmail = "SELECT email FROM users WHERE email = '$email'";
     $result = $conn->query($checkEmail);
@@ -16,19 +19,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('Error: Email already exists.'); window.history.back();</script>";
     } else {
         $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role) 
-                VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer')";
-
-//for agree terms and priacy   
-$agreed = isset($_POST['terms_agree']) ? 1 : 0;
-
-if ($agreed == 0) {
-    die("Error: You must agree to the terms.");
+        
+        // Add 'agreed_to_terms' and its value '$agreed' to your SQL
+        $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role, agreed_to_terms) 
+                VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer', '$agreed')";
+        
+        if ($conn->query($sql)) {
+            echo "<script>alert('Success!'); window.location.href='login.php';</script>";
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    }
 }
 
-// In your INSERT query, add the 'agreed_to_terms' field
-$sql = "INSERT INTO users (name, email, password, agreed_to_terms) 
-        VALUES ('$name', '$email', '$password', $agreed)";          
+ 
+       
 
         if ($conn->query($sql) === TRUE) {
             
