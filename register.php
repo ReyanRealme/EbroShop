@@ -1,5 +1,4 @@
 <?php
-
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,61 +23,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role, agreed_to_terms) 
                 VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer', '$agreed')";
         
-        if ($conn->query($sql)) {
-            echo "<script>alert('Success!'); window.location.href='login.php';</script>";
-        } else {
-            echo "Error: " . $conn->error;
-        }
-    }
-}
-
- 
-       
-
         if ($conn->query($sql) === TRUE) {
             
             // --- BREVO EMAIL SYSTEM ---
             $apiKey = getenv('BREVO_API_KEY'); 
-            $senderEmail = 'ebroshoponline@gmail.com'; // MUST be verified in Brevo
-            $siteUrl = "https://ebroshop.onrender.com"; // Your Render URL
-            
-            // Your Cloudinary Logo
+            $senderEmail = 'ebroshoponline@gmail.com'; 
+            $siteUrl = "https://ebroshop.onrender.com"; 
             $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
 
-         $data = array(
+            $data = array(
                 "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
                 "to" => array(array("email" => $email, "name" => $fname)),
                 "subject" => "Customer account confirmation",
                 "htmlContent" => "
-            
-                    <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; border: 1px solid #eee; text_align:center;'>
-                        
+                    <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; border: 1px solid #eee; text-align:center;'>
                         <div style='text-align: left;'>
                             <img src='$logoUrl' alt='EbRoShop Logo' style='width: 260px; height: auto; display: block;'>
                         </div>
-
                         <h1 style=' color: #136835;'>Welcome to EbRoShop!</h1>
-
-                        <p style='font-size: 16px; color: #555;'>
-                            Hello $fname, your customer account is now active.</p>
-                           <p style='color:#777;'>Next time you shop with us, log in for faster checkout.</p>
-                     
-                          <br>
-                         
-                          <div style='text-align: center; margin: 30px 0;'>
+                        <p style='font-size: 16px; color: #555;'>Hello $fname, your customer account is now active.</p>
+                        <p style='color:#777;'>Next time you shop with us, log in for faster checkout.</p>
+                        <br>
+                        <div style='text-align: center; margin: 30px 0;'>
                             <a href='$siteUrl' style='background-color: #136835; color: white; padding: 15px 35px; text-decoration: none; font-size: 18px; border-radius: 50px; display: inline-block; font-weight: bold;'>
                               Visit our store
                            </a>
-                          </div>
-                           <br>
-                           <br>
-                        <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. You can also reach us by calling our helpline number at <b style='color: #0b91ff;'>+251970130755</b></p>
-
-                    
+                        </div>
+                        <br>
+                        <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. Helpline: <b style='color: #0b91ff;'>+251970130755</b></p>
                     </div>"
             );
 
-            // FIXED URL: api.brevo.com
             $ch = curl_init('https://api.brevo.com/v3/smtp/email');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -89,14 +64,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'Accept: application/json'
             ));
 
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_exec($ch);
             curl_close($ch);
 
-            // Success message
+            // Final Success Alert
             echo "<script>
-                    alert('Congratulations! You have successfully created account for EbRoShop. Welcome message sent to your email $email');
-                    window.location.href = 'login.html';
+                    alert('Congratulations! You have successfully created an account. Welcome message sent to $email');
+                    window.location.href = 'login.php';
                   </script>";
         } else {
             echo "Error: " . $conn->error;
