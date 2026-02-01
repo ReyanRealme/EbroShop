@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Final Success Alert
             echo "<script>
                     alert('Congratulations! You have successfully created an account. Welcome message sent to $email');
-                    window.location.href = 'login.php';
+                    window.location.href = 'login.html';
                   </script>";
         } else {
             echo "Error: " . $conn->error;
