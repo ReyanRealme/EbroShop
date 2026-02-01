@@ -851,6 +851,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
 <br>
 <div style="font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; color: #333; max-width: 500px; margin: auto; background-color: #f9f9f9; }
       ">
+      <br>
     <div class="header-title">My Addresses</div>
 
     <?php if ($view == 'list'): ?>

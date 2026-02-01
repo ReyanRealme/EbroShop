@@ -1,94 +1,30 @@
-<?php
-
-include 'db.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fname = mysqli_real_escape_string($conn, $_POST['first_name']);
-    $lname = mysqli_real_escape_string($conn, $_POST['last_name']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $pass  = $_POST['password'];
-
-    $checkEmail = "SELECT email FROM users WHERE email = '$email'";
-    $result = $conn->query($checkEmail);
-
-    if ($result->num_rows > 0) {
-        echo "<script>alert('Error: Email already exists.'); window.history.back();</script>";
-    } else {
-        $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role) 
-                VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer')";
-
- 
-       
-
-        if ($conn->query($sql) === TRUE) {
-            
-            // --- BREVO EMAIL SYSTEM ---
-            $apiKey = getenv('BREVO_API_KEY'); 
-            $senderEmail = 'ebroshoponline@gmail.com'; // MUST be verified in Brevo
-            $siteUrl = "https://ebroshop.onrender.com"; // Your Render URL
-            
-            // Your Cloudinary Logo
-            $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
-
-         $data = array(
-                "sender" => array("name" => "EbRoShop", "email" => $senderEmail),
-                "to" => array(array("email" => $email, "name" => $fname)),
-                "subject" => "Customer account confirmation",
-                "htmlContent" => "
-            
-                    <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; border: 1px solid #eee; text_align:center;'>
-                        
-                        <div style='text-align: left;'>
-                            <img src='$logoUrl' alt='EbRoShop Logo' style='width: 260px; height: auto; display: block;'>
-                        </div>
-
-                        <h1 style=' color: #136835;'>Welcome to EbRoShop!</h1>
-
-                        <p style='font-size: 16px; color: #555;'>
-                            Hello $fname, your customer account is now active.</p>
-                           <p style='color:#777;'>Next time you shop with us, log in for faster checkout.</p>
-                     
-                          <br>
-                         
-                          <div style='text-align: center; margin: 30px 0;'>
-                            <a href='$siteUrl' style='background-color: #136835; color: white; padding: 15px 35px; text-decoration: none; font-size: 18px; border-radius: 50px; display: inline-block; font-weight: bold;'>
-                              Visit our store
-                           </a>
-                          </div>
-                           <br>
-                           <br>
-                        <p style='font-size: 12px; color: #bbb;'>If you have any questions, reply to this email or contact us at $senderEmail. You can also reach us by calling our helpline number at <b style='color: #0b91ff;'>+251970130755</b></p>
-
-                    
-                    </div>"
-            );
-
-            // FIXED URL: api.brevo.com
-            $ch = curl_init('https://api.brevo.com/v3/smtp/email');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'api-key: ' . $apiKey,
-                'Content-Type: application/json',
-                'Accept: application/json'
-            ));
-
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            // Success message
-            echo "<script>
-                    alert('Congratulations! You have successfully created account for EbRoShop. Welcome message sent to your email $email');
-                    window.location.href = 'login.html';
-                  </script>";
-        } else {
-            echo "Error: " . $conn->error;
-        }
- }
- }
-$conn->close();
-?>
+<div style='margin-top: 25px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border-left: 4px solid #136835;'>
+    <p style='margin: 0 0 8px 0; color: #136835; font-size: 14px; font-weight: bold;'>ቀጣይ መመሪያዎች:</p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • ትዕዛዝዎ በትክክል ደርሶናል። በአሁኑ ሰዓት በዝግጅት ላይ ይገኛል።
+    </p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • የክፍያ ማረጋገጫዎ እንደታየ ትዕዛዝዎ ወደ እርስዎ እንዲላክ ይደረጋል።
+    </p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • እቃው ለትራንስፖርት ሲወጣ በስልክ ቁጥርዎ እንደውልሎትአለን ወይም አጭር የጽሁፍ መልዕክት (SMS) እንልክልዎታለን።
+    </p>
+    
+    <p style='margin: 10px 0 0 0; color: #d9534f; font-size: 12px; font-style: italic;'>
+        * ማሳሰቢያ፡ ማንኛውም አይነት ጥያቄ ካለዎት ከታች ባለው ስልክ ቁጥር ወይም ኢሜል ሊያገኙን ይችላሉ።
+    </p>
+    <div style='text-align: center; margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px;'>
+    <p style='font-size: 12px; color: #777; margin: 0;'>
+        <span style='font-size: 15px; color: #136835; vertical-align: middle;'>&#9993;</span> 
+        <a href='mailto:ebroshoponline@gmail.com' style='color: #777; text-decoration: none; vertical-align: middle;'>ebroshoponline@gmail.com</a>
+        
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        
+        <span style='font-size: 15px; color: #136835; vertical-align: middle;'>&#9742;</span> 
+        <span style='vertical-align: middle;'>+251970130755</span>
+    </p>
+     </div>
+</div>
