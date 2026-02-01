@@ -906,7 +906,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff}
         
         <header class="u-cart-header">
             <h1 data-key="cart1">Shopping Bag</h1>
-            <span class="u-cart-badge"><?php echo $res->num_rows; ? data-key="cart2"> Items</span>
+            <span class="u-cart-badge"><?php echo $res->num_rows; ?> data-key="cart2"> Items</span>
         </header>
 
         <?php if ($res->num_rows > 0): ?>
