@@ -203,6 +203,28 @@ function updatePageLanguage(lang) {
         updatePageLanguage(savedLang);
     });
 
+
+
+// Add this translation dictionary
+const ebroTranslations = {
+    'en': {
+        "Search1": "Search",
+        "Search2": "Start typing to find products...",
+        "search3": "Start typing to find products",
+        "search4": "No products found",
+        "search5": "Sorry! This item is sold out. We'll add it soon.\n\nይቅርታ! ይህ እቃ አልቋል። በቅርቡ እናመጣዋለን።"
+    },
+    'am': {
+        "Search1": "ፍለጋ",
+        "Search2": "ለመፈለግ እዚህ መጻፍ ይጀምሩ...",
+        "search3": "ለመፈለግ እዚህ መጻፍ ይጀምሩ",
+        "search4": "ምንም የተገኘ እቃ የለም",
+        "search5": "ይቅርታ! ይህ እቃ አልቋል። በቅርቡ እናመጣዋለን።"
+    }
+};
+
+// Update your variable reference
+const translations = ebroTranslations[localStorage.getItem('userLanguage') || 'en'];
 </script>
 </body>
 </html>
