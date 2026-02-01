@@ -255,7 +255,7 @@ const ebroTranslations = {
 
 
     //for forget password page
-          "forget1": "Forgot your Password?",
+          "forget1": "Forgot Password?",
           "forget2": "Recover your password", 
           "forget3": "We will send you an email to reset your password", 
           "forget4": "Email Address", 
