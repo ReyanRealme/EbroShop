@@ -53,31 +53,43 @@ if ($input && $apiKey) {
         $logoUrl = "https://res.cloudinary.com/die8hxris/image/upload/v1767382208/n8ixozf4lj5wfhtz2val.jpg";
 
         $data = array(
-            "sender" => array("name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"),
-            "to" => array(array("email" => $customerEmail, "name" => $name)), // SENDS TO USER
-            "subject" => "Your Order Confirmation #$order_id",
-            "htmlContent" => "
-                <div style='font-family:Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius:10px;'>
-                    <div style='text-align: center; border-bottom: 2px solid #136835; padding-bottom: 15px; margin-bottom: 20px;'>
-                        <img src='$logoUrl' alt='EbRoShop' style='width: 200px;'>
-                    </div>
-                    <h2 style='color: #136835; text-align: center;'>Thank you for your order!</h2>
-                    <p>Hello <b>$name</b>, your order has been received.</p>
-                    <table style='width: 100%; border-collapse: collapse; margin: 20px 0;'>
-                        <tr style='background: #222; color: white;'>
-                            <th style='padding:12px; text-align:left;'>Product/እቃ</th>
-                            <th style='padding:12px;'>Qty/ብዛት</th>
-                            <th style='padding:12px; text-align:right;'>Price/የክፍያ መጠን</th>
-                        </tr>
-                        $rows
-                        <tr style='font-weight: bold;'>
-                            <td colspan='2' style='padding:15px; text-align:right;'>Total Amount/አጠቃላይ ክፍያ:</td>
-                            <td style='padding:15px; text-align:right; color:#136835;'>ETB " . number_format($total, 2) . "</td>
-                        </tr>
-                    </table>
-                    <p><b>Phone:</b> $phone | <b>Payment:</b> $payment</p>
+    "sender" => array("name" => "EbRoShop", "email" => "ebroshoponline@gmail.com"),
+    "to" => array(array("email" => $customerEmail, "name" => $name)), 
+    "subject" => "Order Confirmation #$order_id - EbRoShop",
+    "htmlContent" => "
+        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 15px; color: #333;'>
+            <div style='text-align: center; border-bottom: 3px solid #136835; padding-bottom: 15px; margin-bottom: 20px;'>
+                <img src='$logoUrl' alt='EbRoShop' style='width: 180px;'>
+            </div>
             
-                </div>"
+            <h2 style='color: #136835; text-align: center;'>Thank you for your order!</h2>
+            <p style='font-size: 16px;'>Hello <b>$name</b>, we have received your order <b>#$order_id</b> and are preparing it for delivery.</p>
+            
+            <table style='width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;'>
+                <thead>
+                    <tr style='background: #136835; color: white;'>
+                        <th style='padding: 12px; text-align: left; border-radius: 5px 0 0 0;'>Product/እቃ</th>
+                        <th style='padding: 12px; text-align: center;'>Qty/ብዛት</th>
+                        <th style='padding: 12px; text-align: right; border-radius: 0 5px 0 0;'>Price/ዋጋ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $rows
+                </tbody>
+                <tfoot>
+                    <tr style='font-weight: bold; font-size: 16px; border-top: 2px solid #eee;'>
+                        <td colspan='2' style='padding: 15px; text-align: right;'>Total Amount / አጠቃላይ ክፍያ:</td>
+                        <td style='padding: 15px; text-align: right; color: #136835;'>ETB " . number_format($total, 2) . "</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div style='background: #f4fcf7; padding: 15px; border-radius: 8px; margin-bottom: 20px;'>
+                <p style='margin: 5px 0;'><b>Phone:</b> $phone</p>
+                <p style='margin: 5px 0;'><b>Payment Method:</b> $payment</p>
+            </div>"
+
+          
 
                 
 <div style='margin-top: 25px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border-left: 4px solid #136835;'>
