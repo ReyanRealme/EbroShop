@@ -76,10 +76,40 @@ if ($input && $apiKey) {
       </tr>
      </table>
      <p><b>Phone:</b> $phone | <b>Payment:</b> $payment</p>
-     <p style='font-size: 12px; color: #777; text-align: center; margin-top: 30px;'>
-     Contact us at ebroshoponline@gmail.com or +251970130755
-     </p>
-     </div>"
+    
+     
+     <div style='margin-top: 25px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border-left: 4px solid #136835;'>
+    <p style='margin: 0 0 8px 0; color: #136835; font-size: 14px; font-weight: bold;'>ቀጣይ መመሪያዎች:</p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • ትዕዛዝዎ በትክክል ደርሶናል። በአሁኑ ሰዓት በዝግጅት ላይ ይገኛል።
+    </p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • የክፍያ ማረጋገጫዎ እንደታየ ትዕዛዝዎ ወደ እርስዎ እንዲላክ ይደረጋል።
+    </p>
+    
+    <p style='margin: 0 0 5px 0; color: #444; font-size: 13px; line-height: 1.5;'>
+        • እቃው ለትራንስፖርት ሲወጣ በስልክ ቁጥርዎ እንደውልሎትአለን ወይም አጭር የጽሁፍ መልዕክት (SMS) እንልክልዎታለን።
+    </p>
+    
+    <p style='margin: 10px 0 0 0; color: #d9534f; font-size: 12px; font-style: italic;'>
+        * ማሳሰቢያ፡ ማንኛውም አይነት ጥያቄ ካለዎት ከታች ባለው ስልክ ቁጥር ወይም ኢሜል ሊያገኙን ይችላሉ።
+    </p>
+    <div style='text-align: center; margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px;'>
+    <p style='font-size: 12px; color: #777; margin: 0;'>
+        <span style='font-size: 15px; color: #136835; vertical-align: middle;'>&#9993;</span> 
+        <a href='mailto:ebroshoponline@gmail.com' style='color: #777; text-decoration: none; vertical-align: middle;'>ebroshoponline@gmail.com</a>
+        
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        
+        <span style='font-size: 15px; color: #136835; vertical-align: middle;'>&#9742;</span> 
+        <span style='vertical-align: middle;'>+251970130755</span>
+    </p>
+     </div>
+</div>
+
+</div>"
  );                                                                
 
           
