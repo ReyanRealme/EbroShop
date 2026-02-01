@@ -1,25 +1,35 @@
 <?php
 include 'db.php';
 
-// 1. Check if the 'agreed_to_terms' column already exists in the users table
-$checkColumn = $conn->query("SHOW COLUMNS FROM `users` LIKE 'agreed_to_terms'");
-$exists = ($checkColumn->num_rows > 0);
+// The specific email you want to clear
+$target_email = 'ebrohayru77@gmail.com';
 
-if (!$exists) {
-    // 2. Add the column if it is missing
-    // We use TINYINT(1) with DEFAULT 0 (meaning not agreed yet)
-    $sql = "ALTER TABLE users ADD agreed_to_terms TINYINT(1) NOT NULL DEFAULT 0";
-    
-    if ($conn->query($sql)) {
-        echo "Success: Column 'agreed_to_terms' added to users table.<br>";
+// 1. Prepare a direct delete query
+$sql = "DELETE FROM users WHERE email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $target_email);
+
+echo "<div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #136835; border-radius: 10px; max-width: 500px; margin: 50px auto; text-align: center;'>";
+
+if ($stmt->execute()) {
+    if ($stmt->affected_rows > 0) {
+        echo "<h2 style='color: #136835;'>Task Successful! / ተግባሩ ተሳክቷል!</h2>";
+        echo "<p>The email <b>$target_email</b> has been completely removed from the database.</p>";
+        echo "<p style='color: #555;'>You can now go to the registration page and sign up as a new user.</p>";
+        echo "<hr style='border: 0; border-top: 1px solid #eee;'>";
+        echo "<p>አሁን ኢሜይሉ ስለተሰረዘ እንደ አዲስ መመዝገብ ይችላሉ።</p>";
     } else {
-        echo "Error adding column: " . $conn->error . "<br>";
+        echo "<h2 style='color: #e74c3c;'>Not Found / አልተገኘም</h2>";
+        echo "<p>The email <b>$target_email</b> does not exist in your database records.</p>";
     }
 } else {
-    echo "Notice: Column 'agreed_to_terms' already exists. No changes made.<br>";
+    echo "<h2 style='color: #e74c3c;'>Error / ስህተት</h2>";
+    echo "Something went wrong: " . $conn->error;
 }
 
-// 3. Optional: Set existing users to 1 if you want to assume they already agreed
-// $conn->query("UPDATE users SET agreed_to_terms = 1");
+echo "<br><a href='register.php' style='display: inline-block; padding: 10px 20px; background: #136835; color: white; text-decoration: none; border-radius: 5px;'>Go to Registration</a>";
+echo "</div>";
 
+$stmt->close();
+$conn->close();
 ?>

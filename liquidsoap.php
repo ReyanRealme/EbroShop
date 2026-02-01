@@ -31,7 +31,7 @@ if ($result && $result->num_rows > 0) {
         }
 
         // --- THE FIX FOR SORT: Added data-price and data-name here ---
-        $dynamic_html .= '
+         $dynamic_html .= '
         <div class="product" data-price="'.$row['price'].'" data-name="'.strtolower($row['name']).'" style="position: relative; padding: 15px; border: 1px solid #f0f0f0; border-radius: 15px; background: #fff; display: flex; flex-direction: column; align-items: center; text-align: center;">
             ' . $badge . '
             <div style="height: 180px; width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
@@ -39,10 +39,9 @@ if ($result && $result->num_rows > 0) {
             </div>
             <h3 style="color: #000; font-size: 14px; font-weight: 600; margin-bottom: 8px; height: 40px; overflow: hidden;">'.htmlspecialchars($row['name']).'</h3>
             <p style="font-weight:bold; margin-bottom: 12px;">'.number_format($row['price'], 0).' ETB/pcs</p>
-            <button type="button" onclick="'.$btnAction.'" 
-                style="'.$btnStyle.' color: #fff; border: none; width: 100%; padding: 12px 0; border-radius: 50px; font-weight: bold; font-size: 14px;">
-                '.$btnText.'
-            </button>
+            
+            '.$buttonHtml.'
+
         </div>';
     }
 }
