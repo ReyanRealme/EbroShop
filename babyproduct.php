@@ -52,7 +52,7 @@ $js_code = "
 // Faithfully Alert Fix
 function handleSoldOut() {
     // English + Amharic translation
-    alert("Sorry! This item is sold out. We will add more soon!\n\nይቅርታ! ይህ እቃ አልቋል። አሁን ላይ ወደ ቦርሳዎስንንስ መጨመር አይችሉም። በቅርቡ እናስመጣለን።");
+    alert(\"Sorry! This item is sold out. We will add more soon!\n\nይቅርታ! ይህ እቃ አልቋል። አሁን ላይ ወደ ቦርሳዎስንንስ መጨመር አይችሉም። በቅርቡ እናስመጣለን።\");
 }
 
 // Quick Add Fix
