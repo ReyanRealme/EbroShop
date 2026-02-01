@@ -19,6 +19,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO users (first_name, last_name, email, phone, password, role) 
                 VALUES ('$fname', '$lname', '$email', '$phone', '$hashed_password', 'customer')";
 
+//for agree terms and priacy   
+$agreed = isset($_POST['terms_agree']) ? 1 : 0;
+
+if ($agreed == 0) {
+    die("Error: You must agree to the terms.");
+}
+
+// In your INSERT query, add the 'agreed_to_terms' field
+$sql = "INSERT INTO users (name, email, password, agreed_to_terms) 
+        VALUES ('$name', '$email', '$password', $agreed)";          
+
         if ($conn->query($sql) === TRUE) {
             
             // --- BREVO EMAIL SYSTEM ---
