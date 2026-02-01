@@ -607,7 +607,7 @@ const ebroTranslations = {
     //cart page
           "cart1": "የመረጧቸው እቃዎች", 
           "cart2": "የእቃ ብዛት",  
-          "cart3": "ጠቅላላ ሂሳብ", 
+          "cart3": "አጠቃላይ ሂሳብ", 
           "cart4": "አሁን ይዘዙ", 
           "cart5": "መግዛትዎን ይቀጥሉ",
           "cart6": "ቦርሳዎ ባዶ ነው", 
