@@ -1,17 +1,30 @@
 <?php
-/**
- * 1. LOAD CONFIGURATION
- * We include db.php FIRST. It contains your 30-day session settings 
- * and the $conn database connection. This prevents 'Session already active' warnings.
- */
 include 'db.php';
 
-// If the user just arrived at the login page, remember where they came from
+// --- NEW: CATCH THE PREVIOUS PAGE BEFORE LOGIN ATTEMPTS ---
 if (!isset($_SESSION['redirect_to']) && isset($_SERVER['HTTP_REFERER'])) {
-    if (strpos($_SERVER['HTTP_REFERER'], 'login') === false) {
+    // Only save if the referrer is NOT the login page itself
+    if (strpos($_SERVER['HTTP_REFERER'], 'login.html') === false) {
         $_SESSION['redirect_to'] = $_SERVER['HTTP_REFERER'];
     }
 }
+
+// ... (Your existing database/password check code) ...
+
+        if (password_verify($pass, $user['password'])) {
+            $_SESSION['user_id']   = $user['id'];
+            $_SESSION['role']      = $user['role'];
+            $_SESSION['full_name'] = isset($user['first_name']) ? $user['first_name'] . " " . $user['last_name'] : $email;
+
+            // --- FIXED REDIRECT LOGIC ---
+            $target = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : 'home.php';
+            unset($_SESSION['redirect_to']); // Clear it after use
+
+            // Add the success flag for the welcome message
+            $joiner = (strpos($target, '?') !== false) ? '&' : '?';
+            header("Location: " . $target . $joiner . "login=success");
+            exit();
+        }
 
 // Check connection (from db.php)
 if ($conn->connect_error) {
