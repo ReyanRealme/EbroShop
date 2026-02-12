@@ -35,15 +35,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Logic for name: Use first/last name if available, otherwise email
             $_SESSION['full_name'] = isset($user['first_name']) ? $user['first_name'] . " " . $user['last_name'] : $email;
 
-            // 4. REDIRECT BASED ON ROLE
-            if ($user['role'] == 'admin') {
-                // Takes you to your special admin tools
-                header("Location: home.php");
-            } else {
-                // Takes customers to the shopping page
-                // IMPORTANT: Ensure home.html is now home.php to stay logged in!
-                header("Location: home.php");
-            }
+           // 4. REDIRECT BACK WITH WELCOME MESSAGE
+              if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+                  $previousPage = $_SERVER['HTTP_REFERER'];
+              
+                  // Avoid redirecting to login pages
+                  if (strpos($previousPage, 'login.html') !== false || strpos($previousPage, 'login.php') !== false) {
+                      header("Location: home.php?login=success");
+                  } else {
+                      // Add the success message to the previous URL
+                      $connector = (strpos($previousPage, '?') !== false) ? '&' : '?';
+                      header("Location: " . $previousPage . $connector . "login=success");
+                  }
+              } else {
+                  header("Location: home.php?login=success");
+              }
             exit();
         }
     }

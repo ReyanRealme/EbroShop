@@ -452,7 +452,9 @@ const ebroTranslations = {
           "terms49": ". We will reply to you quickly.",
 
      //other
-         
+        "welcome_back": "Welcome Back!",
+        "login_success_msg": "You have logged in successfully.",
+       
 
 
 
@@ -921,6 +923,8 @@ const ebroTranslations = {
           "terms49": "። በፍጥነት ምላሽ እንሰጥዎታለን።",
     
     // other
+          "welcome_back": "እንኳን ደህና መጡ!",
+          "login_success_msg": "በተሳካ ሁኔታ ገብተዋል።",
        
         }
 };
@@ -1013,4 +1017,21 @@ function confirmLogout() {
         window.location.href = 'logout.php';
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('login')) {
+        const lang = localStorage.getItem('userLanguage') || 'en';
+        const title = ebroTranslations[lang]["welcome_back"];
+        const message = ebroTranslations[lang]["login_success_msg"];
+
+        // Show a simple alert or you can use a fancy toast notification
+        alert(title + "\n" + message);
+
+        // Clean the URL so the message doesn't pop up again on refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+
 }
