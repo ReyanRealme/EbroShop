@@ -1034,21 +1034,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Put this inside your "if (typeof window !== 'undefined')" block in languages.js
-// Inside your: if (typeof window !== 'undefined') { ... }
+// Add this inside the: if (typeof window !== 'undefined') block
 window.addEventListener('load', () => {
     const params = new URLSearchParams(window.location.search);
     if (params.has('login')) {
         const lang = localStorage.getItem('userLanguage') || 'en';
         
-        // Short bilingual message logic
-        const welcomeMsg = (lang === 'am') 
+        // Bilingual logic
+        const msg = (lang === 'am') 
             ? "እንኳን ደህና መጡ! በተሳካ ሁኔታ ገብተዋል።" 
             : "Welcome Back! You have logged in successfully.";
 
-        alert(welcomeMsg);
+        alert(msg);
 
-        // This removes "?login=success" from the URL so it doesn't alert again on refresh
+        // Remove "?login=success" from URL so the alert doesn't repeat on refresh
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
