@@ -6,6 +6,13 @@
  */
 include 'db.php';
 
+// If the user just arrived at the login page, remember where they came from
+if (!isset($_SESSION['redirect_to']) && isset($_SERVER['HTTP_REFERER'])) {
+    if (strpos($_SERVER['HTTP_REFERER'], 'login') === false) {
+        $_SESSION['redirect_to'] = $_SERVER['HTTP_REFERER'];
+    }
+}
+
 // Check connection (from db.php)
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -36,21 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['full_name'] = isset($user['first_name']) ? $user['first_name'] . " " . $user['last_name'] : $email;
 
            // 4. REDIRECT BACK WITH WELCOME MESSAGE
-              if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
-                  $previousPage = $_SERVER['HTTP_REFERER'];
+              $redirectTo = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : 'home.php';
+              unset($_SESSION['redirect_to']); // Clear it for next time
               
-                  // Avoid redirecting to login pages
-                  if (strpos($previousPage, 'login.html') !== false || strpos($previousPage, 'login.php') !== false) {
-                      header("Location: home.php?login=success");
-                  } else {
-                      // Add the success message to the previous URL
-                      $connector = (strpos($previousPage, '?') !== false) ? '&' : '?';
-                      header("Location: " . $previousPage . $connector . "login=success");
-                  }
-              } else {
-                  header("Location: home.php?login=success");
-              }
-            exit();
+              $connector = (strpos($redirectTo, '?') !== false) ? '&' : '?';
+              header("Location: " . $redirectTo . $connector . "login=success");
+              exit();
         }
     }
     
