@@ -1,4 +1,4 @@
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+
 // Dictionary for the About.html content
 const ebroTranslations = {
     "en": {
@@ -1034,4 +1034,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-}
