@@ -169,6 +169,7 @@
                     </div>
 
                     <button type="submit" class="btn-blue btn-login"  data-key="login3">Login</button>
+                    <input type="hidden" name="redirect_to" id="redirect_url">
                 </form>
                 
                 <a href="forget.html" class="forgot-link" data-key="login4">Forgot your password?</a>
@@ -327,6 +328,8 @@ fetch('check_session.php')
     });
 
 
+  // This automatically grabs the current page URL (like contact.html)
+  document.getElementById('redirect_url').value = window.location.href;
 
     </script>
     <script src="languages.js"></script>

@@ -33,14 +33,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['role']      = $user['role'];
             $_SESSION['full_name'] = isset($user['first_name']) ? $user['first_name'] . " " . $user['last_name'] : $email;
 
-            // 4. FINAL REDIRECT LOGIC
-            // Use the saved session URL, or fallback to home.php
-            $target = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : 'home.php';
-            unset($_SESSION['redirect_to']); // Clear it for next time
-
-            // Append login success flag for the Welcome Message
-            $joiner = (strpos($target, '?') !== false) ? '&' : '?';
-            header("Location: " . $target . $joiner . "login=success");
+           // 4. FINAL REDIRECT LOGIC
+            // Check if the hidden input sent a URL
+            if (!empty($_POST['redirect_to'])) {
+                $target = $_POST['redirect_to'];
+                
+                // Safety check: if it's the login page, go to home.php instead
+                if (strpos($target, 'login.html') !== false) {
+                    $target = 'home.php';
+                }
+            } else {
+                $target = 'home.php';
+            }
+            
+            header("Location: " . $target);
             exit();
         }
     }
