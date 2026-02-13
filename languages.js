@@ -1,5 +1,7 @@
 
-// Dictionary for the About.html content
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+
+
 const ebroTranslations = {
     "en": {
   /*Common for all pages*/   
@@ -1051,3 +1053,7 @@ window.addEventListener('load', () => {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
+
+ console.log("Running in a browser - Language system active.");
+
+} 
