@@ -1,4 +1,4 @@
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+
 
 const ebroTranslations = {
     "en": {
@@ -1052,6 +1052,6 @@ window.addEventListener('load', () => {
     }
 });
 
- console.log("Running in a browser - Language system active.");
+ 
 
-} 
+
