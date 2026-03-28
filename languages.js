@@ -1,5 +1,4 @@
 
-
 const ebroTranslations = {
     "en": {
   /*Common for all pages*/   
@@ -1051,7 +1050,4 @@ window.addEventListener('load', () => {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
-
- 
-
 
